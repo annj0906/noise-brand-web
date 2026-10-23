@@ -59,18 +59,18 @@ matchMedia('(min-width: 1024px)').addEventListener('change', () => closeMenu());
 
 const interactiveHero=document.querySelector('.interactive-hero');
 if(interactiveHero){
- const photo=interactiveHero.querySelector('.hero-photo'),intro=interactiveHero.querySelector('.hero-intro'),word=intro.querySelector('.intro-word'),logo=interactiveHero.querySelector('.hero-logo'),clarity=interactiveHero.querySelector('.clarity-toggle'),reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ const photo=interactiveHero.querySelector('.hero-photo'),intro=interactiveHero.querySelector('.hero-intro'),word=intro.querySelector('.intro-word'),logo=document.querySelector('.header .wordmark'),clarity=interactiveHero.querySelector('.clarity-toggle'),reduced=matchMedia('(prefers-reduced-motion: reduce)');
  let finished=false,animation,timer,step=0;
  function finishIntro(){finished=true;clearTimeout(timer);animation?.cancel();intro.hidden=true;interactiveHero.classList.remove('logo-resolving');}
  function resolveLetters(){
   if(finished)return;
-  [...word.children].forEach(letter=>letter.classList.toggle('is-pixel',step<6&&Math.random()>.45));
-  if(++step<8){timer=setTimeout(resolveLetters,65);return;}
+  [...word.children].forEach(letter=>letter.classList.toggle('is-pixel',step<11&&Math.random()>.45));
+  if(++step<16){timer=setTimeout(resolveLetters,85);return;}
   const from=word.getBoundingClientRect(),to=logo.getBoundingClientRect();
-  animation=word.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:'translate('+(to.left-from.left)+'px,'+(to.top-from.top)+'px) scale('+(to.height/from.height)+')',opacity:1}],{duration:520,easing:'cubic-bezier(.22,.61,.36,1)',fill:'forwards'});
-  animation.onfinish=finishIntro;
+  animation=word.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:'translate('+(to.left-from.left)+'px,'+(to.top-from.top)+'px) scale('+(to.height/from.height)+')',opacity:1}],{duration:700,easing:'cubic-bezier(.22,.61,.36,1)',fill:'forwards'});
+  animation.onfinish=()=>{intro.classList.add('intro-fading');timer=setTimeout(finishIntro,300);};
  }
- function updateScroll(){const box=interactiveHero.getBoundingClientRect();photo.classList.toggle('is-scroll-clear',box.top < -8);document.body.classList.toggle('hero-header-hidden',box.top > -photo.offsetHeight*.72);if(box.top < -8)finishIntro();}
+ function updateScroll(){const box=interactiveHero.getBoundingClientRect();const distance=Math.max(0,-box.top);const progress=Math.max(0,Math.min(1,(distance-70)/(photo.offsetHeight*.55)));photo.classList.toggle('is-scroll-clear',distance>0);photo.style.setProperty('--scroll-blur',(14*(1-progress))+'px');photo.style.setProperty('--scroll-sharp',String(progress));document.body.classList.remove('hero-header-hidden');}
  clarity.hidden=false;
  clarity.addEventListener('click',()=>{const clear=clarity.getAttribute('aria-pressed')!=='true';clarity.setAttribute('aria-pressed',String(clear));clarity.textContent=clear?'이미지 흐리게 보기':'이미지 선명하게 보기';photo.classList.toggle('is-clear',clear);});
  photo.addEventListener('pointermove',event=>{if(event.pointerType!=='mouse'||reduced.matches)return;const box=photo.getBoundingClientRect();photo.style.setProperty('--lens-x',(event.clientX-box.left)+'px');photo.style.setProperty('--lens-y',(event.clientY-box.top)+'px');photo.classList.add('is-exploring');});

@@ -31,3 +31,12 @@
 @media(min-width:1200px){:root{--hero-slogan-size:16px}.hero-line{grid-template-columns:14% 1fr auto;gap:28px}.hero-line nav{grid-column:auto;gap:24px}.hero-line .hero-slogan{white-space:nowrap}}
 @media(min-width:768px) and (max-width:1023px){.menu-toggle{display:block}.js #navigation{display:none}.js #navigation.open{display:flex;position:absolute;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){.js .hero-intro{display:none}.js .logo-resolving .hero-logo{opacity:1}.js .photo-soft{filter:none}.js .photo-sharp{display:none}}
+
+/* Keep the small opening logo visible before it settles. */
+.intro-word{font-size:44px}.js .photo-soft{filter:blur(var(--scroll-blur,14px))}.js .hero-photo.is-scroll-clear .photo-soft{filter:blur(var(--scroll-blur,14px))}.js .hero-photo.is-scroll-clear .photo-sharp{opacity:var(--scroll-sharp,0);mask-image:none}.js .hero-photo.is-clear .photo-soft{filter:none}.js .hero-photo.is-clear .photo-sharp{opacity:1;mask-image:none}
+@media(min-width:768px){.intro-word{font-size:52px}}
+@media(prefers-reduced-motion:reduce){.js .photo-soft{filter:none}}
+
+/* Restore an actual opening scene and the original top navigation. */
+.js .interactive-hero{height:180svh}.js .hero-scene{position:sticky;top:0}.js .hero-intro{position:fixed;inset:0;height:100svh;background:var(--paper);z-index:40;transition:opacity 300ms ease}.js .hero-intro.intro-fading{opacity:0}.js .header,.js .hero-header-hidden .header{transform:none;opacity:1;pointer-events:auto}.hero-line{z-index:2}.hero-tools p,.clarity-toggle,.note,.note-toggle,.note-close,.story p,.experience-body p,.ending-ko{font-family:var(--font-ui)}.label{font-family:var(--font-label),Pretendard,sans-serif}
+@media(prefers-reduced-motion:reduce){.js .interactive-hero{height:auto}.js .hero-scene{position:relative}.js .hero-intro{display:none}}
