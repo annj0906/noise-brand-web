@@ -102,8 +102,27 @@ if(interactiveHero){
   document.querySelector('.header').inert=introActive;
   document.body.classList.remove('hero-header-hidden');
  }
- photo.addEventListener('pointermove',event=>{if(event.pointerType!=='mouse'||reduced.matches||!intro.hidden)return;const box=photo.getBoundingClientRect();photo.style.setProperty('--lens-x',(event.clientX-box.left)+'px');photo.style.setProperty('--lens-y',(event.clientY-box.top)+'px');photo.classList.add('is-exploring');});
- photo.addEventListener('pointerleave',()=>photo.classList.remove('is-exploring'));
+ const trails=[.42,.26,.14].map((strength,index)=>{
+  const layer=photo.querySelector('.photo-blur-lens').cloneNode();layer.classList.add('lens-trail');layer.style.setProperty('--trail-strength',String(strength));photo.append(layer);
+  return {layer,x:0,y:0,tau:240+index*160};
+ });
+ let lensFrame=0,lensX=0,lensY=0,targetX=0,targetY=0,lastTime=0,lensInitialized=false;
+ function followLens(time){
+  const delta=lastTime?Math.min(50,time-lastTime):16.67;lastTime=time;
+  const ease=1-Math.exp(-delta/135);
+  lensX+=(targetX-lensX)*ease;lensY+=(targetY-lensY)*ease;
+  photo.style.setProperty('--lens-x',lensX+'px');photo.style.setProperty('--lens-y',lensY+'px');
+  let unsettled=Math.abs(targetX-lensX)+Math.abs(targetY-lensY)>.15;
+  trails.forEach(trail=>{const k=1-Math.exp(-delta/trail.tau);trail.x+=(targetX-trail.x)*k;trail.y+=(targetY-trail.y)*k;trail.layer.style.setProperty('--lens-x',trail.x+'px');trail.layer.style.setProperty('--lens-y',trail.y+'px');if(Math.abs(targetX-trail.x)+Math.abs(targetY-trail.y)>.3)unsettled=true;});
+  if(unsettled)lensFrame=requestAnimationFrame(followLens);else{lensFrame=0;lastTime=0;}
+ }
+ photo.addEventListener('pointermove',event=>{
+  if(event.pointerType!=='mouse'||reduced.matches||!intro.hidden)return;
+  const box=photo.getBoundingClientRect();targetX=event.clientX-box.left;targetY=event.clientY-box.top;
+  if(!lensInitialized){lensX=targetX;lensY=targetY;trails.forEach(trail=>{trail.x=targetX;trail.y=targetY;});lensInitialized=true;}
+  photo.classList.add('is-exploring');if(!lensFrame)lensFrame=requestAnimationFrame(followLens);
+ });
+ photo.addEventListener('pointerleave',()=>{photo.classList.remove('is-exploring');cancelAnimationFrame(lensFrame);lensFrame=0;lastTime=0;lensInitialized=false;});
  window.addEventListener('scroll',updateScroll,{passive:true});window.addEventListener('resize',updateScroll);reduced.addEventListener('change',updateScroll);updateScroll();
 }
 

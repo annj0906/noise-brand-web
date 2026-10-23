@@ -103,3 +103,11 @@
 .type-fracture{animation:type-fracture 240ms steps(1,end) 1}
 @keyframes type-fracture{0%,100%{clip-path:inset(0);text-shadow:none}20%{clip-path:polygon(0 0,100% 0,100% 38%,98% 38%,98% 52%,100% 52%,100% 100%,0 100%);text-shadow:1px 0 currentColor}45%{clip-path:inset(0);text-shadow:-1px 0 currentColor}65%{clip-path:polygon(0 0,100% 0,100% 65%,0 65%,0 57%,3% 57%,3% 48%,0 48%)}80%{clip-path:inset(0);text-shadow:none}}
 @media(prefers-reduced-motion:reduce){.js .hero-photo .photo-blur-lens{display:none}.type-fracture{animation:none}}
+
+/* Soft photographic afterimages linger behind the moving blur lens. */
+.js .hero-photo .lens-trail{transition:opacity 650ms ease;mask-image:radial-gradient(circle calc(var(--hero-lens) * .88) at var(--lens-x,50%) var(--lens-y,50%),#000 0%,transparent 100%)}
+.js .hero-photo.is-exploring .lens-trail{opacity:calc(var(--lens-blur-alpha,0) * var(--trail-strength));transition:opacity 180ms ease}
+
+/* Hero slogan and inline navigation: 16px. */
+:root{--hero-slogan-size:16px}.hero-line nav a{font-size:16px}
+@media(min-width:1200px) and (max-width:1350px){.hero-line{grid-template-columns:110px 1fr;gap:8px 24px}.hero-line nav{grid-column:2;justify-content:flex-start}}
