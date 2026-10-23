@@ -59,7 +59,7 @@ matchMedia('(min-width: 1024px)').addEventListener('change', () => closeMenu());
 
 const interactiveHero=document.querySelector('.interactive-hero');
 if(interactiveHero){
- const photo=interactiveHero.querySelector('.hero-photo'),intro=interactiveHero.querySelector('.hero-intro'),word=intro.querySelector('.intro-word'),logo=document.querySelector('.header .wordmark'),clarity=interactiveHero.querySelector('.clarity-toggle'),reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ const photo=interactiveHero.querySelector('.hero-photo'),intro=interactiveHero.querySelector('.hero-intro'),word=intro.querySelector('.intro-word'),logo=document.querySelector('.header .wordmark'),reduced=matchMedia('(prefers-reduced-motion: reduce)');
 
  let glitchPlayed=false,glitchTimer=null,glitchStep=0;
  function stopGlitch(){clearTimeout(glitchTimer);word.classList.remove('is-glitching');word.querySelectorAll('span').forEach(letter=>letter.classList.remove('is-pixel'));}
@@ -96,8 +96,6 @@ if(interactiveHero){
   document.querySelector('.header').inert=introActive;
   document.body.classList.remove('hero-header-hidden');
  }
- clarity.hidden=false;
- clarity.addEventListener('click',()=>{const clear=clarity.getAttribute('aria-pressed')!=='true';clarity.setAttribute('aria-pressed',String(clear));clarity.textContent=clear?'이미지 흐리게 보기':'이미지 선명하게 보기';photo.classList.toggle('is-clear',clear);});
  photo.addEventListener('pointermove',event=>{if(event.pointerType!=='mouse'||reduced.matches||!intro.hidden)return;const box=photo.getBoundingClientRect();photo.style.setProperty('--lens-x',(event.clientX-box.left)+'px');photo.style.setProperty('--lens-y',(event.clientY-box.top)+'px');photo.classList.add('is-exploring');});
  photo.addEventListener('pointerleave',()=>photo.classList.remove('is-exploring'));
  window.addEventListener('scroll',updateScroll,{passive:true});window.addEventListener('resize',updateScroll);reduced.addEventListener('change',updateScroll);updateScroll();
