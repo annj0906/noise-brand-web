@@ -139,3 +139,6 @@
 /* Match visible capital height; all arrows point diagonally down-right. */
 .ui-arrow,.choices a>.ui-arrow{width:.8em;height:.8em;min-width:.8em;font-size:inherit;vertical-align:-.02em;rotate:0deg;margin-inline-start:.35em}
 .arrow-down{rotate:0deg}
+
+/* The drawn arrow occupies 75% of its box, matching Latin cap height. */
+.ui-arrow,.choices a>.ui-arrow{width:1em;height:1em;min-width:1em;font-size:inherit;vertical-align:-.08em;align-self:center;margin-inline-start:.5em;rotate:0deg}
