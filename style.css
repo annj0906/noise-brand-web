@@ -111,3 +111,13 @@
 /* Hero slogan and inline navigation: 16px. */
 :root{--hero-slogan-size:16px}.hero-line nav a{font-size:16px}
 @media(min-width:1200px) and (max-width:1350px){.hero-line{grid-template-columns:110px 1fr;gap:8px 24px}.hero-line nav{grid-column:2;justify-content:flex-start}}
+
+/* Airier hero navigation and consistent main navigation type. */
+:root{--size-nav:16px}.hero-line nav{column-gap:32px}.header nav a{font-size:16px}
+@media(min-width:1200px){.hero-line nav{column-gap:40px}}
+@media(min-width:1200px) and (max-width:1439px){.hero-line{grid-template-columns:110px 1fr;gap:8px 24px}.hero-line nav{grid-column:2;justify-content:flex-start}}
+
+/* Longer, fluid circular afterimages with gentle directional stretching. */
+.js .hero-photo .photo-sharp,.js .hero-photo .photo-blur-lens{mask-image:radial-gradient(ellipse var(--lens-rx,120px) var(--lens-ry,120px) at var(--lens-x,50%) var(--lens-y,50%),#000 28%,transparent 100%)}
+.js .hero-photo .lens-trail{transition:opacity 1100ms ease;mask-image:radial-gradient(ellipse var(--lens-rx,120px) var(--lens-ry,120px) at var(--lens-x,50%) var(--lens-y,50%),#000 8%,transparent 100%)}
+.js .hero-photo.is-exploring .lens-trail{transition:opacity 220ms ease}

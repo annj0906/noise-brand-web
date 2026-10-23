@@ -102,14 +102,17 @@ if(interactiveHero){
   document.querySelector('.header').inert=introActive;
   document.body.classList.remove('hero-header-hidden');
  }
- const trails=[.42,.26,.14].map((strength,index)=>{
+ const trails=[.48,.34,.23,.13].map((strength,index)=>{
   const layer=photo.querySelector('.photo-blur-lens').cloneNode();layer.classList.add('lens-trail');layer.style.setProperty('--trail-strength',String(strength));photo.append(layer);
-  return {layer,x:0,y:0,tau:240+index*160};
+  return {layer,x:0,y:0,tau:420+index*240};
  });
  let lensFrame=0,lensX=0,lensY=0,targetX=0,targetY=0,lastTime=0,lensInitialized=false;
  function followLens(time){
   const delta=lastTime?Math.min(50,time-lastTime):16.67;lastTime=time;
   const ease=1-Math.exp(-delta/135);
+  const stretchX=Math.min(1.32,1+Math.abs(targetX-lensX)/650);
+  const stretchY=Math.min(1.32,1+Math.abs(targetY-lensY)/650);
+  photo.style.setProperty('--lens-rx',(120*stretchX)+'px');photo.style.setProperty('--lens-ry',(120*stretchY)+'px');
   lensX+=(targetX-lensX)*ease;lensY+=(targetY-lensY)*ease;
   photo.style.setProperty('--lens-x',lensX+'px');photo.style.setProperty('--lens-y',lensY+'px');
   let unsettled=Math.abs(targetX-lensX)+Math.abs(targetY-lensY)>.15;
