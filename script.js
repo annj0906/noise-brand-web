@@ -95,6 +95,8 @@ if(interactiveHero){
   const clarityProgress=Math.max(0,Math.min(1,(distance-height*3.7)/(height*1.15)));
   photo.classList.toggle('is-scroll-clear',clarityProgress>0);
   photo.style.setProperty('--scroll-blur',(14*(1-clarityProgress))+'px');photo.style.setProperty('--scroll-sharp',String(clarityProgress));
+  photo.style.setProperty('--lens-sharp-alpha',String(1-clarityProgress));
+  photo.style.setProperty('--lens-blur-alpha',String(clarityProgress));
   const introActive=progress<1&&!reduced.matches;
   document.body.classList.toggle('intro-active',introActive);
   document.querySelector('.header').inert=introActive;
@@ -104,3 +106,15 @@ if(interactiveHero){
  photo.addEventListener('pointerleave',()=>photo.classList.remove('is-exploring'));
  window.addEventListener('scroll',updateScroll,{passive:true});window.addEventListener('resize',updateScroll);reduced.addEventListener('change',updateScroll);updateScroll();
 }
+
+// Brief visual type fracture, without changing labels or accessible names.
+if(typeof window!=='undefined')document.querySelectorAll('button,.header nav a,.hero-line nav a,.text-link,footer nav a').forEach(control=>{
+ let hoverTimer;
+ control.addEventListener('pointerenter',event=>{
+  if(event.pointerType!=='mouse'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  clearTimeout(hoverTimer);control.classList.remove('type-fracture');
+  void control.offsetWidth;control.classList.add('type-fracture');
+  hoverTimer=setTimeout(()=>control.classList.remove('type-fracture'),260);
+ });
+ control.addEventListener('pointerleave',()=>{clearTimeout(hoverTimer);control.classList.remove('type-fracture');});
+});

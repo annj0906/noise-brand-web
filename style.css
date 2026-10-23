@@ -94,3 +94,12 @@
 .intro-word > .intro-no{position:absolute;right:calc(50% + var(--insert,0) * .135em);top:0;transform:none}
 .intro-word > .intro-se{position:absolute;left:calc(50% + var(--insert,0) * .135em);top:0;transform:none}
 .intro-word > .intro-i{position:absolute;left:50%!important;top:0;width:.27em;transform:translate(-50%,calc((1 - var(--insert,0)) * 55px));opacity:var(--insert,0)}
+
+/* Photo-only lens inversion: sharp on blur, then blur on the clear photograph. */
+.photo-blur-lens{display:none;pointer-events:none}
+.js .hero-photo .photo-blur-lens{display:block;filter:blur(14px);opacity:0;mask-image:radial-gradient(circle var(--hero-lens) at var(--lens-x,50%) var(--lens-y,50%),#000 35%,transparent 100%);transition:opacity 180ms ease}
+.js .hero-photo.is-exploring .photo-sharp{opacity:var(--lens-sharp-alpha,1)}
+.js .hero-photo.is-exploring .photo-blur-lens{opacity:var(--lens-blur-alpha,0)}
+.type-fracture{animation:type-fracture 240ms steps(1,end) 1}
+@keyframes type-fracture{0%,100%{clip-path:inset(0);text-shadow:none}20%{clip-path:polygon(0 0,100% 0,100% 38%,98% 38%,98% 52%,100% 52%,100% 100%,0 100%);text-shadow:1px 0 currentColor}45%{clip-path:inset(0);text-shadow:-1px 0 currentColor}65%{clip-path:polygon(0 0,100% 0,100% 65%,0 65%,0 57%,3% 57%,3% 48%,0 48%)}80%{clip-path:inset(0);text-shadow:none}}
+@media(prefers-reduced-motion:reduce){.js .hero-photo .photo-blur-lens{display:none}.type-fracture{animation:none}}
