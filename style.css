@@ -128,3 +128,10 @@
 .js .hero-line.copy-visible > :nth-child(2){transition-delay:150ms}
 .js .hero-line.copy-visible > :nth-child(3){transition-delay:300ms}
 @media(prefers-reduced-motion:reduce){.js .hero-line > *{opacity:1;transform:none;transition:none}}
+
+/* Fine-line arrows scale with their surrounding text, preserving direction. */
+.ui-arrow{display:inline-block;width:1.15em;height:1.15em;min-width:1.15em;flex-shrink:0;vertical-align:-.17em;margin-inline-start:.4em;overflow:visible;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter}
+.ui-arrow path{vector-effect:non-scaling-stroke}
+.arrow-ne{rotate:-90deg}.arrow-up{rotate:-135deg}.arrow-right{rotate:-45deg}
+.text-link>.ui-arrow,.choices a>.ui-arrow{margin-inline-start:0}
+.choices a>.ui-arrow{font-size:24px}
