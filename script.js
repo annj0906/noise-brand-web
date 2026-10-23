@@ -163,7 +163,7 @@ if(typeof window!=='undefined')document.querySelectorAll('.hero-line nav a').for
  link.addEventListener('pointerenter',event=>{
   if(event.pointerType!=='mouse'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   clearTimeout(timer);link.classList.remove('menu-glitch');void link.offsetWidth;link.classList.add('menu-glitch');
-  timer=setTimeout(()=>link.classList.remove('menu-glitch'),420);
+  timer=setTimeout(()=>link.classList.remove('menu-glitch'),240);
  });
  link.addEventListener('pointerleave',()=>{clearTimeout(timer);link.classList.remove('menu-glitch');});
 });
