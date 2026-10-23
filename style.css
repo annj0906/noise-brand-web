@@ -40,3 +40,42 @@
 /* Restore an actual opening scene and the original top navigation. */
 .js .interactive-hero{height:180svh}.js .hero-scene{position:sticky;top:0}.js .hero-intro{position:fixed;inset:0;height:100svh;background:var(--paper);z-index:40;transition:opacity 300ms ease}.js .hero-intro.intro-fading{opacity:0}.js .header,.js .hero-header-hidden .header{transform:none;opacity:1;pointer-events:auto}.hero-line{z-index:2}.hero-tools p,.clarity-toggle,.note,.note-toggle,.note-close,.story p,.experience-body p,.ending-ko{font-family:var(--font-ui)}.label{font-family:var(--font-label),Pretendard,sans-serif}
 @media(prefers-reduced-motion:reduce){.js .interactive-hero{height:auto}.js .hero-scene{position:relative}.js .hero-intro{display:none}}
+
+/* Scroll-linked black NOSE -> NOISE opening, with no flying logo. */
+.js .interactive-hero{height:255svh}.js .hero-intro{position:absolute;inset:0 0 auto;background:var(--ink);color:var(--paper);height:100svh;opacity:var(--intro-opacity,1);transform:translateY(var(--intro-y,0px));transition:none;z-index:30}.intro-word{position:relative;display:flex;font-size:44px;letter-spacing:-.065em;gap:0}.intro-word span{width:auto;clip-path:none;transform:none;font-family:var(--font-brand);font-weight:500}.intro-word .intro-no{transform:translateX(calc(var(--insert,0) * -.16em))}.intro-word .intro-se{transform:translateX(calc(var(--insert,0) * .16em))}.intro-word .intro-i{position:absolute;left:50%;top:0;opacity:var(--insert,0);transform:translate(-50%,calc((1 - var(--insert,0)) * 70px))}.js .header{z-index:20}.js .hero-scene{z-index:21}.hero-tools{background:var(--paper)}
+@media(min-width:768px){.intro-word{font-size:52px}}
+@media(prefers-reduced-motion:reduce){.js .interactive-hero{height:auto}.js .hero-scene{position:relative;z-index:auto}.js .hero-intro{display:none}}
+.js .hero-scene{z-index:auto}.js .hero-intro{z-index:40}
+
+/* Reserve a real glyph slot for I, preserving the original letter baseline. */
+.intro-word{display:flex;align-items:baseline;gap:0;letter-spacing:-.065em;filter:blur(var(--intro-blur,0px))}.intro-word .intro-no,.intro-word .intro-se{display:flex;transform:none}.intro-word .intro-i{position:relative;left:auto;top:auto;display:block;width:calc(var(--insert,0) * .33em);overflow:visible;opacity:var(--insert,0);transform:translateY(calc((1 - var(--insert,0)) * 55px));text-align:center}.intro-word span span{display:inline-block}.intro-word .is-pixel{font-family:var(--font-pixel);font-weight:400}.intro-word.is-glitching{animation:logo-fracture 130ms steps(1,end) infinite}.js .hero-intro{transform:none;background:var(--ink)}
+@keyframes logo-fracture{0%,100%{clip-path:inset(0);translate:0}25%{clip-path:polygon(0 0,100% 0,100% 41%,97% 41%,97% 50%,100% 50%,100% 100%,0 100%);translate:1px}60%{clip-path:inset(0);translate:-1px}80%{translate:0}}
+@media(prefers-reduced-motion:reduce){.intro-word.is-glitching{animation:none}}
+
+/* Longer scroll beats: intro 1.65 screens, a pause, then 1.15 screens to clear. */
+.js .interactive-hero{height:430svh}
+@media(prefers-reduced-motion:reduce){.js .interactive-hero{height:auto}}
+
+/* Exact centerline for insertion; pixel changes without positional shaking. */
+.js .interactive-hero{height:600svh}
+.intro-word{position:relative;display:flex;justify-content:center;letter-spacing:-.065em}
+.intro-word .intro-no{transform:translateX(calc(var(--insert,0) * -.165em))}
+.intro-word .intro-se{transform:translateX(calc(var(--insert,0) * .165em))}
+.intro-word .intro-i{position:absolute;top:0;width:.33em;left:50%;text-align:center;transform:translate(-50%,calc((1 - var(--insert,0)) * 55px));opacity:var(--insert,0)}
+.intro-word.is-glitching{animation:none;translate:none}
+@media(prefers-reduced-motion:reduce){.js .interactive-hero{height:auto}}
+
+/* Hold glitch and resolved logo; restore the earlier hero clarity duration. */
+.js .interactive-hero{height:615svh}
+@media(prefers-reduced-motion:reduce){.js .interactive-hero{height:auto}}
+
+/* I occupies its own real layout column, never an overlay on O. */
+.intro-word{display:flex;align-items:baseline;justify-content:center;letter-spacing:0;white-space:nowrap}
+.intro-word .intro-no,.intro-word .intro-se{transform:none;letter-spacing:-.065em}
+.intro-word .intro-i{position:relative;inset:auto;left:auto!important;top:auto;width:calc(var(--insert,0) * .36em);flex-shrink:0;letter-spacing:0;text-align:center;transform:translateY(calc((1 - var(--insert,0)) * 55px));opacity:var(--insert,0)}
+.intro-word .intro-no > span,.intro-word .intro-se > span{width:.72em;text-align:center}
+
+/* Unified intro glyph layout: native NO/SE widths, zero initial I slot. */
+.intro-word{display:flex;align-items:baseline;gap:0;font-family:var(--font-brand);font-weight:500;letter-spacing:-.065em;white-space:nowrap}
+.intro-word > .intro-no,.intro-word > .intro-se{display:block;position:static;width:auto;flex:none;transform:none;letter-spacing:inherit;text-align:left;clip-path:none}
+.intro-word > .intro-i{display:block;position:relative;inset:auto;left:auto!important;top:auto;flex:0 0 calc(var(--insert,0) * .27em);width:calc(var(--insert,0) * .27em);margin:0;padding:0;letter-spacing:inherit;overflow:visible;text-align:center;transform:translateY(calc((1 - var(--insert,0)) * 55px));opacity:var(--insert,0)}
