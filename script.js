@@ -133,7 +133,7 @@ if(interactiveHero){
 }
 
 // Brief visual type fracture, without changing labels or accessible names.
-if(typeof window!=='undefined')document.querySelectorAll('button,.header nav a,.hero-line nav a,.text-link,footer nav a').forEach(control=>{
+if(typeof window!=='undefined')document.querySelectorAll('button,.header nav a,.text-link,footer nav a').forEach(control=>{
  let hoverTimer;
  control.addEventListener('pointerenter',event=>{
   if(event.pointerType!=='mouse'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
@@ -142,4 +142,28 @@ if(typeof window!=='undefined')document.querySelectorAll('button,.header nav a,.
   hoverTimer=setTimeout(()=>control.classList.remove('type-fracture'),260);
  });
  control.addEventListener('pointerleave',()=>{clearTimeout(hoverTimer);control.classList.remove('type-fracture');});
+});
+
+// A local red light clipped to the hero lettering, independent of photo blur.
+if(typeof window!=='undefined')document.querySelectorAll('.hero-line .hero-logo,.hero-line .hero-slogan').forEach(label=>{
+ const region=document.querySelector('.hero-main');
+ region.addEventListener('pointermove',event=>{
+  if(event.pointerType!=='mouse'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const box=label.getBoundingClientRect();
+  label.style.setProperty('--light-x',(event.clientX-box.left)+'px');
+  label.style.setProperty('--light-y',(event.clientY-box.top)+'px');
+  label.classList.toggle('red-light',event.clientX>box.left-70&&event.clientX<box.right+70&&event.clientY>box.top-70&&event.clientY<box.bottom+70);
+ });
+ region.addEventListener('pointerleave',()=>label.classList.remove('red-light'));
+});
+
+// Keep the soft red fade while briefly fracturing only the menu lettering.
+if(typeof window!=='undefined')document.querySelectorAll('.hero-line nav a').forEach(link=>{
+ let timer;
+ link.addEventListener('pointerenter',event=>{
+  if(event.pointerType!=='mouse'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  clearTimeout(timer);link.classList.remove('menu-glitch');void link.offsetWidth;link.classList.add('menu-glitch');
+  timer=setTimeout(()=>link.classList.remove('menu-glitch'),420);
+ });
+ link.addEventListener('pointerleave',()=>{clearTimeout(timer);link.classList.remove('menu-glitch');});
 });
