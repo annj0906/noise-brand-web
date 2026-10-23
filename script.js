@@ -80,6 +80,10 @@ if(interactiveHero){
   const insert=Math.max(0,Math.min(1,(progress-.05)/.4));
   const fade=Math.max(0,Math.min(1,(progress-.88)/.12));
   intro.style.setProperty('--insert',String(insert));
+  const noWidth=word.querySelector('.intro-no').getBoundingClientRect().width;
+  const seWidth=word.querySelector('.intro-se').getBoundingClientRect().width;
+  word.style.setProperty('--no-width',noWidth+'px');
+  word.style.setProperty('--se-width',seWidth+'px');
 
   intro.style.setProperty('--intro-opacity',String(1-fade));
   intro.style.setProperty('--intro-blur',(fade*18)+'px');
