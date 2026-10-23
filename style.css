@@ -79,3 +79,8 @@
 .intro-word{display:flex;align-items:baseline;gap:0;font-family:var(--font-brand);font-weight:500;letter-spacing:-.065em;white-space:nowrap}
 .intro-word > .intro-no,.intro-word > .intro-se{display:block;position:static;width:auto;flex:none;transform:none;letter-spacing:inherit;text-align:left;clip-path:none}
 .intro-word > .intro-i{display:block;position:relative;inset:auto;left:auto!important;top:auto;flex:0 0 calc(var(--insert,0) * .27em);width:calc(var(--insert,0) * .27em);margin:0;padding:0;letter-spacing:inherit;overflow:visible;text-align:center;transform:translateY(calc((1 - var(--insert,0)) * 55px));opacity:var(--insert,0)}
+
+/* Double the opening mark; navigation returns after the intro. */
+.intro-word{font-size:88px}
+.js .intro-active .header{opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-100%)}
+@media(min-width:768px){.intro-word{font-size:104px}}

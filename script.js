@@ -91,6 +91,9 @@ if(interactiveHero){
   const clarityProgress=Math.max(0,Math.min(1,(distance-height*3.7)/(height*1.15)));
   photo.classList.toggle('is-scroll-clear',clarityProgress>0);
   photo.style.setProperty('--scroll-blur',(14*(1-clarityProgress))+'px');photo.style.setProperty('--scroll-sharp',String(clarityProgress));
+  const introActive=progress<1&&!reduced.matches;
+  document.body.classList.toggle('intro-active',introActive);
+  document.querySelector('.header').inert=introActive;
   document.body.classList.remove('hero-header-hidden');
  }
  clarity.hidden=false;
