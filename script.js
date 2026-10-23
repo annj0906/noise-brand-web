@@ -91,6 +91,9 @@ if(interactiveHero){
   if(progress<.05){stopGlitch();glitchPlayed=false;}
   if(progress>=1||reduced.matches)stopGlitch();
   intro.hidden=progress>=1;
+  const heroCopy=interactiveHero.querySelector('.hero-line');
+  heroCopy.classList.toggle('copy-visible',progress>=.96||reduced.matches);
+  heroCopy.inert=progress<.96&&!reduced.matches;
   if(!intro.hidden)photo.classList.remove('is-exploring');
   const clarityProgress=Math.max(0,Math.min(1,(distance-height*3.7)/(height*1.15)));
   photo.classList.toggle('is-scroll-clear',clarityProgress>0);

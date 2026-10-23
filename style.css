@@ -121,3 +121,10 @@
 .js .hero-photo .photo-sharp,.js .hero-photo .photo-blur-lens{mask-image:radial-gradient(ellipse var(--lens-rx,120px) var(--lens-ry,120px) at var(--lens-x,50%) var(--lens-y,50%),#000 28%,transparent 100%)}
 .js .hero-photo .lens-trail{transition:opacity 1100ms ease;mask-image:radial-gradient(ellipse var(--lens-rx,120px) var(--lens-ry,120px) at var(--lens-x,50%) var(--lens-y,50%),#000 8%,transparent 100%)}
 .js .hero-photo.is-exploring .lens-trail{transition:opacity 220ms ease}
+
+/* Quiet staggered reveal after the opening logo fades. */
+.js .hero-line > *{opacity:0;transform:translateY(9px);transition:opacity 1000ms ease,transform 1000ms cubic-bezier(.22,.61,.36,1)}
+.js .hero-line.copy-visible > *{opacity:1;transform:translateY(0)}
+.js .hero-line.copy-visible > :nth-child(2){transition-delay:150ms}
+.js .hero-line.copy-visible > :nth-child(3){transition-delay:300ms}
+@media(prefers-reduced-motion:reduce){.js .hero-line > *{opacity:1;transform:none;transition:none}}
