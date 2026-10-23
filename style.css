@@ -135,3 +135,7 @@
 .arrow-ne{rotate:-90deg}.arrow-up{rotate:-135deg}.arrow-right{rotate:-45deg}
 .text-link>.ui-arrow,.choices a>.ui-arrow{margin-inline-start:0}
 .choices a>.ui-arrow{font-size:24px}
+
+/* Match visible capital height; all arrows point diagonally down-right. */
+.ui-arrow,.choices a>.ui-arrow{width:.8em;height:.8em;min-width:.8em;font-size:inherit;vertical-align:-.02em;rotate:0deg;margin-inline-start:.35em}
+.arrow-down{rotate:0deg}
