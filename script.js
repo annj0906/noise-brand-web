@@ -54,99 +54,27 @@ document.addEventListener('keydown', e => {
   if (menuButton.getAttribute('aria-expanded') === 'true') closeMenu(true);
   cards.forEach(card => { if (!card.querySelector('.note').hidden) setNote(card, false, card.contains(document.activeElement)); });
 });
-matchMedia('(min-width: 768px)').addEventListener('change', () => closeMenu());
+matchMedia('(min-width: 1024px)').addEventListener('change', () => closeMenu());
 
-// Reversible, scroll-linked NOSE -> NOISE intro and frosted-glass image exploration.
-const interactiveHero = document.querySelector('.interactive-hero');
-if (interactiveHero) {
-  const photo = interactiveHero.querySelector('.hero-photo');
-  const mainVisual = interactiveHero.querySelector('.hero-main');
-  const intro = interactiveHero.querySelector('.hero-intro');
-  interactiveHero.querySelector('.intro-skip').addEventListener('click', () => {
-    const start = interactiveHero.getBoundingClientRect().top + scrollY;
-    scrollTo({ top: start + interactiveHero.offsetHeight - innerHeight, behavior: reduced.matches ? 'instant' : 'smooth' });
-  });
-  const clarity = interactiveHero.querySelector('.clarity-toggle');
-  const word = interactiveHero.querySelector('.intro-word');
-  const no = interactiveHero.querySelector('.intro-no');
-  const letterI = interactiveHero.querySelector('.intro-i');
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
-  let scrollDirty = true, frame = 0, lastProgress = 0, glitchTimer;
-  let targetX = 0, targetY = 0, x = 0, y = 0, exploring = false, firstPoint = true;
-  const clamp = value => Math.max(0, Math.min(1, value));
-  const smooth = value => { const t = clamp(value); return t * t * (3 - 2 * t); };
-  clarity.hidden = false;
-  function measure() {
-    interactiveHero.style.setProperty('--i-width', `${letterI.offsetWidth}px`);
-    interactiveHero.style.setProperty('--join-x', `${no.offsetLeft + no.offsetWidth}px`);
-    scrollDirty = true;
-    schedule();
-  }
-  function schedule() { if (!frame) frame = requestAnimationFrame(render); }
-  function render() {
-    frame = 0;
-    if (scrollDirty) {
-      scrollDirty = false;
-      const bounds = interactiveHero.getBoundingClientRect();
-      const distance = Math.max(1, interactiveHero.offsetHeight - innerHeight);
-      const progress = reduced.matches ? 1 : clamp(-bounds.top / distance);
-      mainVisual.inert = progress < .92;
-      intro.inert = progress > .8;
-      const split = smooth((progress - .14) / .34);
-      interactiveHero.style.setProperty('--hero-split', split);
-      interactiveHero.style.setProperty('--hero-i-alpha', clamp((progress - .24) / .2));
-      interactiveHero.style.setProperty('--hero-i-y', `${(1 - smooth((progress - .22) / .28)) * 150}px`);
-      interactiveHero.style.setProperty('--hero-word-alpha', 1 - smooth((progress - .63) / .17));
-      interactiveHero.style.setProperty('--hero-reveal', smooth((progress - .66) / .26));
-      document.body.classList.toggle('hero-header-hidden', !reduced.matches && bounds.bottom >= innerHeight - 1 && bounds.top <= 1);
-      if (!reduced.matches && lastProgress < .52 && progress >= .52 && progress < .7) {
-        word.classList.remove('is-glitch');
-        void word.offsetWidth;
-        word.classList.add('is-glitch');
-        clearTimeout(glitchTimer);
-        glitchTimer = setTimeout(() => word.classList.remove('is-glitch'), 280);
-      }
-      lastProgress = progress;
-    }
-    if (exploring) {
-      const follow = reduced.matches ? 1 : .18;
-      x += (targetX - x) * follow;
-      y += (targetY - y) * follow;
-      photo.style.setProperty('--lens-x', `${x}px`);
-      photo.style.setProperty('--lens-y', `${y}px`);
-      if (Math.abs(targetX - x) + Math.abs(targetY - y) > .3) schedule();
-    }
-  }
-  function explore(event) {
-    if (event.pointerType === 'mouse' && !finePointer.matches) return;
-    const rect = photo.getBoundingClientRect();
-    targetX = event.clientX - rect.left;
-    targetY = event.clientY - rect.top;
-    if (firstPoint) { x = targetX; y = targetY; firstPoint = false; }
-    exploring = true;
-    photo.classList.add('is-exploring');
-    schedule();
-  }
-  function stopExploring() { exploring = false; firstPoint = true; photo.classList.remove('is-exploring'); }
-  photo.addEventListener('pointermove', explore, { passive: true });
-  photo.addEventListener('pointerdown', explore, { passive: true });
-  photo.addEventListener('pointerleave', stopExploring);
-  photo.addEventListener('pointercancel', stopExploring);
-  photo.addEventListener('pointerup', event => { if (event.pointerType !== 'mouse') stopExploring(); });
-  clarity.addEventListener('click', () => {
-    const clear = clarity.getAttribute('aria-pressed') !== 'true';
-    clarity.setAttribute('aria-pressed', String(clear));
-    clarity.textContent = clear ? '블러로 돌아가기' : '이미지 선명하게 보기';
-    photo.classList.toggle('is-clear', clear);
-  });
-  interactiveHero.addEventListener('keydown', event => {
-    if (event.key === 'Escape') { stopExploring(); if (clarity.getAttribute('aria-pressed') === 'true') clarity.click(); }
-  });
-  addEventListener('scroll', () => { scrollDirty = true; schedule(); }, { passive: true });
-  addEventListener('resize', measure, { passive: true });
-  reduced.addEventListener('change', measure);
-  if (document.fonts) document.fonts.ready.then(measure);
-  measure();
+
+const interactiveHero=document.querySelector('.interactive-hero');
+if(interactiveHero){
+ const photo=interactiveHero.querySelector('.hero-photo'),intro=interactiveHero.querySelector('.hero-intro'),word=intro.querySelector('.intro-word'),logo=interactiveHero.querySelector('.hero-logo'),clarity=interactiveHero.querySelector('.clarity-toggle'),reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ let finished=false,animation,timer,step=0;
+ function finishIntro(){finished=true;clearTimeout(timer);animation?.cancel();intro.hidden=true;interactiveHero.classList.remove('logo-resolving');}
+ function resolveLetters(){
+  if(finished)return;
+  [...word.children].forEach(letter=>letter.classList.toggle('is-pixel',step<6&&Math.random()>.45));
+  if(++step<8){timer=setTimeout(resolveLetters,65);return;}
+  const from=word.getBoundingClientRect(),to=logo.getBoundingClientRect();
+  animation=word.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:'translate('+(to.left-from.left)+'px,'+(to.top-from.top)+'px) scale('+(to.height/from.height)+')',opacity:1}],{duration:520,easing:'cubic-bezier(.22,.61,.36,1)',fill:'forwards'});
+  animation.onfinish=finishIntro;
+ }
+ function updateScroll(){const box=interactiveHero.getBoundingClientRect();photo.classList.toggle('is-scroll-clear',box.top < -8);document.body.classList.toggle('hero-header-hidden',box.top > -photo.offsetHeight*.72);if(box.top < -8)finishIntro();}
+ clarity.hidden=false;
+ clarity.addEventListener('click',()=>{const clear=clarity.getAttribute('aria-pressed')!=='true';clarity.setAttribute('aria-pressed',String(clear));clarity.textContent=clear?'이미지 흐리게 보기':'이미지 선명하게 보기';photo.classList.toggle('is-clear',clear);});
+ photo.addEventListener('pointermove',event=>{if(event.pointerType!=='mouse'||reduced.matches)return;const box=photo.getBoundingClientRect();photo.style.setProperty('--lens-x',(event.clientX-box.left)+'px');photo.style.setProperty('--lens-y',(event.clientY-box.top)+'px');photo.classList.add('is-exploring');});
+ photo.addEventListener('pointerleave',()=>photo.classList.remove('is-exploring'));
+ window.addEventListener('scroll',updateScroll,{passive:true});window.addEventListener('resize',updateScroll);reduced.addEventListener('change',finishIntro);updateScroll();
+ if(reduced.matches||scrollY>8)finishIntro();else{interactiveHero.classList.add('logo-resolving');document.fonts.ready.then(()=>{if(!finished)resolveLetters();});}
 }
-
