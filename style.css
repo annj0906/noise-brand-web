@@ -178,3 +178,5 @@
 74%{translate:-1px 0;clip-path:inset(0 0 9%);text-shadow:1px 0 rgb(255 0 0 / .35)}
 86%{translate:0;clip-path:inset(0);text-shadow:none}}
 @media(prefers-reduced-motion:reduce){.hero-line nav a.menu-glitch .hero-menu-ink{animation:none!important}}
+
+@media(hover:hover) and (pointer:fine){.hero-photo figcaption.caption-follow{left:var(--caption-x);top:var(--caption-y);bottom:auto;margin:0;pointer-events:none;max-width:calc(100% - 32px)}}

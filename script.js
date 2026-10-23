@@ -167,3 +167,20 @@ if(typeof window!=='undefined')document.querySelectorAll('.hero-line nav a').for
  });
  link.addEventListener('pointerleave',()=>{clearTimeout(timer);link.classList.remove('menu-glitch');});
 });
+
+// Product caption follows a mouse on the hero photograph; touch keeps it static.
+if(typeof window!=='undefined'){
+ const photo=document.querySelector('.hero-photo'),caption=photo?.querySelector('figcaption');
+ if(caption){
+  photo.addEventListener('pointermove',event=>{
+   if(event.pointerType!=='mouse'||!matchMedia('(hover:hover) and (pointer:fine)').matches||!document.querySelector('.hero-intro').hidden)return;
+   const bounds=photo.getBoundingClientRect();
+   const x=Math.max(16,Math.min(event.clientX-bounds.left+22,bounds.width-caption.offsetWidth-16));
+   let y=event.clientY-bounds.top+24;
+   if(y+caption.offsetHeight>bounds.height-16)y=event.clientY-bounds.top-caption.offsetHeight-18;
+   caption.style.setProperty('--caption-x',x+'px');caption.style.setProperty('--caption-y',Math.max(16,y)+'px');
+   caption.classList.add('caption-follow');
+  });
+  photo.addEventListener('pointerleave',()=>caption.classList.remove('caption-follow'));
+ }
+}
