@@ -316,12 +316,41 @@ frequency.classList.remove('has-fixed-landing');
   const settle=reduced.matches?1:smooth(fp/.5),crop=product.querySelector('.frequency-car-crop'),figure=product.querySelector('.frequency-car').getBoundingClientRect(),centerX=figure.left+figure.width/2,centerY=figure.top+figure.width*589/824/2;
   crop.style.transform='translate('+((innerWidth/2-centerX)*(1-settle))+'px,'+((innerHeight/2-centerY)*(1-settle))+'px) scale('+(1+(1-settle)*17)+')';
   product.style.setProperty('--car-settle',String(smooth((settle-.78)/.22)));
-  const white=document.querySelector('.frequency-white'),whiteReveal=reduced.matches?1:smooth((fp-.67)/.3);white.style.opacity=String(whiteReveal);white.style.pointerEvents=whiteReveal>.5?'auto':'none';white.classList.toggle('is-sequence-pinned',!reduced.matches&&fp>.6&&fb.bottom>innerHeight&&fb.top<=0);white.classList.toggle('is-product-focus',whiteReveal>.9);
+  const white=document.querySelector('.frequency-white'),whiteReveal=reduced.matches?1:smooth((fp-.67)/.3);white.style.opacity=String(whiteReveal);white.style.pointerEvents=whiteReveal>.5?'auto':'none';white.classList.toggle('is-sequence-pinned',!reduced.matches&&fb.bottom>innerHeight&&fb.top<=0);
   product.style.setProperty('--black-leave',String(1-whiteReveal));product.classList.toggle('is-white-handoff',whiteReveal>.01);
 
-  const pb=product.getBoundingClientRect();product.classList.toggle('is-product-focus',settle>.98&&pb.top<vh*.06&&pb.bottom>vh*.55);
+  product.classList.remove('is-product-focus');
  }
  function schedule(){if(!frame)frame=requestAnimationFrame(render);}
  window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);document.fonts.ready.then(schedule);render();
  document.querySelectorAll('.frequency-black,.frequency-white').forEach(surface=>surface.addEventListener('pointermove',event=>{if(event.pointerType!=='mouse'||reduced.matches)return;const b=surface.getBoundingClientRect();surface.style.setProperty('--target-x',(event.clientX-b.left)+'px');surface.style.setProperty('--target-y',(event.clientY-b.top)+'px');}));
+}
+
+// A single wheel gesture switches the settled product state.
+if(typeof window!=='undefined'){
+ const track=document.querySelector('.frequency-scroll'),reduce=matchMedia('(prefers-reduced-motion: reduce)');
+ let lockedUntil=0,quietUntil=0;
+ window.addEventListener('wheel',event=>{
+  if(!track||reduce.matches||event.ctrlKey||Math.abs(event.deltaY)<=Math.abs(event.deltaX)||Math.abs(event.deltaY)<2)return;
+  const now=performance.now(),box=track.getBoundingClientRect(),range=track.offsetHeight-innerHeight,p=-box.top/Math.max(1,range);
+  if(now<lockedUntil||now<quietUntil){event.preventDefault();quietUntil=now+180;return;}
+  let target=null;
+  if(event.deltaY>0&&p>=.49&&p<.975)target=.98;
+  if(event.deltaY<0&&p>.7&&p<=1.015)target=.52;
+  if(target===null)return;
+  event.preventDefault();lockedUntil=now+850;quietUntil=now+180;
+  window.scrollTo({top:scrollY+box.top+range*target,behavior:'smooth'});
+ },{passive:false});
+}
+
+// A short target glitch on product contact, without moving the pointer center.
+if(typeof window!=='undefined'){
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ document.querySelectorAll('.frequency-car-link,.white-snow a').forEach(link=>{
+  const target=link.closest('.frequency-black,.frequency-white').querySelector('.frequency-target');
+  let timer=0;
+  function clear(){clearTimeout(timer);target.classList.remove('target-static');}
+  link.addEventListener('pointerenter',event=>{if(event.pointerType!=='mouse'||reduced.matches)return;clear();target.classList.add('target-static');timer=setTimeout(clear,260);});
+  link.addEventListener('pointerleave',clear);
+ });
 }
