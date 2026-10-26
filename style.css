@@ -180,3 +180,182 @@
 @media(prefers-reduced-motion:reduce){.hero-line nav a.menu-glitch .hero-menu-ink{animation:none!important}}
 
 @media(hover:hover) and (pointer:fine){.hero-photo figcaption.caption-follow{left:var(--caption-x);top:var(--caption-y);bottom:auto;margin:0;pointer-events:none;max-width:calc(100% - 32px)}}
+
+
+/* Temperature and sense scenes: coherent Figma geometry and a continuous glass lens. */
+.temperature-section{position:relative;background:#fff;--temp-progress:0}.temperature-scroll{height:430svh;position:relative}
+.temperature-stage{position:sticky;top:0;height:100svh;min-height:540px;overflow:hidden;background:#fff;color:#000;isolation:isolate;touch-action:pan-y}
+.temperature-world{position:absolute;inset:0;will-change:transform,opacity}
+.temperature-heading{position:absolute;left:50%;top:40%;width:76%;transform:translateX(-50%);text-align:center;z-index:2}
+.temperature-heading h2{font:400 clamp(32px,4.167vw,80px)/1.2 var(--font-label);letter-spacing:-.025em;color:#000}
+.temperature-line{display:flex;align-items:center;justify-content:center;gap:.18em;white-space:nowrap}
+.temperature-art{pointer-events:none;max-width:none}
+.temperature-heading .temp-fragment{width:1.675em;height:1.65em;object-fit:fill;flex:none;margin-left:-1.7em;margin-right:.1em}
+.temperature-heading .temp-inline,.temperature-heading .temp-strip{width:1.725em;height:.8125em;object-fit:fill;flex:none}
+.temperature-enter{display:inline-flex;align-items:center}.temperature-heading .temp-strip{margin-right:-1.7em}
+.temperature-heading p{margin-top:clamp(34px,4.167vw,80px);font:400 clamp(14px,1.25vw,24px)/1.4 var(--font-ui);letter-spacing:-.025em}
+.temperature-world>.temperature-art{position:absolute;z-index:1;animation:temperature-drift 7s ease-in-out infinite alternate}
+.temperature-world>.temp-chevron{left:24.1%;top:23%;animation-delay:-2s}
+.temperature-world>.temp-cross{left:71.8%;top:40%;animation-delay:-1s}
+.temperature-world>.temp-cross-red{left:12.7%;top:70%;animation-delay:-4s}
+.temperature-world>.temp-star{left:72.2%;top:88%;animation-delay:-3s}
+.temperature-footnote{position:absolute;left:1.2%;bottom:1%;font:400 clamp(14px,1.25vw,24px)/1.4 var(--font-label);letter-spacing:-.025em;z-index:2}
+.temperature-debris{position:absolute;inset:0;pointer-events:none;overflow:hidden}.temperature-debris i{position:absolute;width:2px;height:3px;background:#101010;animation:temperature-fall 5s linear infinite}.temperature-world.is-zooming .temperature-debris{opacity:0}
+.temperature-exit{position:absolute;inset:0;background:#000;opacity:var(--temp-exit,0);z-index:5;pointer-events:none}
+.temperature-glass{display:none}
+.js .temperature-word{opacity:0;filter:blur(7px);transform:translateY(10px);transition:opacity 950ms ease,filter 1100ms ease,transform 1100ms ease}
+.js .temperature-section.is-entered .temperature-word{opacity:1;filter:none;transform:none}.temperature-word:nth-child(4){transition-delay:180ms}.temperature-line:nth-child(2) .temperature-word{transition-delay:360ms}
+@keyframes temperature-drift{from{translate:0 -3px}to{translate:2px 5px}}
+@keyframes temperature-fall{0%{transform:translateY(-15px) rotate(0);opacity:0}15%{opacity:.3}100%{transform:translateY(110px) rotate(150deg);opacity:0}}
+.journey-glass{position:fixed;left:0;top:0;width:var(--glass-diameter,300px);height:var(--glass-diameter,300px);border-radius:50%;pointer-events:none;z-index:26;opacity:0;transform-origin:center;backdrop-filter:blur(7px) saturate(1.12);-webkit-backdrop-filter:blur(7px) saturate(1.12);background:linear-gradient(135deg,rgb(255 255 255 / .19),rgb(225 235 240 / .04) 48%,rgb(255 255 255 / .13));border:1px solid rgb(150 165 175 / .6);box-shadow:inset 1px 1px 3px rgb(255 255 255 / .9),inset -2px -3px 5px rgb(80 100 115 / .13),0 18px 32px rgb(30 45 60 / .09);will-change:transform,width,height}
+.journey-glass::before{content:'';position:absolute;inset:3px;border:1px solid rgb(255 255 255 / .4);border-radius:50%}
+.journey-glass::after{content:'';position:absolute;left:14%;top:6%;width:68%;height:25%;border-radius:50%;background:linear-gradient(155deg,rgb(255 255 255 / .35),transparent 70%);filter:blur(5px);transform:rotate(-27deg)}
+.hero-line{translate:0 var(--hero-line-descent,0px)}
+.sense-black{position:relative;min-height:100svh;overflow:hidden;background:#000;color:#fff;padding:0;isolation:isolate}
+.sense-content{position:absolute;left:50%;top:27%;width:76%;transform:translateX(-50%);text-align:center}
+.sense-label{font:400 clamp(14px,.834vw,16px)/1.2 var(--font-label);text-align:left;margin-left:24%;margin-bottom:clamp(24px,2.5vw,48px)}
+.sense-content h2{font:400 clamp(32px,4.167vw,80px)/1.2 var(--font-label);letter-spacing:-.025em;color:#fff}
+.sense-content h2>span{display:flex;align-items:center;justify-content:center;gap:.18em;white-space:nowrap}
+.sense-car{display:inline-block;width:2.15em;height:1.5375em;overflow:hidden;flex:none}.sense-car img{max-width:none;width:100%;height:100%}
+.sense-fig{display:inline-block;width:1.075em;height:1.0625em;overflow:hidden;opacity:.8;flex:none}.sense-fig img{max-width:none;width:100%;height:100%}
+.sense-moon{width:1.0125em;height:.9em;object-fit:contain;opacity:.8}
+.sense-copy{font:400 clamp(14px,1.25vw,24px)/1.4 var(--font-ui);letter-spacing:-.025em;margin-top:clamp(50px,6vw,115px)}
+.sense-footnote{position:absolute;right:1.2%;top:1%;font:400 clamp(14px,1.25vw,24px)/1.4 var(--font-label);letter-spacing:-.025em}
+.sense-deco{position:absolute;max-width:none;pointer-events:none}.sense-cross{left:72%;top:12%}.sense-red{left:57%;top:32%}.sense-asterisk{left:16%;top:29%}.sense-star{left:28%;top:72%}.sense-spark{left:88%;top:43%}.sense-ring{left:48%;top:90%}
+@media(max-width:767px){.sense-content{width:100%;top:31%}.sense-content h2{font-size:clamp(25px,6.5vw,40px)}.sense-label{margin-left:16%;font-size:14px}.sense-footnote{font-size:14px;max-width:75%;text-align:right}.sense-copy{padding:0 20px}.sense-deco{scale:.65}.sense-red{top:25%}}
+@media(prefers-reduced-motion:reduce){.temperature-scroll{height:100svh}.temperature-zoom{display:none}}
+
+
+.sense-moon{object-fit:fill}
+@media(max-width:767px){.temperature-heading{width:100%;top:40%}.temperature-heading h2{font-size:clamp(28px,6vw,42px)}.temperature-heading .temp-fragment{margin-left:0;width:1.3em;height:1.3em}.temperature-heading .temp-strip{margin-right:0}.temperature-world>.temp-cross{left:86%;top:30%;scale:.65}.temperature-footnote{left:5%;bottom:3%;max-width:75%;font-size:14px}.temperature-world>.temp-star{top:87%;scale:.7}}
+@media(prefers-reduced-motion:reduce){.temperature-scroll{height:100svh}.temperature-stage{position:relative}.temperature-world{transform:none!important;opacity:1!important}.temperature-exit,.journey-glass{display:none}.js .temperature-word{opacity:1;filter:none;transform:none}.temperature-world>.temperature-art,.temperature-debris i{animation:none}.hero-line{translate:none}}
+
+/* Use layout positioning so backdrop sampling follows the moving hero row. */
+.hero-line{--hero-line-top:43svh;translate:none;top:calc(var(--hero-line-top) + var(--hero-line-descent,0px))}
+@media(min-width:768px){.hero-line{--hero-line-top:49svh}}
+@media(prefers-reduced-motion:reduce){.hero-line{top:var(--hero-line-top)}}
+
+/* Clean optical lens: transparent center, restrained rim, no painted coating. */
+.journey-glass{background:rgb(255 255 255 / .015);border:1px solid rgb(120 130 140 / .4);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);box-shadow:inset 0 0 2px rgb(255 255 255 / .7),0 12px 28px rgb(0 0 0 / .055);backface-visibility:visible}
+.journey-glass::before{inset:1px;border-color:rgb(255 255 255 / .25)}.journey-glass::after{display:none}
+.temperature-scroll{height:490svh}
+.js .temperature-word,.js .temperature-section.is-entered .temperature-word{display:inline-block;min-width:var(--typed-width,0px);opacity:1;filter:none;transform:none;transition:none;text-align:left}
+.sense-content,.sense-footnote,.sense-black>.sense-deco{opacity:var(--sense-reveal,0);transition:none}
+.sense-content{translate:0 calc((1 - var(--sense-reveal,0)) * 28px)}
+@media(prefers-reduced-motion:reduce){.temperature-scroll{height:100svh}.sense-content,.sense-footnote,.sense-black>.sense-deco{opacity:1}.sense-content{translate:none}}
+
+/* Scroll direction navigation and restrained travelling footnote. */
+.js .header.nav-scroll-hidden{opacity:0;transform:translateY(-100%);visibility:hidden;pointer-events:none}
+.js .header{transition:transform 320ms ease,opacity 320ms ease,visibility 320ms}
+.temperature-footnote{font-size:clamp(14px,.834vw,16px);white-space:nowrap;will-change:transform,opacity}
+.temperature-world.is-zooming>.temperature-art,.temperature-world.is-zooming .temp-fragment,.temperature-world.is-zooming .temp-inline,.js .temperature-section.is-entered .temperature-world.is-zooming .temperature-word,.temperature-world.is-zooming .temperature-heading>p{filter:blur(var(--zoom-surround-blur,0px))}
+.temperature-world .temp-strip{filter:none}
+@media(prefers-reduced-motion:reduce){.temperature-footnote{transform:none!important;opacity:1!important}.temperature-world.is-zooming>*{filter:none}}
+
+/* Independent scroll depths, rather than a shared looping float. */
+.temperature-world>.temperature-art{animation:none;transform:translate3d(var(--depth-x,0px),var(--depth-y,0px),0) rotate(var(--depth-turn,0deg));will-change:transform}
+@media(prefers-reduced-motion:reduce){.temperature-world>.temperature-art{transform:none;will-change:auto}}
+
+.hero-photo figcaption{opacity:0;visibility:hidden;pointer-events:none}.hero-photo figcaption.caption-follow{opacity:1;visibility:visible}
+
+/* One optical circle: remove the second inner rim, retain the travelling lens. */
+.journey-glass::before,.journey-glass::after{display:none}
+.sense-typed{display:inline-block;white-space:pre;vertical-align:baseline;min-height:1em}
+
+/* The black content occupies the zoom landing screen, not another blank scroll beat. */
+.sense-black{margin-top:-100svh;z-index:6;opacity:var(--black-arrival,0)}
+@media(prefers-reduced-motion:reduce){.sense-black{margin-top:0;opacity:1}}
+
+/* Black philosophy matches the white scene's footnote and independent depth. */
+.sense-scroll{position:relative;height:370svh;margin-top:-100svh;background:#000}
+.sense-black{position:sticky;top:0;margin-top:0;height:100svh;min-height:540px;z-index:6}
+.sense-world{position:absolute;inset:0;will-change:transform,opacity}
+.sense-footnote{font-size:clamp(14px,.834vw,16px);white-space:nowrap;will-change:transform,opacity}
+.sense-world>.sense-deco{opacity:1;transform:translate3d(var(--depth-x,0px),var(--depth-y,0px),0) rotate(var(--depth-turn,0deg));will-change:transform}
+.sense-exit{position:absolute;inset:0;background:#000;opacity:var(--car-exit,0);z-index:8;pointer-events:none}
+/* Figma black frequency scene: native crops, type hierarchy and red tracking lines. */
+.frequencies-redesign{position:relative;max-width:none;margin-top:-100svh;padding:0;z-index:8;background:transparent}
+.frequency-black{position:relative;min-height:100svh;height:max(720px,100svh);overflow:hidden;color:#fff;background:#000;opacity:var(--frequency-arrival,0);isolation:isolate}
+.frequency-black::after{content:'';position:absolute;left:0;right:0;bottom:0;height:12%;background:linear-gradient(transparent,#181818);pointer-events:none}
+.frequency-scene-title{position:absolute;left:50%;top:9.5%;z-index:2}.frequency-scene-title>.label{font-size:clamp(14px,.834vw,16px);margin-bottom:clamp(26px,3.5vw,66px)}
+.frequency-scene-title h2{font:400 clamp(30px,2.5vw,48px)/1.2 var(--font-label);letter-spacing:-.025em;transition:filter 400ms ease}
+.frequency-scene-intro{position:absolute;left:74%;top:8%;font:400 clamp(14px,.834vw,16px)/1.4 var(--font-ui);letter-spacing:-.025em;max-width:24%}
+.frequency-car{position:absolute;left:5.7%;top:17%;width:42.92%;margin:0;z-index:2}
+.frequency-car-link{position:relative;display:block;min-height:44px}.frequency-car-crop{display:block;width:100%;aspect-ratio:824/589;overflow:hidden}.frequency-car-crop>img{max-width:none;width:100%;height:100%;object-fit:fill;transition:filter 400ms ease}
+.frequency-car figcaption{margin:8px 0 0 8%;font:400 clamp(16px,1.25vw,24px)/1.4 var(--font-label)!important;color:#fff}
+.frequency-enter{position:absolute;left:50%;top:55%;translate:-50% -50%;font:400 clamp(16px,1.25vw,24px)/1.4 var(--font-ui);opacity:0;transform:translateY(8px);transition:opacity 350ms,transform 350ms;white-space:nowrap;color:#fff}
+.frequency-car-link:hover .frequency-enter,.frequency-car-link:focus-visible .frequency-enter,.frequency-black.is-product-focus .frequency-enter{opacity:1;transform:none}
+.frequency-black:has(.frequency-car-link:hover) .frequency-scene-title h2,.frequency-black.is-product-focus .frequency-scene-title h2{filter:blur(4px)}
+.frequency-detail{position:absolute;left:56.45%;top:46%;width:30%;z-index:1}.frequency-detail>.label{font:400 clamp(14px,.834vw,16px)/1.4 var(--font-ui)}
+.frequency-detail h3{position:relative;font:400 clamp(28px,1.875vw,36px)/1.2 var(--font-label);letter-spacing:-.025em;margin:clamp(28px,4vw,76px) 0 26px}
+.frequency-description{position:relative;font:400 clamp(14px,.834vw,16px)/1.4 var(--font-ui);letter-spacing:-.025em}
+.frequency-detail>a{position:relative;display:inline-flex;align-items:center;min-height:44px;margin-top:clamp(24px,3vw,58px);font:400 clamp(16px,1.25vw,24px)/1.4 var(--font-ui);gap:8px}
+.frequency-dark-art{position:absolute;top:-4%;left:0;width:100%;aspect-ratio:572/526;overflow:hidden;opacity:.22;pointer-events:none}.frequency-dark-art img{max-width:none;width:100%;height:100%}
+.frequency-target{position:absolute;inset:0;z-index:3;pointer-events:none;color:#ff0000;opacity:.6}.target-h{position:absolute;left:0;right:0;top:var(--target-y,36.1%);height:.5px;background:currentColor}.target-v{position:absolute;top:0;bottom:0;left:var(--target-x,16.9%);width:.5px;background:currentColor}.target-box{position:absolute;left:var(--target-x,16.9%);top:var(--target-y,36.1%);width:10.26%;aspect-ratio:197/143;border:.5px solid;transform:translate(-50%,-50%)}
+.frequency-white-preserved{background:var(--paper);max-width:none}.frequency-white-preserved>.frequency{max-width:900px;margin:auto}.frequency-white-preserved>.frequency figure{max-width:600px}.frequency-white-preserved .frequency-copy{margin-left:15%}
+@media(hover:hover) and (pointer:fine){.frequency-black{cursor:none}.frequency-black a{cursor:pointer}.frequency-car-link:hover img{filter:brightness(1.16)}}
+@media(max-width:767px){.frequency-black{height:1000px}.frequency-scene-title{left:7%;top:7%}.frequency-scene-title>.label{margin-bottom:24px}.frequency-scene-intro{left:54%;top:7%;max-width:41%;font-size:14px}.frequency-scene-title h2{font-size:26px}.frequency-car{left:4%;top:27%;width:89%}.frequency-detail{left:18%;top:65%;width:70%}.frequency-detail h3{margin:24px 0 16px}.frequency-detail>a{margin-top:20px}.frequency-car figcaption{font-size:16px!important}.target-box{width:24%}.sense-footnote{max-width:none}}
+@media(prefers-reduced-motion:reduce){.sense-scroll{height:100svh;margin-top:0}.sense-black{position:relative}.frequencies-redesign{margin-top:0}.frequency-black{opacity:1}.sense-world{transform:none!important;opacity:1!important}.sense-exit{display:none}.sense-footnote{transform:none!important;opacity:1!important}.sense-world>.sense-deco{transform:none}}
+
+.sense-world.is-car-zooming>.sense-deco,.sense-world.is-car-zooming .sense-copy,.sense-world.is-car-zooming .sense-label,.sense-world.is-car-zooming .sense-typed{filter:blur(var(--car-blur,0px))}
+@keyframes frequency-shimmer{0%,85%,100%{opacity:.22}88%{opacity:.27}91%{opacity:.19}95%{opacity:.25}}
+.frequency-dark-art{animation:frequency-shimmer 6s linear infinite}
+@media(prefers-reduced-motion:reduce){.frequency-dark-art{animation:none}.sense-world.is-car-zooming *{filter:none}}
+
+@media(max-width:767px){.frequency-black{height:1100px}.frequency-scene-intro{left:7%;top:19%;max-width:86%}.frequency-car{top:32%}.frequency-detail{top:70%}}
+
+/* Land on a fixed black canvas before starting its content animation. */
+.sense-black.is-landing{position:fixed;inset:0;top:0;width:100%;height:100svh;z-index:30}
+.sense-black:not(.sense-ready) .sense-world{opacity:0!important;pointer-events:none}
+.sense-content h2>.sense-line{display:flex;justify-content:center;align-items:center;gap:.18em;width:max-content;max-width:none;margin-inline:auto;white-space:nowrap}
+.sense-text,.sense-typed,.sense-car,.sense-fig,.sense-moon{flex-shrink:0}
+.sense-text{display:inline-block}.sense-typed{max-width:none}
+.frequency-black.is-landing{position:fixed;inset:0;width:100%;height:100svh;min-height:0;z-index:31}
+.frequencies-redesign.has-fixed-landing{padding-top:max(720px,100svh)}
+@media(max-width:767px){.frequencies-redesign.has-fixed-landing{padding-top:1100px}}
+@media(prefers-reduced-motion:reduce){.sense-black .sense-world{opacity:1!important}.sense-black.is-landing,.frequency-black.is-landing{position:relative;inset:auto}.frequencies-redesign.has-fixed-landing{padding-top:0}}
+
+/* A strict blackout gate: never crossfade the next content over the zoom image. */
+.sense-black:not(.sense-content-active) .sense-world{visibility:hidden;opacity:0!important;pointer-events:none}
+.sense-black.sense-content-active .sense-world{visibility:visible}
+.frequency-black:not(.frequency-content-active)>*{visibility:hidden;pointer-events:none}
+@media(prefers-reduced-motion:reduce){.sense-black .sense-world,.frequency-black>*{visibility:visible!important;opacity:1!important;pointer-events:auto}}
+
+/* Keep every zoom canvas locked to the viewport; only its imagery transforms. */
+.temperature-stage.is-sequence-pinned{position:fixed;inset:0;width:100%;height:100svh;z-index:10}
+.sense-black.is-sequence-pinned{position:fixed;inset:0;width:100%;height:100svh;z-index:30}
+.frequencies-redesign{margin-top:-100svh;padding:0!important}
+.frequency-scroll{position:relative;height:420svh;background:#000}
+.frequency-black{position:sticky;top:0;height:100svh;min-height:0}
+.frequency-black.is-sequence-pinned{position:fixed;inset:0;width:100%;height:100svh;z-index:31}
+.frequency-car-crop{transform-origin:center;will-change:transform}
+.frequency-black .frequency-scene-title,.frequency-black .frequency-scene-intro,.frequency-black .frequency-detail,.frequency-black .frequency-car figcaption,.frequency-black .frequency-target{opacity:var(--car-settle,0)}
+.frequency-black .frequency-car figcaption{transition:none}
+.frequency-black>.frequency-car{z-index:2}.frequency-black .frequency-car-link{overflow:visible}
+.frequency-black.frequency-content-active{visibility:visible}
+.frequency-white{position:absolute;left:0;right:0;bottom:0;height:100svh;min-height:640px;background:#fff;color:#000;overflow:hidden;opacity:0;isolation:isolate;z-index:32}
+.frequency-white.is-sequence-pinned{position:fixed;inset:0;width:100%;height:100svh;min-height:0}
+.frequency-white .frequency-scene-title h2{color:#000}.frequency-white .frequency-scene-title{opacity:.28;filter:blur(3px)}.frequency-white .frequency-scene-intro{opacity:.3;filter:blur(2px)}
+.white-car-ghost{position:absolute;left:5.7%;top:18%;width:42.92%;opacity:.085;filter:invert(1);pointer-events:none}
+.white-car-ghost .frequency-car-crop{transform:none!important}
+.white-frequency-detail{position:absolute;left:35%;top:44%;width:28%;z-index:2}.white-frequency-detail>.label{font:400 clamp(14px,.834vw,16px)/1.4 var(--font-ui)}
+.white-frequency-detail h3{font:400 clamp(28px,1.875vw,36px)/1.2 var(--font-label);letter-spacing:-.025em;margin:clamp(28px,4vw,76px) 0 26px}
+.white-frequency-detail>p:not(.label){font:400 clamp(14px,.834vw,16px)/1.4 var(--font-ui);letter-spacing:-.025em}
+.white-frequency-detail>a{display:inline-flex;align-items:center;min-height:44px;margin-top:clamp(24px,3vw,58px);font:400 clamp(16px,1.25vw,24px)/1.4 var(--font-ui);gap:8px}
+.white-snow{position:absolute;left:57%;top:40%;width:30%;z-index:1}.white-snow>a{position:relative;display:block}.white-snow-crop{display:block;overflow:hidden;aspect-ratio:572/526}.white-snow-crop>img{width:100%;height:100%;max-width:none;filter:invert(1)}
+.white-snow figcaption{position:absolute;left:90%;bottom:3%;white-space:nowrap;font:400 clamp(16px,1.25vw,24px)/1.4 var(--font-label)!important}
+.frequency-white .frequency-enter{color:#000}.white-snow a:hover .frequency-enter,.white-snow a:focus-visible .frequency-enter{opacity:1;transform:none}
+@media(hover:hover) and (pointer:fine){.frequency-white{cursor:none}.frequency-white a{cursor:pointer}}
+@media(max-width:767px){.frequency-black{height:100svh}.frequency-scene-title{left:6%;top:6%}.frequency-scene-title h2{font-size:23px}.frequency-scene-intro{left:6%;top:19%;max-width:88%;font-size:14px}.frequency-car{top:31%;left:4%;width:67%}.frequency-car figcaption{font-size:14px!important}.frequency-detail{top:60%;left:48%;width:48%}.frequency-detail h3{font-size:25px;margin:18px 0 14px}.frequency-description{font-size:14px}.frequency-detail>a{font-size:16px;margin-top:12px}.frequency-white{min-height:0}.white-car-ghost{width:74%;top:24%}.white-frequency-detail{left:7%;top:48%;width:65%}.white-frequency-detail h3{font-size:28px;margin:28px 0 18px}.white-frequency-detail>a{margin-top:24px}.white-snow{left:54%;top:57%;width:43%}.white-snow figcaption{left:54%;bottom:-38px;font-size:14px!important}}
+@media(prefers-reduced-motion:reduce){.frequency-scroll{height:auto}.temperature-stage.is-sequence-pinned,.sense-black.is-sequence-pinned,.frequency-black.is-sequence-pinned,.frequency-white.is-sequence-pinned{position:relative;inset:auto}.frequency-white{position:relative;opacity:1!important;pointer-events:auto!important}.frequency-black{height:100svh}.frequency-car-crop{transform:none!important}.frequency-black .frequency-scene-title,.frequency-black .frequency-scene-intro,.frequency-black .frequency-detail,.frequency-black .frequency-car figcaption,.frequency-black .frequency-target{opacity:1}}
+
+/* Spacer regions never paint a rising black edge; only full-screen canvases do. */
+.sense-scroll,.frequency-scroll{background:transparent}.frequencies-redesign{z-index:40}
+
+.frequency-black.is-white-handoff>*{visibility:hidden}.white-snow-crop>img{filter:none}
+
+@media(max-width:767px){.white-frequency-detail{width:44%}.white-frequency-detail>p:not(.label){word-break:normal;overflow-wrap:anywhere}.white-snow{left:54%;width:43%}}
+
+/* Reveal the oversized car progressively after the blackout, before settling. */
+.frequency-black .frequency-car-crop{opacity:var(--car-entry,0)}
+@media(prefers-reduced-motion:reduce){.frequency-black .frequency-car-crop{opacity:1}}
