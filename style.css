@@ -382,3 +382,8 @@
 @keyframes target-static{0%,100%{transform:translate(-50%,-50%);opacity:1;clip-path:inset(0)}18%{transform:translate(calc(-50% + 3px),calc(-50% - 1px));clip-path:inset(0 0 32%)}36%{transform:translate(calc(-50% - 2px),calc(-50% + 2px));clip-path:inset(27% 0 0)}54%{transform:translate(calc(-50% + 1px),-50%);opacity:.35;clip-path:inset(0)}72%{transform:translate(calc(-50% - 3px),-50%);clip-path:inset(12% 0 18%)} }
 .frequency-target.target-static .target-box{animation:target-static 240ms steps(1,end) 1;box-shadow:2px 0 0 -1px currentColor,-2px 0 0 -1px currentColor}
 @media(prefers-reduced-motion:reduce){.frequency-target.target-static .target-box{animation:none;box-shadow:none}}
+
+/* Composite only the active car; avoid retaining giant offscreen textures. */
+.frequency-car-crop{will-change:auto;backface-visibility:hidden}
+.frequency-black.is-sequence-pinned .frequency-car-crop{will-change:transform;contain:paint}
+.frequency-car-crop>img{backface-visibility:hidden}
