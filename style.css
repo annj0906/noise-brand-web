@@ -359,3 +359,9 @@
 /* Reveal the oversized car progressively after the blackout, before settling. */
 .frequency-black .frequency-car-crop{opacity:var(--car-entry,0)}
 @media(prefers-reduced-motion:reduce){.frequency-black .frequency-car-crop{opacity:1}}
+
+/* Compact target: four exterior arms leave the square clear. */
+.frequency-target{--target-size:44px;--target-half:22px}
+.target-box{width:var(--target-size);height:var(--target-size);aspect-ratio:1}
+.target-h{background:linear-gradient(to right,currentColor 0,currentColor calc(var(--target-x,16.9%) - var(--target-half)),transparent calc(var(--target-x,16.9%) - var(--target-half)),transparent calc(var(--target-x,16.9%) + var(--target-half)),currentColor calc(var(--target-x,16.9%) + var(--target-half)),currentColor 100%)}
+.target-v{background:linear-gradient(to bottom,currentColor 0,currentColor calc(var(--target-y,36.1%) - var(--target-half)),transparent calc(var(--target-y,36.1%) - var(--target-half)),transparent calc(var(--target-y,36.1%) + var(--target-half)),currentColor calc(var(--target-y,36.1%) + var(--target-half)),currentColor 100%)}

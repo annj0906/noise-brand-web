@@ -284,7 +284,7 @@ if(typeof window!=='undefined'){
    const groups=[...black.querySelectorAll('.sense-label,.sense-content h2,.sense-copy,.sense-footnote')].map(element=>{
     const walker=document.createTreeWalker(element,NodeFilter.SHOW_TEXT),nodes=[];let node;
     while(node=walker.nextNode())if(node.textContent.trim())nodes.push(node);
-    const spans=nodes.map(text=>{const range=document.createRange();range.selectNodeContents(text);const width=range.getBoundingClientRect().width,span=document.createElement('span');span.className='sense-typed';span.dataset.fullText=text.textContent;span.style.width=width+'px';span.setAttribute('aria-hidden','true');text.replaceWith(span);return span;});
+    const spans=nodes.map(text=>{const range=document.createRange();range.selectNodeContents(text);const world=black.querySelector('.sense-world'),scale=world.getBoundingClientRect().width/Math.max(1,world.offsetWidth),width=range.getBoundingClientRect().width/Math.max(.001,scale),span=document.createElement('span');span.className='sense-typed';span.dataset.fullText=text.textContent;span.style.width=width+'px';span.setAttribute('aria-hidden','true');text.replaceWith(span);return span;});
     element.setAttribute('aria-label',spans.map(span=>span.dataset.fullText).join(' '));return spans;
    });
 
