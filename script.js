@@ -288,12 +288,27 @@ if(typeof window!=='undefined'){
     element.setAttribute('aria-label',spans.map(span=>span.dataset.fullText).join(' '));return spans;
    });
 
-   let started=false;
-   function startTyping(){
-    if(started)return;started=true;
-    groups.forEach((spans,index)=>{let row=0,ch=0;function type(){const span=spans[row];if(!span)return;span.textContent=span.dataset.fullText.slice(0,++ch);if(ch>=span.dataset.fullText.length){row++;ch=0;}setTimeout(type,index===1?85:45);}setTimeout(type,index===0?100:index===1?350:index===2?1600:800);});
+   let started=false,animation=0,startTime=0;
+   const delays=[100,400,1600,800],speeds=[45,85,45,45];
+   function resetTyping(){cancelAnimationFrame(animation);animation=0;started=false;groups.flat().forEach(span=>span.textContent='');}
+   function tick(now){
+    let pending=false;
+    groups.forEach((spans,index)=>{
+     let remaining=Math.max(0,Math.floor((now-startTime-delays[index])/speeds[index]));
+     spans.forEach(span=>{const full=span.dataset.fullText,count=Math.min(full.length,remaining),text=full.slice(0,count);if(span.textContent!==text)span.textContent=text;remaining=Math.max(0,remaining-full.length);if(count<full.length)pending=true;});
+    });
+    animation=pending?requestAnimationFrame(tick):0;
    }
-   black.addEventListener('sense-ready',startTyping,{once:true});if(black.classList.contains('sense-ready'))startTyping();
+   function checkVisible(){
+    const rect=black.getBoundingClientRect(),world=black.querySelector('.sense-world');
+    const visible=black.classList.contains('sense-content-active')&&rect.top<=2&&rect.bottom>=innerHeight*.8&&Number(world.style.opacity||1)>.9;
+    if(visible&&!started){started=true;startTime=performance.now();animation=requestAnimationFrame(tick);}
+    else if(!black.classList.contains('sense-content-active')||rect.bottom<=0||rect.top>=innerHeight||Number(world.style.opacity||1)<.2){if(started)resetTyping();}
+   }
+   resetTyping();
+   new MutationObserver(checkVisible).observe(black,{attributes:true,attributeFilter:['class']});
+   window.addEventListener('scroll',checkVisible,{passive:true});
+   black.addEventListener('sense-ready',checkVisible);checkVisible();
   });
  }
 }
