@@ -647,3 +647,19 @@
 @media(hover:hover) and (pointer:fine){.scent-board .scent-card:hover{transform:translate(var(--card-depth-x,0px),calc(var(--card-depth-y,0px) - 16px)) rotate(0deg)}}
 @media(max-width:767px){.scent-board .scent-card{transform:translate(calc(var(--card-depth-x,0px)*.4),calc(var(--card-depth-y,0px)*.45)) rotate(calc(var(--card-angle)*.3 + var(--card-scroll-turn,0deg)*.4))}}
 @media(prefers-reduced-motion:reduce){.scent-board .scent-card{transform:none!important;transition:none}}
+
+/* View more belongs to the section plane, never the moving product frame. */
+@media(hover:hover) and (pointer:fine){.collection-stage>.collection-view{position:absolute;left:0;top:0;opacity:0;visibility:hidden;z-index:12;color:#101010;pointer-events:none;transition:opacity 150ms;animation:none;transform:none;translate:none}.collection-stage.view-follow-active>.collection-view{opacity:1;visibility:visible}}
+@media(hover:none),(pointer:coarse){.collection-stage>.collection-view{left:auto;right:8%;top:auto;bottom:8%;color:#101010}}
+
+/* Target locks into a compact solid marker on product contact. */
+.frequency-target{transition:--target-size 250ms ease}
+.frequency-target .target-box{background:transparent;transition:width 280ms ease,height 280ms ease,background-color 280ms ease}
+.target-h,.target-v{transition:background 280ms ease}
+@media(hover:hover) and (pointer:fine){
+ .frequency-black:has(.frequency-car-link:hover) .frequency-target,.frequency-white:has(.white-snow a:hover) .frequency-target{--target-size:18px;--target-half:9px}
+ .frequency-black:has(.frequency-car-link:hover) .target-box,.frequency-white:has(.white-snow a:hover) .target-box{background:currentColor;animation:none!important;box-shadow:none}
+}
+.frequency-black:has(.frequency-car-link:focus-visible) .frequency-target,.frequency-white:has(.white-snow a:focus-visible) .frequency-target{--target-size:18px;--target-half:9px}
+.frequency-black:has(.frequency-car-link:focus-visible) .target-box,.frequency-white:has(.white-snow a:focus-visible) .target-box{background:currentColor;animation:none!important;box-shadow:none}
+@media(prefers-reduced-motion:reduce){.frequency-target .target-box,.target-h,.target-v{transition:none}}
