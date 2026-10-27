@@ -113,7 +113,7 @@ if(interactiveHero){
 }
 
 // Brief visual type fracture, without changing labels or accessible names.
-if(typeof window!=='undefined')document.querySelectorAll('button:not(.flip-card),.header nav a,.text-link,footer nav a').forEach(control=>{
+if(typeof window!=='undefined')document.querySelectorAll('button:not(.flip-card):not(.collection-object),.header nav a,.text-link,footer nav a').forEach(control=>{
  let hoverTimer;
  control.addEventListener('pointerenter',event=>{
   if(event.pointerType!=='mouse'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;

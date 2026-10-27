@@ -678,3 +678,14 @@
 .collection-product-layer{contain:layout style}
 .collection-view{will-change:transform}
 
+
+/* Keep the product compositor stable across reverse-scroll boundaries. */
+.collection-object.type-fracture{animation:none!important;filter:none!important;opacity:1!important}
+.collection-object{perspective:none}
+.collection-package-part,.collection-bottle-part{transform-style:flat}
+@keyframes package-drift{0%,100%{transform:translate(0,0) rotate(-.45deg)}50%{transform:translate(5px,-9px) rotate(.45deg)}}
+@keyframes bottle-drift{0%,100%{transform:translate(0,3px) rotate(.35deg)}50%{transform:translate(-4px,-5px) rotate(-.35deg)}}
+.collection-stage.swap-white-only .collection-white-object>.collection-package-part{mask-image:linear-gradient(to bottom,transparent calc(var(--package-swap) - 9%),#000 calc(var(--package-swap) + 9%));-webkit-mask-image:linear-gradient(to bottom,transparent calc(var(--package-swap) - 9%),#000 calc(var(--package-swap) + 9%))}
+.collection-stage.swap-white-only .collection-white-object>.collection-bottle-part{mask-image:linear-gradient(to bottom,transparent calc(var(--bottle-swap) - 9%),#000 calc(var(--bottle-swap) + 9%));-webkit-mask-image:linear-gradient(to bottom,transparent calc(var(--bottle-swap) - 9%),#000 calc(var(--bottle-swap) + 9%))}
+.collection-stage.swap-black-only .collection-black-object>.collection-package-part{mask-image:linear-gradient(to bottom,#000 calc(var(--package-swap) - 9%),transparent calc(var(--package-swap) + 9%));-webkit-mask-image:linear-gradient(to bottom,#000 calc(var(--package-swap) - 9%),transparent calc(var(--package-swap) + 9%))}
+.collection-stage.swap-black-only .collection-black-object>.collection-bottle-part{mask-image:linear-gradient(to bottom,#000 calc(var(--bottle-swap) - 9%),transparent calc(var(--bottle-swap) + 9%));-webkit-mask-image:linear-gradient(to bottom,#000 calc(var(--bottle-swap) - 9%),transparent calc(var(--bottle-swap) + 9%))}
