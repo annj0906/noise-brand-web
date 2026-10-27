@@ -300,7 +300,13 @@ if(typeof window!=='undefined'){
   frame=0;const b=region.getBoundingClientRect(),p=Math.max(0,Math.min(1,-b.top/Math.max(1,region.offsetHeight-innerHeight)));
   const clamp=n=>Math.max(0,Math.min(1,n)),ease=n=>1-Math.pow(1-clamp(n),3),smooth=n=>{const t=clamp(n);return t*t*(3-2*t);};
   const packageEntry=reduce.matches?1:ease(p/.25),bottleEntry=reduce.matches?1:ease((p-.1)/.3);
-  const bottleTravel=reduce.matches?0:smooth((p-.49)/.42)*4,packageTravel=reduce.matches?0:smooth((p-.48)/.52)*39;
+  // Rest around the middle of the viewport, then drift only a little before leaving.
+  const planeHeight=Math.min(object.clientWidth,innerHeight*1.1733)*.75;
+  const baseCenter=object.offsetTop+object.clientHeight*.5;
+  const packageRest=Math.max(0,Math.min(22,(innerHeight*.54-(baseCenter-planeHeight*.105))/innerHeight*100));
+  const bottleRest=(innerHeight*.43-(baseCenter+planeHeight*.105))/innerHeight*100;
+  const bottleTravel=reduce.matches?0:smooth((p-.4)/.22)*bottleRest;
+  const packageTravel=reduce.matches?0:smooth((p-.4)/.24)*packageRest+smooth((p-.66)/.16)*2;
   stage.style.setProperty('--package-y',((1-packageEntry)*-110+packageTravel)+'svh');
   stage.style.setProperty('--bottle-y',((1-bottleEntry)*-130+bottleTravel)+'svh');
   stage.style.setProperty('--package-swap',(clamp((p-.52)/.1)*124-12)+'%');
@@ -422,5 +428,22 @@ if(typeof window!=='undefined'){
   function tick(now){const dt=Math.min(2,(now-last)/16.667||1);last=now;vx=(vx-x*.085*dt)*Math.pow(.78,dt);vy=(vy-y*.085*dt)*Math.pow(.78,dt);x=clamp(x+vx*dt,22);y=clamp(y+vy*dt,15);button.style.setProperty('--brush-x',x+'px');button.style.setProperty('--brush-y',y+'px');if(Math.abs(x)+Math.abs(y)+Math.abs(vx)+Math.abs(vy)>.12)frame=requestAnimationFrame(tick);else{frame=0;last=0;button.style.setProperty('--brush-x','0px');button.style.setProperty('--brush-y','0px');}}
   button.addEventListener('pointerenter',event=>{px=event.clientX;py=event.clientY;time=event.timeStamp;});
   button.addEventListener('pointermove',event=>{if(event.pointerType!=='mouse'||reduce.matches)return;const dt=Math.max(8,event.timeStamp-time),dx=event.clientX-px,dy=event.clientY-py;px=event.clientX;py=event.clientY;time=event.timeStamp;if(Math.hypot(dx,dy)/dt<.25)return;vx=clamp(vx+dx*.16,8);vy=clamp(vy+dy*.16,6);if(!frame)frame=requestAnimationFrame(tick);});
+ });
+}
+
+// Card sparkles are built lazily and run only on the hovered front face.
+if(typeof window!=='undefined'){
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ document.querySelectorAll('.scent-card').forEach(card=>{
+  const front=card.querySelector('.card-front'),image=front.querySelector('img');
+  function build(){
+   if(reduced.matches||card.classList.contains('is-flipped')||front.querySelector('.card-sparkles')||!image.complete||!image.naturalWidth)return;
+   const canvas=document.createElement('canvas');canvas.width=96;canvas.height=96;const ctx=canvas.getContext('2d',{willReadFrequently:true});const scale=Math.min(96/image.naturalWidth,96/image.naturalHeight),w=image.naturalWidth*scale,h=image.naturalHeight*scale;ctx.drawImage(image,(96-w)/2,(96-h)/2,w,h);
+   let pixels;try{pixels=ctx.getImageData(0,0,96,96).data;}catch{return;}
+   const points=[];for(let y=6;y<90;y+=3)for(let x=6;x<90;x+=3){const i=(y*96+x)*4;if(pixels[i+3]>180&&(card.dataset.family==='BLACK'?pixels[i]>100:pixels[i]<160))points.push([x,y]);}
+   const layer=document.createElement('span');layer.className='card-sparkles';layer.setAttribute('aria-hidden','true');
+   for(let n=0;n<10&&points.length;n++){const point=points[Math.min(points.length-1,Math.floor((n+.3)*points.length/10))],dot=document.createElement('i');dot.style.left=(point[0]/96*100)+'%';dot.style.top=(point[1]/96*100)+'%';dot.style.animationDelay=(n*.065)+'s';layer.append(dot);}front.append(layer);
+  }
+  card.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')build();});
  });
 }

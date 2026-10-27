@@ -689,3 +689,23 @@
 .collection-stage.swap-white-only .collection-white-object>.collection-bottle-part{mask-image:linear-gradient(to bottom,transparent calc(var(--bottle-swap) - 9%),#000 calc(var(--bottle-swap) + 9%));-webkit-mask-image:linear-gradient(to bottom,transparent calc(var(--bottle-swap) - 9%),#000 calc(var(--bottle-swap) + 9%))}
 .collection-stage.swap-black-only .collection-black-object>.collection-package-part{mask-image:linear-gradient(to bottom,#000 calc(var(--package-swap) - 9%),transparent calc(var(--package-swap) + 9%));-webkit-mask-image:linear-gradient(to bottom,#000 calc(var(--package-swap) - 9%),transparent calc(var(--package-swap) + 9%))}
 .collection-stage.swap-black-only .collection-black-object>.collection-bottle-part{mask-image:linear-gradient(to bottom,#000 calc(var(--bottle-swap) - 9%),transparent calc(var(--bottle-swap) + 9%));-webkit-mask-image:linear-gradient(to bottom,#000 calc(var(--bottle-swap) - 9%),transparent calc(var(--bottle-swap) + 9%))}
+
+/* Ten modest highlights per card; no animation outside front-face hover. */
+.card-front{position:absolute}
+.card-front .card-sparkles{position:absolute;left:14%;right:14%;top:17.5%;height:65%;pointer-events:none}
+.card-sparkles i{position:absolute;width:2px;height:2px;background:#fff;opacity:0;box-shadow:0 0 2px #fffa}
+@keyframes card-pixel-spark{0%,100%{opacity:0}30%{opacity:.85}55%{opacity:.1}72%{opacity:.65}}
+@media(hover:hover) and (pointer:fine){.scent-card:hover:not(.is-flipped) .card-sparkles i{animation:card-pixel-spark 600ms ease-out 1 both}}
+.scent-card.is-flipped .card-sparkles{display:none}
+@media(prefers-reduced-motion:reduce){.card-sparkles{display:none!important}}
+
+/* Hover keeps only the active card's sparse glints alive. */
+@media(hover:hover) and (pointer:fine){.scent-card:hover:not(.is-flipped) .card-sparkles i{animation:card-pixel-spark 1.8s ease-in-out infinite both}.scent-card:hover:not(.is-flipped) .card-sparkles i:nth-child(3n){animation-duration:2.3s}.scent-card:hover:not(.is-flipped) .card-sparkles i:nth-child(3n + 1){animation-duration:2.7s}}
+@media(prefers-reduced-motion:reduce){.card-sparkles{display:none!important}}
+
+/* Readable card glints at desktop viewing distance. */
+@media(min-width:1024px){
+ .scent-card .card-sparkles i{width:clamp(3px,.3vw,5px);height:clamp(3px,.3vw,5px);background:#fff;box-shadow:0 0 3px #fff,0 0 6px #fffa}
+ .scent-card[data-family=WHITE] .card-sparkles i{background:#fff;box-shadow:0 0 2px #fff,0 0 5px #fff}
+ .scent-card:hover:not(.is-flipped) .card-sparkles i{animation-duration:1.4s}
+}
