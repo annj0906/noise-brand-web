@@ -748,3 +748,24 @@
 .final-intro-stage .final-posters img{height:100%;width:100%;object-fit:contain;object-position:left center}
 @media(max-width:767px){.final-intro-track{height:220svh}.final-intro-stage{gap:5svh}.final-intro-stage .final-title{font-size:clamp(42px,10vw,76px)}.final-intro-stage .final-posters{gap:12px;max-height:42svh}.final-intro-stage .final-posters figure{height:auto;aspect-ratio:583/812}.final-intro-stage .final-posters img{height:100%}}
 @media(prefers-reduced-motion:reduce){.final-intro-track{height:auto}.final-intro-stage{position:relative;height:auto;min-height:90svh}}
+
+/* The original ASCII lemon replaces the hero photograph; typography stays intact. */
+#top .hero-main,#top .hero-photo{background:#000}
+#top .hero-photo{filter:none!important;opacity:1;overflow:hidden}
+#top .hero-photo>img{display:none!important}
+#top .hero-photo::before,#top .hero-photo::after{display:none!important}
+.hero-ascii-lemon{position:absolute;left:50%;top:50%;translate:-50% -50%;width:min(48vw,76svh);height:min(48vw,76svh);display:block;cursor:grab;touch-action:pan-y;z-index:1}
+.hero-ascii-lemon:active{cursor:grabbing}
+#top .hero-line{color:#f5f5f5}
+#top .hero-line a,#top .hero-logo,#top .hero-slogan{color:#f5f5f5}
+@media(max-width:767px){.hero-ascii-lemon{width:90vw;height:90vw}}
+
+#top .hero-line .hero-logo,#top .hero-line .hero-slogan{background-image:linear-gradient(#f5f5f5,#f5f5f5);background-clip:text;-webkit-background-clip:text;color:transparent}
+#top .hero-line .hero-logo.red-light,#top .hero-line .hero-slogan.red-light{background-image:radial-gradient(circle 95px at var(--light-x,-200px) var(--light-y,-200px),#ff0000 0%,#ff0000 15%,#f5f5f5 85%)}
+#top .hero-line nav .hero-menu-ink{color:#f5f5f5}#top .hero-line nav a:hover .hero-menu-ink{color:#ff0000}
+
+/* Give the slogan breathing room beside the central lemon. */
+.hero-ascii-lemon{width:min(43vw,68svh);height:min(43vw,68svh)}
+@media(min-width:768px){#top .hero-line{grid-template-columns:90px 1fr;column-gap:16px}}
+@media(min-width:1440px){#top .hero-line{grid-template-columns:10% 1fr auto;column-gap:24px}}
+@media(max-width:767px){.hero-ascii-lemon{width:82vw;height:82vw}}
