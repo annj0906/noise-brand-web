@@ -378,11 +378,11 @@ if(typeof window!=='undefined'){
   frame=0;const b=region.getBoundingClientRect(),p=Math.max(0,Math.min(1,-b.top/Math.max(1,region.offsetHeight-innerHeight)));
   const clamp=n=>Math.max(0,Math.min(1,n)),ease=n=>1-Math.pow(1-clamp(n),3),smooth=n=>{const t=clamp(n);return t*t*(3-2*t);};
   const packageEntry=reduce.matches?1:ease(p/.25),bottleEntry=reduce.matches?1:ease((p-.1)/.3);
-  const bottleTravel=reduce.matches?0:smooth((p-.4)/.55)*12,packageTravel=reduce.matches?0:smooth((p-.5)/.48)*8;
+  const bottleTravel=reduce.matches?0:smooth((p-.53)/.44)*10,packageTravel=reduce.matches?0:smooth((p-.4)/.55)*14;
   stage.style.setProperty('--package-y',((1-packageEntry)*-110+packageTravel)+'svh');
   stage.style.setProperty('--bottle-y',((1-bottleEntry)*-130+bottleTravel)+'svh');
-  stage.style.setProperty('--package-swap',(clamp((p-.59)/.32)*100)+'%');
-  stage.style.setProperty('--bottle-swap',(clamp((p-.48)/.34)*100)+'%');
+  stage.style.setProperty('--package-swap',(clamp((p-.48)/.36)*100)+'%');
+  stage.style.setProperty('--bottle-swap',(clamp((p-.6)/.36)*100)+'%');
   stage.style.setProperty('--collection-travel','0px');stage.classList.toggle('depth-active',b.top<innerHeight&&b.bottom>0);
  }
  function schedule(){if(!frame)frame=requestAnimationFrame(draw);}

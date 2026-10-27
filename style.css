@@ -442,3 +442,7 @@
 .collection-white-object .collection-bottle-part{clip-path:inset(var(--bottle-swap,0%) 49.5% 0 0)}
 .collection-black-object .collection-package-part{clip-path:inset(0 0 calc(100% - var(--package-swap,0%)) 50.5%)}
 .collection-black-object .collection-bottle-part{clip-path:inset(0 49.5% calc(100% - var(--bottle-swap,0%)) 0)}
+
+/* More room for the package-led descent before the bottle follows. */
+.collection-showcase{height:560svh}
+@media(prefers-reduced-motion:reduce){.collection-showcase{height:180svh}}
