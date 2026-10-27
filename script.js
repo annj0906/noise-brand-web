@@ -28,7 +28,7 @@ function filterCollection(family) {
   document.querySelector('#result-count').textContent = `${family} / ${cards.filter(card => !card.hidden).length} SCENTS`;
 }
 document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => filterCollection(button.dataset.filter)));
-document.querySelectorAll('[data-filter-link]').forEach(link => link.addEventListener('click', () => filterCollection(link.dataset.filterLink)));
+document.querySelectorAll('[data-filter-link]').forEach(link => link.addEventListener('click', () => filterCollection('ALL')));
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
   if (menuButton.getAttribute('aria-expanded') === 'true') closeMenu(true);
@@ -359,7 +359,7 @@ if(typeof window!=='undefined'){
   frame=0;const b=region.getBoundingClientRect(),p=Math.max(0,Math.min(1,-b.top/Math.max(1,region.offsetHeight-innerHeight)));
   const clamp=n=>Math.max(0,Math.min(1,n)),ease=n=>1-Math.pow(1-clamp(n),3),smooth=n=>{const t=clamp(n);return t*t*(3-2*t);};
   const packageEntry=reduce.matches?1:ease(p/.25),bottleEntry=reduce.matches?1:ease((p-.1)/.3);
-  const bottleTravel=reduce.matches?0:smooth((p-.49)/.42)*4,packageTravel=reduce.matches?0:smooth((p-.48)/.44)*33;
+  const bottleTravel=reduce.matches?0:smooth((p-.49)/.42)*4,packageTravel=reduce.matches?0:smooth((p-.48)/.52)*39;
   stage.style.setProperty('--package-y',((1-packageEntry)*-110+packageTravel)+'svh');
   stage.style.setProperty('--bottle-y',((1-bottleEntry)*-130+bottleTravel)+'svh');
   stage.style.setProperty('--package-swap',(clamp((p-.52)/.1)*100)+'%');
@@ -439,4 +439,12 @@ if(typeof window!=='undefined'){
  function depth(){frame=0;if(!board||reduce.matches)return;const b=board.getBoundingClientRect();if(b.bottom<0||b.top>innerHeight)return;const p=Math.max(-1,Math.min(1,(innerHeight*.5-b.top)/Math.max(1,b.height)));board.querySelectorAll('.scent-card').forEach(card=>card.style.setProperty('--card-depth-y',(p*Number(card.style.getPropertyValue('--depth')))+'px'));}
  function schedule(){if(!frame)frame=requestAnimationFrame(depth);}window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);depth();
  board.querySelectorAll('.scent-card').forEach(card=>{card.addEventListener('pointermove',event=>{if(event.pointerType!=='mouse'||reduce.matches)return;const b=card.getBoundingClientRect(),x=(event.clientX-b.left)/b.width-.5,y=(event.clientY-b.top)/b.height-.5;card.style.setProperty('--paper-rx',(-y*8)+'deg');card.style.setProperty('--paper-ry',(x*9)+'deg');});card.addEventListener('pointerleave',()=>{card.style.setProperty('--paper-rx','0deg');card.style.setProperty('--paper-ry','0deg');});});
+}
+
+// Navigation contrast follows the visible full-screen scene.
+if(typeof window!=='undefined'){
+ const nav=document.querySelector('.header'),black=document.querySelector('.sense-black'),product=document.querySelector('.frequency-black'),white=document.querySelector('.frequency-white');let frame=0;
+ function update(){frame=0;const y=nav.offsetHeight/2;const covers=e=>{const b=e.getBoundingClientRect();return b.top<=y&&b.bottom>y;};const darkSense=covers(black)&&black.classList.contains('sense-content-active')&&Number(black.querySelector('.sense-world').style.opacity||1)>.05;const darkProduct=covers(product)&&product.classList.contains('frequency-content-active')&&(!covers(white)||Number(white.style.opacity||0)<.5);nav.classList.toggle('on-dark',darkSense||darkProduct);}
+ function schedule(){if(!frame)frame=requestAnimationFrame(update);}
+ window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);[black,product,white].forEach(e=>new MutationObserver(schedule).observe(e,{attributes:true,attributeFilter:['class','style']}));update();
 }

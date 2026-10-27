@@ -603,3 +603,22 @@
 .scent-board .scent-card.is-flipped .flip-inner{transform:rotateY(180deg)}
 .scent-board .card-back.note[hidden]{display:flex!important}
 @media(prefers-reduced-motion:reduce){.scent-board .flip-inner{transition:none}}
+
+/* Card heading follows the product descent without the old toolbar gap. */
+#collection-details{position:relative;z-index:2;padding-top:32px}
+#collection-details .collection-toolbar{display:none!important}
+#collection-details .collection-heading{margin-bottom:0}
+#collection-details .collection-heading h2{font-size:clamp(36px,4.167vw,80px);line-height:1.18}
+#collection-details .collection-heading p{font-size:clamp(14px,.94vw,18px);line-height:1.5;max-width:320px}
+.scent-board.products{margin-top:28px}
+@media(max-width:767px){#collection-details{padding-top:28px}.scent-board.products{margin-top:32px}}
+
+/* Frosted navigation keeps labels crisp over scrolling content. */
+.header{background:rgba(245,245,245,.64);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(16,16,16,.06)}
+.js #navigation.open{background:rgba(245,245,245,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+@supports not (backdrop-filter:blur(1px)){.header,.js #navigation.open{background:rgba(245,245,245,.96)}}
+
+.header{transition:color 300ms ease,background-color 300ms ease}
+.header.on-dark{color:#f5f5f5;background:rgba(16,16,16,.58);border-bottom-color:rgba(245,245,245,.1)}
+.header.on-dark .wordmark,.header.on-dark nav a,.header.on-dark .menu-toggle{color:#f5f5f5}
+.header.on-dark #navigation.open{background:rgba(16,16,16,.9);color:#f5f5f5}
