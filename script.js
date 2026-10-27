@@ -17,31 +17,11 @@ navigation.addEventListener('click', e => { if (e.target.closest('a')) closeMenu
 document.addEventListener('click', e => { if (!e.target.closest('.header')) closeMenu(); });
 const cards = [...document.querySelectorAll('.product')];
 function setNote(card, open, focus = false) {
-  const toggle = card.querySelector('.note-toggle');
-  toggle.setAttribute('aria-expanded', String(open));
-  toggle.querySelector('span').textContent = open ? '−' : '+';
-  card.querySelector('.note').hidden = !open;
-  if (focus) toggle.focus();
+ const toggle=card.querySelector('.note-toggle'),note=card.querySelector('.note');
+ toggle.setAttribute('aria-expanded',String(open));card.classList.toggle('is-flipped',open);note.hidden=!open;note.setAttribute('aria-hidden',String(!open));
+ if(focus)toggle.focus();
 }
-cards.forEach(card => {
-  let preview = false;
-  card.querySelector('.note-toggle').addEventListener('pointerenter', e => {
-    if (e.pointerType === 'mouse' && matchMedia('(hover: hover)').matches && card.querySelector('.note').hidden) {
-      preview = true;
-      setNote(card, true);
-    }
-  });
-  card.addEventListener('pointerleave', () => {
-    if (preview && !card.contains(document.activeElement)) setNote(card, false);
-    preview = false;
-  });
-  card.querySelector('.note-toggle').addEventListener('click', () => {
-    const open = preview || card.querySelector('.note').hidden;
-    preview = false;
-    setNote(card, open);
-  });
-  card.querySelector('.note-close').addEventListener('click', () => { preview = false; setNote(card, false, true); });
-});
+cards.forEach(card=>{card.querySelector('.note-toggle').addEventListener('click',()=>setNote(card,!card.classList.contains('is-flipped')));});
 function filterCollection(family) {
   cards.forEach(card => { setNote(card, false); card.hidden = family !== 'ALL' && card.dataset.family !== family; });
   document.querySelectorAll('[data-filter]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === family)));
@@ -133,7 +113,7 @@ if(interactiveHero){
 }
 
 // Brief visual type fracture, without changing labels or accessible names.
-if(typeof window!=='undefined')document.querySelectorAll('button,.header nav a,.text-link,footer nav a').forEach(control=>{
+if(typeof window!=='undefined')document.querySelectorAll('button:not(.flip-card),.header nav a,.text-link,footer nav a').forEach(control=>{
  let hoverTimer;
  control.addEventListener('pointerenter',event=>{
   if(event.pointerType!=='mouse'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
@@ -451,4 +431,12 @@ if(typeof window!=='undefined'){
   link.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')figure.classList.add('identity-locked');});
   link.addEventListener('pointerleave',()=>figure.classList.remove('identity-locked'));
  });
+}
+
+// Each paper card has its own scroll depth and local pointer tilt.
+if(typeof window!=='undefined'){
+ const board=document.querySelector('.scent-board'),reduce=matchMedia('(prefers-reduced-motion: reduce)');let frame=0;
+ function depth(){frame=0;if(!board||reduce.matches)return;const b=board.getBoundingClientRect();if(b.bottom<0||b.top>innerHeight)return;const p=Math.max(-1,Math.min(1,(innerHeight*.5-b.top)/Math.max(1,b.height)));board.querySelectorAll('.scent-card').forEach(card=>card.style.setProperty('--card-depth-y',(p*Number(card.style.getPropertyValue('--depth')))+'px'));}
+ function schedule(){if(!frame)frame=requestAnimationFrame(depth);}window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);depth();
+ board.querySelectorAll('.scent-card').forEach(card=>{card.addEventListener('pointermove',event=>{if(event.pointerType!=='mouse'||reduce.matches)return;const b=card.getBoundingClientRect(),x=(event.clientX-b.left)/b.width-.5,y=(event.clientY-b.top)/b.height-.5;card.style.setProperty('--paper-rx',(-y*8)+'deg');card.style.setProperty('--paper-ry',(x*9)+'deg');});card.addEventListener('pointerleave',()=>{card.style.setProperty('--paper-rx','0deg');card.style.setProperty('--paper-ry','0deg');});});
 }

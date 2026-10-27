@@ -556,3 +556,50 @@
 @media(hover:hover) and (pointer:fine){.frequency-black.car-arrived:has(.frequency-car-link:hover) .frequency-detail{filter:blur(4px)}}
 .frequency-black.car-arrived:has(.frequency-car-link:focus-visible) .frequency-detail{filter:blur(4px)}
 @media(prefers-reduced-motion:reduce){.frequency-black .frequency-detail{opacity:1;filter:none;translate:none;transition:none;pointer-events:auto}}
+
+/* Figma scent papers: 325 × 431 front/back, editorial scattered layout. */
+#collection-details{--card-paper:#eee;--card-ink:#000;--card-radius:0px;--card-flip-time:700ms;padding:90px 6% 80px;max-width:1920px}
+#collection-details .collection-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:32px;margin:0 0 36px}
+#collection-details .collection-heading h2{font:400 clamp(32px,4.3vw,80px)/1.18 var(--font-label);letter-spacing:-.025em}
+#collection-details .collection-heading p{font:400 14px/1.5 var(--font-ui);margin-top:16px;max-width:280px}
+#collection-details>.section-label{display:none}
+.scent-board.products{position:relative;display:block;aspect-ratio:1920/2600;margin-top:80px;isolation:isolate}
+.scent-board .scent-card{position:absolute;left:var(--card-x);top:var(--card-y);width:17%;aspect-ratio:325/431;padding:0;margin:0;border:0;border-radius:var(--card-radius);background:none;box-shadow:none;transform:translateY(var(--card-depth-y,0px)) rotate(var(--card-angle));transition:transform 650ms cubic-bezier(.2,.7,.2,1),filter 450ms,opacity 450ms;z-index:1;perspective:1200px}
+.scent-card[data-family=BLACK]{--card-paper:#000;--card-ink:#fff}
+.scent-card[hidden]{display:none!important}
+.scent-board .flip-card.note-toggle{display:block;position:absolute;inset:0;width:100%;height:100%;padding:0;margin:0;border:0;border-radius:0;background:none;color:var(--card-ink);font:400 16px/1.4 var(--font-label);text-align:left;cursor:pointer;overflow:visible;transform:rotateX(var(--paper-rx,0deg)) rotateY(var(--paper-ry,0deg));transition:transform 450ms ease-out}
+.flip-inner{position:absolute;inset:0;display:block;transform-style:preserve-3d;transition:transform var(--card-flip-time) cubic-bezier(.2,.7,.2,1)}
+.scent-card.is-flipped .flip-inner{transform:rotateY(180deg)}
+.card-front,.scent-board .card-back.note{position:absolute;inset:0;display:flex;flex-direction:column;border:0;border-radius:0;background:var(--card-paper);color:var(--card-ink);backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.card-front{align-items:center;justify-content:center;padding:14%}
+.card-front img{display:block;width:100%;height:65%;object-fit:contain;pointer-events:none}
+.scent-card[data-family=WHITE] .card-front img{opacity:.8}
+.scent-board .card-back.note,.scent-board .card-back.note[hidden]{display:flex;padding:7.7%;transform:rotateY(180deg);font-size:clamp(14px,1vw,18px);line-height:1.4}
+.card-identity{display:flex;flex-direction:column;gap:4px;font:400 clamp(16px,1.25vw,24px)/1.15 var(--font-label)}
+.card-identity strong{font-weight:700}
+.card-description{display:block;margin-top:17%;font:400 clamp(14px,.94vw,18px)/1.4 var(--font-ui);letter-spacing:-.025em;word-break:keep-all}
+.card-keywords{display:flex;flex-direction:column;margin-top:auto;padding-top:12px;font:400 clamp(14px,.94vw,18px)/1.4 var(--font-label)}
+.scent-board .scent-card:focus-within{z-index:5;transform:translateY(calc(var(--card-depth-y,0px) - 14px)) rotate(0deg)}
+@media(hover:hover) and (pointer:fine){.scent-board:has(.scent-card:hover) .scent-card:not(:hover){filter:blur(2px);opacity:.65}.scent-board .scent-card:hover{z-index:5;transform:translateY(calc(var(--card-depth-y,0px) - 16px)) rotate(0deg)}}
+.flip-card:focus-visible{outline:2px solid #f00;outline-offset:6px}
+#collection-details .collection-caption{font-size:14px;line-height:1.6;margin-top:36px}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(max-width:767px){#collection-details{padding:64px 6%}#collection-details .collection-heading{display:block}.scent-board.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:42px 22px;aspect-ratio:auto;margin-top:56px}.scent-board .scent-card{position:relative;left:auto;top:auto;width:100%;transform:translateY(var(--card-depth-y,0px)) rotate(calc(var(--card-angle)*.3))}.scent-board .card-back.note{padding:10px}.card-identity{font-size:16px}.card-description{font-size:14px;margin-top:12px;line-height:1.3;word-break:normal}.card-keywords{font-size:14px;line-height:1.25;padding-top:8px}}
+@media(prefers-reduced-motion:reduce){.scent-board .scent-card,.flip-inner,.scent-board .flip-card.note-toggle{transition:none;transform:none}.scent-board .scent-card:hover{transform:none}.scent-card.is-flipped .flip-inner{transform:rotateY(180deg)}}
+
+/* Scope legacy note-button span typography away from the new card faces. */
+.scent-board .flip-card .card-identity,.scent-board .flip-card .card-identity span{font:400 clamp(16px,1.25vw,24px)/1.15 var(--font-label)}
+.scent-board .flip-card .card-description{font:400 clamp(14px,.94vw,18px)/1.4 var(--font-ui);letter-spacing:-.025em}
+.scent-board .flip-card .card-keywords,.scent-board .flip-card .card-keywords span{font:400 clamp(14px,.94vw,18px)/1.4 var(--font-label)}
+@media(max-width:767px){.scent-board .flip-card .card-description{font-size:14px;line-height:1.25;word-break:normal}.scent-board .flip-card .card-keywords,.scent-board .flip-card .card-keywords span{font-size:14px;line-height:1.2}}
+
+@media(max-width:767px){.scent-board .scent-card{min-height:264px;aspect-ratio:325/500}.scent-board .flip-card .card-description{margin-top:14px}}
+
+/* Paper cards never inherit the global button glitch. */
+.scent-board .flip-card.type-fracture{animation:none!important;filter:none!important;text-shadow:none!important}
+
+/* Explicit 0↔180 angles make the reverse flip retrace the same path. */
+.scent-board .flip-inner{transform:rotateY(0deg);transition:transform var(--card-flip-time) cubic-bezier(.2,.7,.2,1)}
+.scent-board .scent-card.is-flipped .flip-inner{transform:rotateY(180deg)}
+.scent-board .card-back.note[hidden]{display:flex!important}
+@media(prefers-reduced-motion:reduce){.scent-board .flip-inner{transition:none}}
