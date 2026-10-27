@@ -536,3 +536,8 @@
 @media(hover:hover) and (pointer:fine){.white-snow>a:hover{scale:1.035}}
 .white-snow>a:focus-visible{scale:1.035}
 @media(prefers-reduced-motion:reduce){.identity-locked figcaption{animation:none!important}.white-frequency-detail{filter:none;translate:none}.white-snow>a{scale:1!important;transition:none}}
+
+/* Product identity softly resolves from blur on target contact. */
+.frequency-black .frequency-car figcaption,.frequency-white .white-snow figcaption{filter:blur(7px);translate:0 4px;transition:opacity 420ms ease,filter 520ms ease,translate 520ms ease,visibility 0s 420ms;animation:none!important}
+.frequency-black .frequency-car.identity-locked figcaption,.frequency-white .white-snow.identity-locked figcaption,.frequency-car:focus-within figcaption,.white-snow:focus-within figcaption{filter:blur(0);translate:0 0;text-shadow:none;transition-delay:0s;animation:none!important}
+@media(prefers-reduced-motion:reduce){.frequency-car figcaption,.white-snow figcaption{transition:none!important;filter:none!important;translate:none!important}}
