@@ -407,3 +407,15 @@
 @media(prefers-reduced-motion:reduce){.collection-object.is-following .collection-view{animation:none}.collection-showcase{height:160svh}}
 
 #collection{scroll-margin-top:0}
+
+/* Full-bleed white stage; supplied WebPs are masked into two depth layers. */
+#collection{max-width:none;width:100%;margin:0;background:#fff}
+.collection-showcase{height:340svh;background:#fff}
+.collection-stage{background:#fff;--package-y:-110svh;--bottle-y:-130svh}
+.collection-product-layer,.collection-package-part,.collection-bottle-part{position:absolute;inset:0;display:block;pointer-events:none}
+.collection-product-layer img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.collection-package-part{clip-path:inset(0 0 0 50.5%);transform:translate3d(0,var(--package-y),0)}
+.collection-bottle-part{clip-path:inset(0 49.5% 0 0);transform:translate3d(0,var(--bottle-y),0)}
+.collection-stage-label{left:3%;top:6%}
+#collection-details{max-width:var(--container);margin-inline:auto}
+@media(prefers-reduced-motion:reduce){.collection-package-part,.collection-bottle-part{transform:none}.collection-showcase{height:180svh}}
