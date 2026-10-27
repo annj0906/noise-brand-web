@@ -419,3 +419,13 @@
 .collection-stage-label{left:3%;top:6%}
 #collection-details{max-width:var(--container);margin-inline:auto}
 @media(prefers-reduced-motion:reduce){.collection-package-part,.collection-bottle-part{transform:none}.collection-showcase{height:180svh}}
+
+/* Subtle depth continues through the product swap. */
+.collection-object{perspective:1400px}
+.collection-package-part,.collection-bottle-part{transform-style:preserve-3d}
+.collection-package-part img{animation:package-drift 8s ease-in-out infinite;transform-origin:65% 35%}
+.collection-bottle-part img{animation:bottle-drift 9.5s ease-in-out infinite;transform-origin:38% 65%}
+@keyframes package-drift{0%,100%{transform:translate3d(0,0,0) rotateY(-2deg) rotateZ(-.45deg)}50%{transform:translate3d(5px,-9px,12px) rotateY(2deg) rotateZ(.45deg)}}
+@keyframes bottle-drift{0%,100%{transform:translate3d(0,3px,16px) rotateY(1.5deg) rotateZ(.35deg)}50%{transform:translate3d(-4px,-5px,26px) rotateY(-1.5deg) rotateZ(-.35deg)}}
+.collection-stage:not(.depth-active) .collection-product-layer img{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.collection-product-layer img{animation:none!important;transform:none!important}}
