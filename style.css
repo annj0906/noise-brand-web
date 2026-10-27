@@ -512,3 +512,10 @@
 .collection-white-object .collection-bottle-part{clip-path:inset(var(--bottle-swap,0%) 0 0)}
 .collection-black-object .collection-package-part{clip-path:inset(0 0 calc(100% - var(--package-swap,0%)))}
 .collection-black-object .collection-bottle-part{clip-path:inset(0 0 calc(100% - var(--bottle-swap,0%)))}
+
+/* Preserve sparkle visibility as the product artwork grows on desktop. */
+@media(min-width:1024px){
+ .frequency-black .car-pixel-glints,.white-snow-crop .car-pixel-glints{opacity:1}
+ .frequency-black .car-pixel-glints i,.white-snow-crop .car-pixel-glints i{width:clamp(4px,.42vw,8px);height:clamp(4px,.42vw,8px);background:#fff;box-shadow:0 0 4px #fff,0 0 8px #fff9}
+ .frequency-black .car-pixel-glints i.is-near,.white-snow-crop .car-pixel-glints i.is-near{opacity:1;box-shadow:0 0 6px #fff,0 0 12px #fffd,0 0 18px #fff6}
+}
