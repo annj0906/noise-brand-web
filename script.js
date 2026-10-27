@@ -370,3 +370,16 @@ if(typeof window!=='undefined'){
   link.addEventListener('pointerleave',clear);
  });
 }
+
+// The collection swaps products in the same frame; the catalogue opens in place.
+if(typeof window!=='undefined'){
+ const region=document.querySelector('.collection-showcase'),stage=document.querySelector('.collection-stage'),object=document.querySelector('.collection-object'),details=document.querySelector('#collection-details'),reduce=matchMedia('(prefers-reduced-motion: reduce)');let frame=0;
+ function draw(){frame=0;const b=region.getBoundingClientRect(),p=Math.max(0,Math.min(1,-b.top/Math.max(1,region.offsetHeight-innerHeight))),t=Math.max(0,Math.min(1,(p-.25)/.5));stage.style.setProperty('--swap',(t*100)+'%');stage.style.setProperty('--scan-alpha',t>0&&t<1?'.25':'0');}
+ function schedule(){if(!frame)frame=requestAnimationFrame(draw);}
+ window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);draw();
+ object.addEventListener('pointermove',event=>{if(event.pointerType!=='mouse'||reduce.matches)return;const b=object.getBoundingClientRect(),x=event.clientX-b.left,y=event.clientY-b.top,u=x/b.width,v=y/b.height,over=u>.24&&u<.88&&v>.08&&v<.9;object.classList.toggle('is-following',over);object.style.setProperty('--view-x',Math.min(b.width-155,x+22)+'px');object.style.setProperty('--view-y',Math.min(b.height-44,y+20)+'px');});
+ object.addEventListener('pointerleave',()=>object.classList.remove('is-following'));
+ function reveal(){details.hidden=false;object.setAttribute('aria-expanded','true');}
+ object.addEventListener('click',()=>{reveal();details.scrollIntoView({behavior:reduce.matches?'instant':'smooth',block:'start'});});
+ document.querySelectorAll('[data-filter-link]').forEach(link=>link.addEventListener('click',()=>{reveal();requestAnimationFrame(()=>details.scrollIntoView({behavior:reduce.matches?'instant':'smooth',block:'start'}));}));
+}
