@@ -637,3 +637,13 @@
 .temperature-scroll{height:650svh}
 .sense-scroll{height:580svh}
 @media(prefers-reduced-motion:reduce){.temperature-scroll,.sense-scroll{height:auto}}
+
+.collection-view{z-index:8}
+.collection-stage .collection-object.is-following .collection-view{animation:none;color:inherit}
+
+/* Independent paper depth becomes visible over the scroll distance. */
+.scent-board .scent-card{transform:translate(var(--card-depth-x,0px),var(--card-depth-y,0px)) rotate(calc(var(--card-angle) + var(--card-scroll-turn,0deg)));transition:transform 280ms ease-out,filter 450ms,opacity 450ms}
+.scent-board .scent-card:focus-within{transform:translate(var(--card-depth-x,0px),calc(var(--card-depth-y,0px) - 14px)) rotate(0deg)}
+@media(hover:hover) and (pointer:fine){.scent-board .scent-card:hover{transform:translate(var(--card-depth-x,0px),calc(var(--card-depth-y,0px) - 16px)) rotate(0deg)}}
+@media(max-width:767px){.scent-board .scent-card{transform:translate(calc(var(--card-depth-x,0px)*.4),calc(var(--card-depth-y,0px)*.45)) rotate(calc(var(--card-angle)*.3 + var(--card-scroll-turn,0deg)*.4))}}
+@media(prefers-reduced-motion:reduce){.scent-board .scent-card{transform:none!important;transition:none}}
