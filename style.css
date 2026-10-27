@@ -526,3 +526,13 @@
 @media(hover:hover) and (pointer:fine){.frequency-car-link:hover{scale:1.035}}
 .frequency-car-link:focus-visible{scale:1.035}
 @media(prefers-reduced-motion:reduce){.frequency-black .frequency-detail{filter:none;translate:none}.frequency-car-link{transition:none;scale:1!important}}
+
+/* A short identity lock replaces the permanently visible image caption. */
+.frequency-black .frequency-car figcaption,.frequency-white .white-snow figcaption{position:absolute;left:var(--identity-x,55%);top:var(--identity-y,55%);z-index:6;margin:0;opacity:0;visibility:hidden;pointer-events:none;white-space:nowrap;font-size:16px;line-height:1.5;transition:opacity 180ms}
+.frequency-black .frequency-car.identity-locked figcaption,.frequency-white .white-snow.identity-locked figcaption,.frequency-car:focus-within figcaption,.white-snow:focus-within figcaption{opacity:1;visibility:visible;animation:identity-lock 240ms steps(1,end) 1}
+@keyframes identity-lock{0%{opacity:0;translate:3px 0;filter:blur(2px)}25%{opacity:1;translate:-2px 0;text-shadow:2px 0 #f00}45%{opacity:.35;translate:2px 1px}70%{opacity:1;translate:-1px 0;text-shadow:-1px 0 #f00}100%{opacity:1;translate:0 0;filter:none;text-shadow:none}}
+.white-frequency-detail{filter:blur(var(--detail-blur,0px));translate:0 var(--detail-rise,0px)}
+.white-snow>a{display:block;scale:1;transition:scale 650ms cubic-bezier(.2,.7,.2,1);transform-origin:center}
+@media(hover:hover) and (pointer:fine){.white-snow>a:hover{scale:1.035}}
+.white-snow>a:focus-visible{scale:1.035}
+@media(prefers-reduced-motion:reduce){.identity-locked figcaption{animation:none!important}.white-frequency-detail{filter:none;translate:none}.white-snow>a{scale:1!important;transition:none}}

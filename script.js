@@ -332,7 +332,7 @@ frequency.classList.remove('has-fixed-landing');
   crop.style.transform='translate('+((innerWidth/2-centerX)*(1-settle))+'px,'+((innerHeight/2-centerY)*(1-settle))+'px) scale('+(1+Math.pow(1-settle,2)*7)+')';
   product.style.setProperty('--car-settle',String(smooth((settle-.78)/.22)));
   const detailReveal=reduced.matches?1:smooth((fp-.32)/.2);product.style.setProperty('--detail-blur',((1-detailReveal)*9)+'px');product.style.setProperty('--detail-rise',((1-detailReveal)*30)+'px');
-  const white=document.querySelector('.frequency-white'),whiteReveal=reduced.matches?1:smooth((fp-.67)/.3);white.style.opacity=String(whiteReveal);white.style.pointerEvents=whiteReveal>.5?'auto':'none';white.classList.toggle('is-sequence-pinned',!reduced.matches&&fb.bottom>innerHeight&&fb.top<=0);
+  const white=document.querySelector('.frequency-white'),whiteReveal=reduced.matches?1:smooth((fp-.67)/.3);white.style.opacity=String(whiteReveal);white.style.setProperty('--detail-blur',((1-whiteReveal)*9)+'px');white.style.setProperty('--detail-rise',((1-whiteReveal)*30)+'px');white.style.pointerEvents=whiteReveal>.5?'auto':'none';white.classList.toggle('is-sequence-pinned',!reduced.matches&&fb.bottom>innerHeight&&fb.top<=0);
   product.style.setProperty('--black-leave',String(1-whiteReveal));product.classList.toggle('is-white-handoff',whiteReveal>.01);
 
   product.classList.remove('is-product-focus');
@@ -441,4 +441,14 @@ if(typeof window!=='undefined'){
   }
   if(image.complete&&image.naturalWidth)build();else image.addEventListener('load',build,{once:true});
  }
+}
+
+// Product identity locks to the pointer only while the artwork is targeted.
+if(typeof window!=='undefined'){
+ document.querySelectorAll('.frequency-car,.white-snow').forEach(figure=>{
+  const link=figure.querySelector('a'),caption=figure.querySelector('figcaption');if(!link||!caption)return;
+  link.addEventListener('pointermove',event=>{if(event.pointerType!=='mouse')return;const b=figure.getBoundingClientRect();figure.style.setProperty('--identity-x',Math.min(event.clientX-b.left+26,innerWidth-b.left-200)+'px');figure.style.setProperty('--identity-y',Math.min(event.clientY-b.top+28,innerHeight-b.top-80)+'px');});
+  link.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')figure.classList.add('identity-locked');});
+  link.addEventListener('pointerleave',()=>figure.classList.remove('identity-locked'));
+ });
 }
