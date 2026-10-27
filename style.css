@@ -809,3 +809,64 @@
  .frequency-detail>a,.white-frequency-detail>a{font-size:clamp(18px,1.25vw,24px);margin-top:clamp(28px,2.76vw,53px)}
 }
 @media(max-width:1023px){.frequency-scene-title h2{font-size:clamp(28px,5.7vw,58px)}}
+
+/* Align the settled BLACK/WHITE scenes to the supplied full-screen references. */
+@media(min-width:1024px){
+ .frequency-scene-title{left:43.89%;top:5.5%;width:54%}
+ .frequency-scene-title>.label{margin-bottom:clamp(32px,3.125vw,60px)}
+ .frequency-scene-intro{left:83.15%;top:43%;width:15.5%;max-width:none;white-space:nowrap}
+ .frequency-black .frequency-car{left:5.7%;top:48%;width:35%;margin:0}
+ .frequency-black .frequency-detail{left:43.89%;top:51.8%;width:31%}
+ .frequency-white .white-frequency-detail{left:43.89%;top:58%;width:31%}
+ .frequency-white .white-snow{left:65%;top:52%;width:28%;margin:0}
+ .frequency-detail h3,.white-frequency-detail h3{margin-top:clamp(34px,4.3vw,82px);margin-bottom:clamp(22px,1.56vw,30px)}
+}
+
+/* Raise scene content slightly while leaving the (02) label in place. */
+.frequency-scene-title h2{position:relative;top:-20px}
+.frequency-scene-intro{margin-top:-12px}
+@media(min-width:1024px){
+ .frequency-black .frequency-car{top:calc(48% - 12px)}
+ .frequency-black .frequency-detail{top:calc(51.8% - 12px)}
+ .frequency-white .white-frequency-detail{top:calc(58% - 12px)}
+ .frequency-white .white-snow{top:calc(52% - 12px)}
+}
+@media(max-width:1023px){.frequency-scene-title h2{top:-12px}.frequency-scene-intro{margin-top:-8px}.frequency-car,.white-snow{margin-top:-8px}.frequency-detail,.white-frequency-detail{margin-top:-8px}}
+
+/* BLACK and WHITE share one graphic slot and one description slot. */
+@media(min-width:1024px){
+ .frequency-white .white-frequency-detail{left:43.89%;top:calc(51.8% - 12px);width:31%}
+ .frequency-white .white-snow{left:5.7%;top:calc(48% - 12px);width:35%;margin:0}
+ .frequency-white .white-snow-crop{aspect-ratio:824/589}
+ .frequency-white .white-snow-crop>img{width:100%;height:100%;object-fit:contain}
+}
+@media(max-width:1023px){.frequency-white .white-frequency-detail{left:48%;top:60%;width:48%}.frequency-white .white-snow{left:4%;top:31%;width:67%}.frequency-white .white-snow-crop{aspect-ratio:824/589}.frequency-white .white-snow-crop>img{width:100%;height:100%;object-fit:contain}}
+.frequency-black>.frequency-car,.frequency-white>.white-snow{filter:blur(var(--swap-art-blur,0px))}
+@media(prefers-reduced-motion:reduce){.frequency-black>.frequency-car,.frequency-white>.white-snow{filter:none}}
+
+/* More breathing room beneath the large frequency headline. */
+@media(min-width:1024px){.frequency-scene-intro{top:calc(43% + 28px)}}
+@media(max-width:1023px){.frequency-scene-intro{margin-top:12px}}
+
+/* A small additional lift for the main frequency headline only. */
+.frequency-scene-title h2{top:-32px}
+@media(max-width:1023px){.frequency-scene-title h2{top:-20px}}
+
+/* Revised Figma layout: left headline, central art, right information. */
+@media(min-width:1024px){
+ .frequency-scene-title{left:9.285%;top:5.4%;width:60%}
+ .frequency-scene-title>.label{margin-bottom:clamp(24px,1.8vw,35px)}
+ .frequency-scene-title h2{top:0;font-size:clamp(56px,6.667vw,128px);line-height:1.2}
+ .frequency-scene-intro{left:68.66%;top:32.5%;width:24%;margin:0;white-space:normal;max-width:none}
+ .frequency-black .frequency-car,.frequency-white .white-snow{left:28.05%;top:41.2%;width:39.54%;margin:0}
+ .frequency-black .frequency-detail,.frequency-white .white-frequency-detail{left:68.66%;top:57.84%;width:28%;margin:0}
+ .frequency-detail h3,.white-frequency-detail h3{font-family:'NOISE Alexandria Story',sans-serif;font-weight:400;font-size:clamp(26px,1.875vw,36px);line-height:1.2;margin:clamp(12px,.625vw,16px) 0 clamp(28px,2.1vw,40px)}
+ .frequency-detail>a,.white-frequency-detail>a{margin-top:clamp(28px,2.76vw,53px)}
+}
+@media(min-width:768px) and (max-width:1023px){
+ .frequency-scene-title{left:8%;top:6%;width:84%}.frequency-scene-title h2{top:0;font-size:6.5vw}
+ .frequency-scene-intro{left:68%;top:29%;width:28%;margin:0}
+ .frequency-black .frequency-car,.frequency-white .white-snow{left:20%;top:43%;width:46%;margin:0}
+ .frequency-black .frequency-detail,.frequency-white .white-frequency-detail{left:68%;top:54%;width:28%;margin:0}
+ .frequency-detail h3,.white-frequency-detail h3{font-family:'NOISE Alexandria Story',sans-serif;font-size:26px;margin:14px 0 24px}
+}
