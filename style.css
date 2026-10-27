@@ -496,3 +496,19 @@
 .white-snow-crop .car-pixel-glints{opacity:.9}
 .white-snow-crop .car-pixel-glints i{width:2px;height:2px;background:#fff;box-shadow:0 0 2px #fff9}
 .white-snow-crop .car-pixel-glints i.is-near{background:#fff;opacity:1;box-shadow:0 0 3px #fff,0 0 5px #fffc}
+
+/* Scale snow highlights for desktop viewing distance. */
+@media(min-width:1024px){
+ .white-snow-crop .car-pixel-glints i{width:clamp(3px,.28vw,5px);height:clamp(3px,.28vw,5px);box-shadow:0 0 3px #fffc}
+ .white-snow-crop .car-pixel-glints i.is-near{box-shadow:0 0 5px #fff,0 0 9px #fffc}
+}
+
+/* Crop in the source image plane before rotation, not in the viewport. */
+.collection-package-part,.collection-bottle-part{inset:auto;left:50%;top:50%;width:min(100%,117.33svh);height:auto;aspect-ratio:4/3;translate:-50% -50%}
+.collection-product-layer img{object-fit:fill}
+.collection-package-part img{clip-path:inset(0 0 0 51%)}
+.collection-bottle-part img{clip-path:inset(0 49.3% 0 0)}
+.collection-white-object .collection-package-part{clip-path:inset(var(--package-swap,0%) 0 0)}
+.collection-white-object .collection-bottle-part{clip-path:inset(var(--bottle-swap,0%) 0 0)}
+.collection-black-object .collection-package-part{clip-path:inset(0 0 calc(100% - var(--package-swap,0%)))}
+.collection-black-object .collection-bottle-part{clip-path:inset(0 0 calc(100% - var(--bottle-swap,0%)))}
