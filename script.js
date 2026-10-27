@@ -412,3 +412,15 @@ if(typeof window!=='undefined'){
   function schedule(){if(!frame)frame=requestAnimationFrame(render);}window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);reduced.addEventListener('change',schedule);render();
  });
 }
+
+// A brief paper impulse runs only for the card being brushed.
+if(typeof window!=='undefined'){
+ const reduce=matchMedia('(prefers-reduced-motion: reduce)');
+ document.querySelectorAll('.scent-card .flip-card').forEach(button=>{
+  let x=0,y=0,vx=0,vy=0,frame=0,last=0,px=0,py=0,time=0;
+  const clamp=(v,max)=>Math.max(-max,Math.min(max,v));
+  function tick(now){const dt=Math.min(2,(now-last)/16.667||1);last=now;vx=(vx-x*.085*dt)*Math.pow(.78,dt);vy=(vy-y*.085*dt)*Math.pow(.78,dt);x=clamp(x+vx*dt,22);y=clamp(y+vy*dt,15);button.style.setProperty('--brush-x',x+'px');button.style.setProperty('--brush-y',y+'px');if(Math.abs(x)+Math.abs(y)+Math.abs(vx)+Math.abs(vy)>.12)frame=requestAnimationFrame(tick);else{frame=0;last=0;button.style.setProperty('--brush-x','0px');button.style.setProperty('--brush-y','0px');}}
+  button.addEventListener('pointerenter',event=>{px=event.clientX;py=event.clientY;time=event.timeStamp;});
+  button.addEventListener('pointermove',event=>{if(event.pointerType!=='mouse'||reduce.matches)return;const dt=Math.max(8,event.timeStamp-time),dx=event.clientX-px,dy=event.clientY-py;px=event.clientX;py=event.clientY;time=event.timeStamp;if(Math.hypot(dx,dy)/dt<.25)return;vx=clamp(vx+dx*.16,8);vy=clamp(vy+dy*.16,6);if(!frame)frame=requestAnimationFrame(tick);});
+ });
+}

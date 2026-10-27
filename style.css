@@ -668,3 +668,6 @@
 .frequency-target{opacity:1}
 @media(hover:hover) and (pointer:fine){.frequency-black:has(.frequency-car-link:hover) .frequency-target,.frequency-white:has(.white-snow a:hover) .frequency-target{--target-size:10px;--target-half:5px;opacity:1}}
 .frequency-black:has(.frequency-car-link:focus-visible) .frequency-target,.frequency-white:has(.white-snow a:focus-visible) .frequency-target{--target-size:10px;--target-half:5px;opacity:1}
+
+.scent-board .flip-card.note-toggle{translate:var(--brush-x,0px) var(--brush-y,0px)}
+@media(prefers-reduced-motion:reduce){.scent-board .flip-card.note-toggle{translate:none!important}}
