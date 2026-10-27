@@ -519,3 +519,10 @@
  .frequency-black .car-pixel-glints i,.white-snow-crop .car-pixel-glints i{width:clamp(4px,.42vw,8px);height:clamp(4px,.42vw,8px);background:#fff;box-shadow:0 0 4px #fff,0 0 8px #fff9}
  .frequency-black .car-pixel-glints i.is-near,.white-snow-crop .car-pixel-glints i.is-near{opacity:1;box-shadow:0 0 6px #fff,0 0 12px #fffd,0 0 18px #fff6}
 }
+
+/* Editorial copy resolves as it rises; hover scale is separate from scroll zoom. */
+.frequency-black .frequency-detail{filter:blur(var(--detail-blur,0px));translate:0 var(--detail-rise,0px);will-change:auto}
+.frequency-car-link{scale:1;transition:scale 650ms cubic-bezier(.2,.7,.2,1);transform-origin:center;display:block}
+@media(hover:hover) and (pointer:fine){.frequency-car-link:hover{scale:1.035}}
+.frequency-car-link:focus-visible{scale:1.035}
+@media(prefers-reduced-motion:reduce){.frequency-black .frequency-detail{filter:none;translate:none}.frequency-car-link{transition:none;scale:1!important}}

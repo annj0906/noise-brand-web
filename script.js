@@ -331,6 +331,7 @@ frequency.classList.remove('has-fixed-landing');
   const settle=reduced.matches?1:smooth(fp/.5),crop=product.querySelector('.frequency-car-crop'),figure=product.querySelector('.frequency-car').getBoundingClientRect(),centerX=figure.left+figure.width/2,centerY=figure.top+figure.width*589/824/2;
   crop.style.transform='translate('+((innerWidth/2-centerX)*(1-settle))+'px,'+((innerHeight/2-centerY)*(1-settle))+'px) scale('+(1+Math.pow(1-settle,2)*7)+')';
   product.style.setProperty('--car-settle',String(smooth((settle-.78)/.22)));
+  const detailReveal=reduced.matches?1:smooth((fp-.32)/.2);product.style.setProperty('--detail-blur',((1-detailReveal)*9)+'px');product.style.setProperty('--detail-rise',((1-detailReveal)*30)+'px');
   const white=document.querySelector('.frequency-white'),whiteReveal=reduced.matches?1:smooth((fp-.67)/.3);white.style.opacity=String(whiteReveal);white.style.pointerEvents=whiteReveal>.5?'auto':'none';white.classList.toggle('is-sequence-pinned',!reduced.matches&&fb.bottom>innerHeight&&fb.top<=0);
   product.style.setProperty('--black-leave',String(1-whiteReveal));product.classList.toggle('is-white-handoff',whiteReveal>.01);
 
