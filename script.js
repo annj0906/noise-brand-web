@@ -306,9 +306,6 @@ if(typeof window!=='undefined'){
   stage.style.setProperty('--package-swap',(clamp((p-.52)/.1)*124-12)+'%');
   stage.style.setProperty('--bottle-swap',(clamp((p-.52)/.1)*124-12)+'%');
   const transition=clamp((p-.52)/.1);stage.classList.toggle('swap-white-only',transition===0);stage.classList.toggle('swap-black-only',transition===1);const edge=transition>0&&transition<1?6*Math.sin(Math.PI*transition):0;stage.style.setProperty('--swap-soft-blur',edge+'px');
-  // Reframe the end pose around the package, independent of viewport aspect ratio.
-  const planeWidth=Math.min(object.clientWidth,innerHeight*1.1733),planeHeight=planeWidth*.75,packageCenterX=object.offsetLeft+object.clientWidth*.5+planeWidth*.195,packageCenterY=object.offsetTop+object.clientHeight*.5-planeHeight*.105+innerHeight*.39,reframe=smooth((p-.55)/.4);
-  stage.style.setProperty('--product-reframe-x',((innerWidth*.5-packageCenterX)*reframe)+'px');stage.style.setProperty('--product-reframe-y',((innerHeight*.55-packageCenterY)*reframe)+'px');
   stage.style.setProperty('--collection-travel','0px');stage.classList.toggle('depth-active',b.top<innerHeight&&b.bottom>0);
  }
  function schedule(){if(!frame)frame=requestAnimationFrame(draw);}

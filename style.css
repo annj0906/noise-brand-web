@@ -678,6 +678,3 @@
 .collection-product-layer{contain:layout style}
 .collection-view{will-change:transform}
 
-/* Center the package in the final scene across wide and narrow viewports. */
-.collection-product-layer{translate:var(--product-reframe-x,0px) var(--product-reframe-y,0px)}
-@media(prefers-reduced-motion:reduce){.collection-product-layer{translate:none}}
