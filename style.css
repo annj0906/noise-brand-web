@@ -452,3 +452,7 @@
 .collection-object{inset:-7% 8% auto;width:84%;height:88%}
 @media(min-width:768px){.collection-object{inset:-7% 10% auto;width:80%;height:88%}}
 @media(prefers-reduced-motion:reduce){.collection-showcase{height:180svh;padding-bottom:0}}
+
+/* Lower the pause composition while preserving room for the package descent. */
+.collection-object{top:0%}
+@media(min-width:768px){.collection-object{top:0%}}
