@@ -622,3 +622,18 @@
 .header.on-dark{color:#f5f5f5;background:rgba(16,16,16,.58);border-bottom-color:rgba(245,245,245,.1)}
 .header.on-dark .wordmark,.header.on-dark nav a,.header.on-dark .menu-toggle{color:#f5f5f5}
 .header.on-dark #navigation.open{background:rgba(16,16,16,.9);color:#f5f5f5}
+
+/* Feather the moving colour boundary instead of slicing the product. */
+.collection-white-object .collection-package-part,.collection-white-object .collection-bottle-part,.collection-black-object .collection-package-part,.collection-black-object .collection-bottle-part{clip-path:none;mask-repeat:no-repeat;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;-webkit-mask-size:100% 100%}
+.collection-white-object .collection-package-part{mask-image:linear-gradient(to bottom,transparent calc(var(--package-swap,0%) - 9%),#000 calc(var(--package-swap,0%) + 9%));-webkit-mask-image:linear-gradient(to bottom,transparent calc(var(--package-swap,0%) - 9%),#000 calc(var(--package-swap,0%) + 9%))}
+.collection-white-object .collection-bottle-part{mask-image:linear-gradient(to bottom,transparent calc(var(--bottle-swap,0%) - 9%),#000 calc(var(--bottle-swap,0%) + 9%));-webkit-mask-image:linear-gradient(to bottom,transparent calc(var(--bottle-swap,0%) - 9%),#000 calc(var(--bottle-swap,0%) + 9%))}
+.collection-black-object .collection-package-part{mask-image:linear-gradient(to bottom,#000 calc(var(--package-swap,0%) - 9%),transparent calc(var(--package-swap,0%) + 9%));-webkit-mask-image:linear-gradient(to bottom,#000 calc(var(--package-swap,0%) - 9%),transparent calc(var(--package-swap,0%) + 9%))}
+.collection-black-object .collection-bottle-part{mask-image:linear-gradient(to bottom,#000 calc(var(--bottle-swap,0%) - 9%),transparent calc(var(--bottle-swap,0%) + 9%));-webkit-mask-image:linear-gradient(to bottom,#000 calc(var(--bottle-swap,0%) - 9%),transparent calc(var(--bottle-swap,0%) + 9%))}
+.collection-product-layer img{filter:blur(var(--swap-soft-blur,0px))}
+
+.scroll-typed{display:inline-block;white-space:pre;vertical-align:baseline;min-height:1em;max-width:none;flex-shrink:0}
+
+/* Longer reading distance before each philosophy zoom. */
+.temperature-scroll{height:650svh}
+.sense-scroll{height:580svh}
+@media(prefers-reduced-motion:reduce){.temperature-scroll,.sense-scroll{height:auto}}
