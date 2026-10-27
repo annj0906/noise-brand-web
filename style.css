@@ -769,3 +769,28 @@
 @media(min-width:768px){#top .hero-line{grid-template-columns:90px 1fr;column-gap:16px}}
 @media(min-width:1440px){#top .hero-line{grid-template-columns:10% 1fr auto;column-gap:24px}}
 @media(max-width:767px){.hero-ascii-lemon{width:82vw;height:82vw}}
+
+/* User-supplied photographic accents and Alexandria Regular story headings. */
+@font-face{font-family:'NOISE Alexandria Story';src:url('Alexandria-Variable.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+.temperature-heading h2,.sense-content h2{font-family:'NOISE Alexandria Story',sans-serif;font-weight:400;font-size:clamp(32px,5.325vw,96px);line-height:1.1;letter-spacing:-.025em}
+.temperature-heading .temp-fragment{width:.86em;height:.86em;object-fit:contain;margin-left:-.95em;margin-right:.06em}
+.temperature-heading .temp-inline{width:.86em;height:.86em;object-fit:contain}
+.temperature-heading .temp-strip{width:.7em;height:.7em;object-fit:contain;margin-right:-.8em}
+.temperature-enter{width:.7em;height:.7em;display:inline-flex;align-items:center;justify-content:center;overflow:visible}
+.sense-content .sense-fig{width:.62em;height:.8em;flex:none}
+.sense-content .sense-car{width:1.25em;height:.8em;flex:none}
+.sense-content .sense-moon{width:.62em;height:.62em;flex:none}
+.sense-content .sense-fig img,.sense-content .sense-car img,.sense-content .sense-moon{object-fit:contain}
+.sense-content .sense-copy{white-space:normal;max-width:1100px;width:94vw;margin-left:50%;translate:-50% 0;font-size:clamp(14px,1.18vw,22px)}
+@media(max-width:767px){.temperature-heading h2{font-size:clamp(28px,7vw,48px)}.sense-content h2{font-size:clamp(24px,6.3vw,44px)}.temperature-heading .temp-fragment{margin-left:0}.temperature-heading .temp-strip{margin-right:0}.sense-content .sense-copy{width:88vw}}
+
+/* Inline art reserves real space; no old negative margins or flex compression. */
+.temperature-heading h2>.temperature-line,.sense-content h2>.sense-line{display:flex;align-items:center;justify-content:center;gap:.16em;width:max-content;max-width:none;margin-inline:auto}
+.temperature-heading .temperature-word,.sense-content .sense-text{flex:0 0 auto;min-width:0}
+.temperature-heading .temp-fragment,.temperature-heading .temp-inline,.temperature-heading .temp-strip{position:static;margin:0;flex:0 0 auto;object-fit:contain;transform:none}
+.temperature-heading .temperature-enter{flex:0 0 .7em;width:.7em;min-width:.7em;height:.7em;margin:0}
+.temperature-heading .temp-fragment{width:.86em;height:.86em}.temperature-heading .temp-inline{width:.86em;height:.86em}.temperature-heading .temp-strip{width:.7em;height:.7em}
+.sense-content .sense-car,.sense-content .sense-fig,.sense-content .sense-moon{position:static;margin:0;transform:none;flex-shrink:0;opacity:1}
+.sense-content .sense-car{flex-basis:1.25em}.sense-content .sense-fig{flex-basis:.62em}.sense-content .sense-moon{flex-basis:.62em}
+.temperature-heading h2,.sense-content h2{font-size:clamp(28px,4.9vw,96px)}
+@media(max-width:767px){.temperature-heading h2{font-size:6.5vw}.sense-content h2{font-size:5.8vw}}
