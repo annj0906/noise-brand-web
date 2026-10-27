@@ -794,3 +794,18 @@
 .sense-content .sense-car{flex-basis:1.25em}.sense-content .sense-fig{flex-basis:.62em}.sense-content .sense-moon{flex-basis:.62em}
 .temperature-heading h2,.sense-content h2{font-size:clamp(28px,4.9vw,96px)}
 @media(max-width:767px){.temperature-heading h2{font-size:6.5vw}.sense-content h2{font-size:5.8vw}}
+
+/* Frequencies: Figma 3:42 / 3:1359 typography and text alignment. */
+.frequency-scene-title h2{font-family:'NOISE Alexandria Story',sans-serif;font-weight:400;letter-spacing:-.025em;line-height:1.2}
+@media(min-width:1024px){
+ .frequency-scene-title{left:43.89%;top:12%;width:54%;}
+ .frequency-scene-title>.label{font:400 clamp(14px,.834vw,16px)/1.2 var(--font-label);margin-bottom:clamp(28px,2.6vw,50px)}
+ .frequency-scene-title h2{font-size:clamp(56px,6.667vw,128px);white-space:nowrap}
+ .frequency-scene-intro{left:83.15%;top:47%;width:14%;max-width:none;font:400 clamp(14px,.834vw,16px)/1.4 var(--font-ui)}
+ .frequency-detail,.white-frequency-detail{left:43.89%;top:55%;width:30%}
+ .frequency-detail h3,.white-frequency-detail h3{font:400 clamp(24px,1.875vw,36px)/1.2 var(--font-label);letter-spacing:-.025em;margin:clamp(34px,4vw,76px) 0 clamp(20px,1.56vw,30px)}
+ .frequency-detail>p.label,.white-frequency-detail>p.label{font-size:clamp(14px,.834vw,16px)}
+ .frequency-detail .frequency-description,.white-frequency-detail>p:not(.label){font:400 clamp(14px,.834vw,16px)/1.4 var(--font-ui)}
+ .frequency-detail>a,.white-frequency-detail>a{font-size:clamp(18px,1.25vw,24px);margin-top:clamp(28px,2.76vw,53px)}
+}
+@media(max-width:1023px){.frequency-scene-title h2{font-size:clamp(28px,5.7vw,58px)}}
