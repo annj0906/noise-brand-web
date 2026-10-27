@@ -541,3 +541,18 @@
 .frequency-black .frequency-car figcaption,.frequency-white .white-snow figcaption{filter:blur(7px);translate:0 4px;transition:opacity 420ms ease,filter 520ms ease,translate 520ms ease,visibility 0s 420ms;animation:none!important}
 .frequency-black .frequency-car.identity-locked figcaption,.frequency-white .white-snow.identity-locked figcaption,.frequency-car:focus-within figcaption,.white-snow:focus-within figcaption{filter:blur(0);translate:0 0;text-shadow:none;transition-delay:0s;animation:none!important}
 @media(prefers-reduced-motion:reduce){.frequency-car figcaption,.white-snow figcaption{transition:none!important;filter:none!important;translate:none!important}}
+
+/* Product focus softens both editorial layers together. */
+.frequency-black .frequency-detail,.frequency-white .white-frequency-detail{transition:filter 450ms ease}
+@media(hover:hover) and (pointer:fine){
+ .frequency-black:has(.frequency-car-link:hover) .frequency-detail,.frequency-white:has(.white-snow a:hover) .white-frequency-detail{filter:blur(4px)}
+}
+.frequency-black:has(.frequency-car-link:focus-visible) .frequency-detail,.frequency-white:has(.white-snow a:focus-visible) .white-frequency-detail{filter:blur(4px)}
+@media(prefers-reduced-motion:reduce){.frequency-black .frequency-detail,.frequency-white .white-frequency-detail{transition:none}}
+
+/* Copy starts its own reveal only after the car completes its pullback. */
+.frequency-black .frequency-detail{opacity:0;filter:blur(9px);translate:0 30px;transition:opacity 650ms ease,filter 800ms ease,translate 800ms cubic-bezier(.2,.7,.2,1);pointer-events:none}
+.frequency-black.car-arrived .frequency-detail{opacity:1;filter:blur(0);translate:0 0;pointer-events:auto}
+@media(hover:hover) and (pointer:fine){.frequency-black.car-arrived:has(.frequency-car-link:hover) .frequency-detail{filter:blur(4px)}}
+.frequency-black.car-arrived:has(.frequency-car-link:focus-visible) .frequency-detail{filter:blur(4px)}
+@media(prefers-reduced-motion:reduce){.frequency-black .frequency-detail{opacity:1;filter:none;translate:none;transition:none;pointer-events:auto}}
