@@ -456,3 +456,43 @@
 /* Lower the pause composition while preserving room for the package descent. */
 .collection-object{top:0%}
 @media(min-width:768px){.collection-object{top:0%}}
+
+/* Tiny independent points on existing bright pixels, no full-image filter. */
+.frequency-car-crop{position:relative}
+.car-pixel-glints{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.car-pixel-glints i{position:absolute;width:2px;height:2px;background:#fff;opacity:0;animation:car-pixel-glint var(--glint-duration,4s) linear infinite;animation-play-state:paused}
+.frequency-black.is-sequence-pinned:not(.is-white-handoff) .car-pixel-glints i{animation-play-state:running}
+@keyframes car-pixel-glint{0%,54%,65%,100%{opacity:0}57%{opacity:.75}60%{opacity:.15}62%{opacity:.9}}
+@media(prefers-reduced-motion:reduce){.car-pixel-glints{display:none}}
+
+/* Stronger sparse sparkle, with a local pointer attraction field. */
+.car-pixel-glints i{width:3px;height:3px;box-shadow:0 0 3px #fff;transform:translate(var(--pull-x,0px),var(--pull-y,0px));transition:transform 260ms ease-out,box-shadow 200ms}
+@keyframes car-pixel-glint{0%,35%,66%,100%{opacity:.06}40%{opacity:1}46%{opacity:.2}54%{opacity:.95}60%{opacity:.3}}
+.car-pixel-glints i.is-near{animation:none;opacity:1;background:#fff;box-shadow:0 0 5px #fff,0 0 9px #fff8}
+
+/* Product graphics drift gently; the scroll zoom stays on the outer crop. */
+.frequency-black .frequency-car-crop>img,.frequency-black .car-pixel-glints{animation:frequency-car-float 8s ease-in-out infinite;animation-play-state:paused;transform-origin:50% 55%}
+.frequency-black.is-sequence-pinned:not(.is-white-handoff) .frequency-car-crop>img,.frequency-black.is-sequence-pinned:not(.is-white-handoff) .car-pixel-glints{animation-play-state:running}
+.white-snow-crop>img{animation:frequency-snow-float 10s ease-in-out infinite;animation-play-state:paused;transform-origin:center}
+.frequency-white.is-sequence-pinned .white-snow-crop>img{animation-play-state:running}
+@keyframes frequency-car-float{0%,100%{transform:translate3d(0,0,0) rotate(-.35deg)}50%{transform:translate3d(3px,-7px,0) rotate(.35deg)}}
+@keyframes frequency-snow-float{0%,100%{transform:translate3d(0,2px,0) rotate(-1deg)}50%{transform:translate3d(-4px,-7px,0) rotate(1deg)}}
+@media(prefers-reduced-motion:reduce){.frequency-black .frequency-car-crop>img,.frequency-black .car-pixel-glints,.white-snow-crop>img{animation:none!important;transform:none}}
+
+/* Snow uses dark highlights so individual pixels stay visible on white. */
+.white-snow-crop{position:relative}
+.white-snow-crop .car-pixel-glints{animation:frequency-snow-float 10s ease-in-out infinite;animation-play-state:paused;transform-origin:center}
+.frequency-white.is-sequence-pinned .car-pixel-glints,.frequency-white.is-sequence-pinned .car-pixel-glints i{animation-play-state:running}
+.white-snow-crop .car-pixel-glints i{background:#101010;box-shadow:0 0 2px #10101088}
+.white-snow-crop .car-pixel-glints i.is-near{background:#000;box-shadow:0 0 4px #10101099,0 0 7px #10101044}
+@media(prefers-reduced-motion:reduce){.white-snow-crop .car-pixel-glints{animation:none!important;display:none}}
+
+/* Keep snow glints close to the original grey print texture. */
+.white-snow-crop .car-pixel-glints{opacity:.36}
+.white-snow-crop .car-pixel-glints i{width:2px;height:2px;background:#777;box-shadow:none}
+.white-snow-crop .car-pixel-glints i.is-near{background:#666;opacity:.65;box-shadow:none}
+
+/* Bright silver glints on the white collection graphic. */
+.white-snow-crop .car-pixel-glints{opacity:.9}
+.white-snow-crop .car-pixel-glints i{width:2px;height:2px;background:#fff;box-shadow:0 0 2px #fff9}
+.white-snow-crop .car-pixel-glints i.is-near{background:#fff;opacity:1;box-shadow:0 0 3px #fff,0 0 5px #fffc}

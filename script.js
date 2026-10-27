@@ -393,3 +393,51 @@ if(typeof window!=='undefined'){
  object.addEventListener('click',()=>{reveal();details.scrollIntoView({behavior:reduce.matches?'instant':'smooth',block:'start'});});
  document.querySelectorAll('[data-filter-link]').forEach(link=>link.addEventListener('click',()=>{reveal();requestAnimationFrame(()=>details.scrollIntoView({behavior:reduce.matches?'instant':'smooth',block:'start'}));}));
 }
+
+// Sparse highlights sampled from the supplied car, rather than flashing the image.
+if(typeof window!=='undefined'){
+ const crop=document.querySelector('.frequency-black .frequency-car-crop'),image=crop?.querySelector('img'),reduce=matchMedia('(prefers-reduced-motion: reduce)');
+ if(crop&&image&&!reduce.matches){
+  function build(){
+   if(crop.querySelector('.car-pixel-glints'))return;
+   const canvas=document.createElement('canvas');canvas.width=240;canvas.height=172;
+   const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(image,0,0,240,172);
+   let data;try{data=ctx.getImageData(0,0,240,172).data;}catch{return;}
+   const candidates=[];for(let y=12;y<160;y+=3)for(let x=8;x<232;x+=3){const i=(y*240+x)*4;if(data[i+3]>200&&data[i]>115&&data[i+1]>115)candidates.push([x,y]);}
+   const layer=document.createElement('span');layer.className='car-pixel-glints';layer.setAttribute('aria-hidden','true');
+   for(let n=0;n<64&&candidates.length;n++){const index=Math.floor((n+.37)*candidates.length/64),point=candidates[Math.min(index,candidates.length-1)],dot=document.createElement('i');dot.dataset.x=String(point[0]/240);dot.dataset.y=String(point[1]/172);dot.style.left=(point[0]/240*100)+'%';dot.style.top=(point[1]/172*100)+'%';dot.style.setProperty('--glint-duration',(2.7+(n%7)*.43)+'s');dot.style.animationDelay=(-n*.57)+'s';layer.append(dot);}
+   crop.append(layer);
+   let pointerFrame=0,px=0,py=0;
+   function attract(){pointerFrame=0;const b=crop.getBoundingClientRect(),scale=b.width/Math.max(1,crop.offsetWidth),x=(px-b.left)/scale,y=(py-b.top)/scale,radius=Math.min(150,crop.offsetWidth*.3);
+    layer.querySelectorAll('i').forEach(dot=>{const dx=x-Number(dot.dataset.x)*crop.offsetWidth,dy=y-Number(dot.dataset.y)*crop.offsetHeight,distance=Math.hypot(dx,dy),strength=Math.max(0,1-distance/radius);dot.classList.toggle('is-near',strength>0);dot.style.setProperty('--pull-x',(dx*strength*.15)+'px');dot.style.setProperty('--pull-y',(dy*strength*.15)+'px');});
+   }
+   crop.addEventListener('pointermove',event=>{if(event.pointerType!=='mouse')return;px=event.clientX;py=event.clientY;if(!pointerFrame)pointerFrame=requestAnimationFrame(attract);});
+   crop.addEventListener('pointerleave',()=>{cancelAnimationFrame(pointerFrame);pointerFrame=0;layer.querySelectorAll('i').forEach(dot=>{dot.classList.remove('is-near');dot.style.setProperty('--pull-x','0px');dot.style.setProperty('--pull-y','0px');});});
+  }
+  if(image.complete&&image.naturalWidth)build();else image.addEventListener('load',build,{once:true});
+ }
+}
+
+// Matching local dark-pixel glints for the snow graphic on white.
+if(typeof window!=='undefined'){
+ const crop=document.querySelector('.white-snow-crop'),image=crop?.querySelector('img'),reduce=matchMedia('(prefers-reduced-motion: reduce)');
+ if(crop&&image&&!reduce.matches){
+  function build(){
+   if(crop.querySelector('.car-pixel-glints'))return;
+   const canvas=document.createElement('canvas');canvas.width=240;canvas.height=172;
+   const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(image,0,0,240,172);
+   let data;try{data=ctx.getImageData(0,0,240,172).data;}catch{return;}
+   const candidates=[];for(let y=12;y<160;y+=3)for(let x=8;x<232;x+=3){const i=(y*240+x)*4;if(data[i+3]>200&&data[i]<150&&data[i+1]<150)candidates.push([x,y]);}
+   const layer=document.createElement('span');layer.className='car-pixel-glints';layer.setAttribute('aria-hidden','true');
+   for(let n=0;n<64&&candidates.length;n++){const index=Math.floor((n+.37)*candidates.length/64),point=candidates[Math.min(index,candidates.length-1)],dot=document.createElement('i');dot.dataset.x=String(point[0]/240);dot.dataset.y=String(point[1]/172);dot.style.left=(point[0]/240*100)+'%';dot.style.top=(point[1]/172*100)+'%';dot.style.setProperty('--glint-duration',(2.7+(n%7)*.43)+'s');dot.style.animationDelay=(-n*.57)+'s';layer.append(dot);}
+   crop.append(layer);
+   let pointerFrame=0,px=0,py=0;
+   function attract(){pointerFrame=0;const b=crop.getBoundingClientRect(),scale=b.width/Math.max(1,crop.offsetWidth),x=(px-b.left)/scale,y=(py-b.top)/scale,radius=Math.min(150,crop.offsetWidth*.3);
+    layer.querySelectorAll('i').forEach(dot=>{const dx=x-Number(dot.dataset.x)*crop.offsetWidth,dy=y-Number(dot.dataset.y)*crop.offsetHeight,distance=Math.hypot(dx,dy),strength=Math.max(0,1-distance/radius);dot.classList.toggle('is-near',strength>0);dot.style.setProperty('--pull-x',(dx*strength*.15)+'px');dot.style.setProperty('--pull-y',(dy*strength*.15)+'px');});
+   }
+   crop.addEventListener('pointermove',event=>{if(event.pointerType!=='mouse')return;px=event.clientX;py=event.clientY;if(!pointerFrame)pointerFrame=requestAnimationFrame(attract);});
+   crop.addEventListener('pointerleave',()=>{cancelAnimationFrame(pointerFrame);pointerFrame=0;layer.querySelectorAll('i').forEach(dot=>{dot.classList.remove('is-near');dot.style.setProperty('--pull-x','0px');dot.style.setProperty('--pull-y','0px');});});
+  }
+  if(image.complete&&image.naturalWidth)build();else image.addEventListener('load',build,{once:true});
+ }
+}
