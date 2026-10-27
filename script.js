@@ -374,7 +374,17 @@ if(typeof window!=='undefined'){
 // The collection swaps products in the same frame; the catalogue opens in place.
 if(typeof window!=='undefined'){
  const region=document.querySelector('.collection-showcase'),stage=document.querySelector('.collection-stage'),object=document.querySelector('.collection-object'),details=document.querySelector('#collection-details'),reduce=matchMedia('(prefers-reduced-motion: reduce)');let frame=0;
- function draw(){frame=0;const b=region.getBoundingClientRect(),p=Math.max(0,Math.min(1,-b.top/Math.max(1,region.offsetHeight-innerHeight))),t=Math.max(0,Math.min(1,(p-.52)/.4));const ease=n=>{const x=Math.max(0,Math.min(1,n));return 1-Math.pow(1-x,2);};const packageProgress=reduce.matches?1:ease(p/.96),bottleProgress=reduce.matches?1:ease((p-.06)/.94);stage.style.setProperty('--package-y',((1-packageProgress)*-110)+'svh');stage.style.setProperty('--bottle-y',((1-bottleProgress)*-130)+'svh');stage.style.setProperty('--collection-travel','0px');stage.style.setProperty('--swap',(t*100)+'%');stage.classList.toggle('depth-active',b.top<innerHeight&&b.bottom>0);}
+ function draw(){
+  frame=0;const b=region.getBoundingClientRect(),p=Math.max(0,Math.min(1,-b.top/Math.max(1,region.offsetHeight-innerHeight)));
+  const clamp=n=>Math.max(0,Math.min(1,n)),ease=n=>1-Math.pow(1-clamp(n),3),smooth=n=>{const t=clamp(n);return t*t*(3-2*t);};
+  const packageEntry=reduce.matches?1:ease(p/.25),bottleEntry=reduce.matches?1:ease((p-.1)/.3);
+  const bottleTravel=reduce.matches?0:smooth((p-.4)/.55)*12,packageTravel=reduce.matches?0:smooth((p-.5)/.48)*8;
+  stage.style.setProperty('--package-y',((1-packageEntry)*-110+packageTravel)+'svh');
+  stage.style.setProperty('--bottle-y',((1-bottleEntry)*-130+bottleTravel)+'svh');
+  stage.style.setProperty('--package-swap',(clamp((p-.59)/.32)*100)+'%');
+  stage.style.setProperty('--bottle-swap',(clamp((p-.48)/.34)*100)+'%');
+  stage.style.setProperty('--collection-travel','0px');stage.classList.toggle('depth-active',b.top<innerHeight&&b.bottom>0);
+ }
  function schedule(){if(!frame)frame=requestAnimationFrame(draw);}
  window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);draw();
  object.addEventListener('pointermove',event=>{if(event.pointerType!=='mouse'||reduce.matches)return;const b=object.getBoundingClientRect(),x=event.clientX-b.left,y=event.clientY-b.top,u=x/b.width,v=y/b.height,over=u>.24&&u<.88&&v>.08&&v<.9;object.classList.toggle('is-following',over);object.style.setProperty('--view-x',Math.min(b.width-155,x+22)+'px');object.style.setProperty('--view-y',Math.min(b.height-44,y+20)+'px');});

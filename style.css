@@ -435,3 +435,10 @@
 .collection-package-part{transform:translate3d(0,calc(var(--package-y) + var(--collection-travel,0px)),0)}
 .collection-bottle-part{transform:translate3d(0,calc(var(--bottle-y) + var(--collection-travel,0px)*1.18),0)}
 @media(prefers-reduced-motion:reduce){.collection-showcase{height:180svh}.collection-package-part,.collection-bottle-part{transform:none}}
+
+/* Separate depth and reveal timing: bottle leads the dark transition. */
+.collection-white-object,.collection-black-object{clip-path:none}
+.collection-white-object .collection-package-part{clip-path:inset(var(--package-swap,0%) 0 0 50.5%)}
+.collection-white-object .collection-bottle-part{clip-path:inset(var(--bottle-swap,0%) 49.5% 0 0)}
+.collection-black-object .collection-package-part{clip-path:inset(0 0 calc(100% - var(--package-swap,0%)) 50.5%)}
+.collection-black-object .collection-bottle-part{clip-path:inset(0 49.5% calc(100% - var(--bottle-swap,0%)) 0)}
