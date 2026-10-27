@@ -671,3 +671,13 @@
 
 .scent-board .flip-card.note-toggle{translate:var(--brush-x,0px) var(--brush-y,0px)}
 @media(prefers-reduced-motion:reduce){.scent-board .flip-card.note-toggle{translate:none!important}}
+
+/* Outside the brief colour swap, render only the visible product pair. */
+.collection-stage.swap-white-only .collection-black-object,.collection-stage.swap-black-only .collection-white-object{visibility:hidden}
+.collection-stage.swap-white-only .collection-white-object>span,.collection-stage.swap-black-only .collection-black-object>span{mask-image:none;-webkit-mask-image:none}
+.collection-product-layer{contain:layout style}
+.collection-view{will-change:transform}
+
+/* Center the package in the final scene across wide and narrow viewports. */
+.collection-product-layer{translate:var(--product-reframe-x,0px) var(--product-reframe-y,0px)}
+@media(prefers-reduced-motion:reduce){.collection-product-layer{translate:none}}

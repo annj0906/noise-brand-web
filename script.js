@@ -238,7 +238,7 @@ if(typeof window!=='undefined'){
 if(typeof window!=='undefined'){
  const region=document.querySelector('.sense-scroll'),scene=document.querySelector('.sense-black'),world=document.querySelector('.sense-world'),frequency=document.querySelector('#frequencies'),product=document.querySelector('.frequency-black'),reduced=matchMedia('(prefers-reduced-motion: reduce)');
  let frame=0;const clamp=n=>Math.max(0,Math.min(1,n)),smooth=n=>{const t=clamp(n);return t*t*(3-2*t);};
- function render(){frame=0;const vh=innerHeight,b=region.getBoundingClientRect(),p=clamp(-b.top/Math.max(1,region.offsetHeight-scene.offsetHeight));
+ function render(){frame=0;const vh=innerHeight,b=region.getBoundingClientRect();if(b.bottom<0&&frequency.getBoundingClientRect().bottom<0){product.classList.remove('is-sequence-pinned');document.querySelector('.frequency-white').classList.remove('is-sequence-pinned');return;}const p=clamp(-b.top/Math.max(1,region.offsetHeight-scene.offsetHeight));
   const travel=smooth((p-.06)/.4),note=world.querySelector('.sense-footnote');note.style.transform='translateX('+(-travel*innerWidth*.75)+'px)';note.style.opacity=String(1-travel);
   const objects=[['.sense-cross',18,-62,8],['.sense-red',-12,32,-7],['.sense-asterisk',-25,-42,-12],['.sense-star',20,-95,14],['.sense-spark',-16,48,9],['.sense-ring',25,-56,-10]];
   objects.forEach(([selector,x,y,r])=>{const el=world.querySelector(selector),d=reduced.matches?0:clamp(p/.7);el.style.setProperty('--depth-x',(x*d)+'px');el.style.setProperty('--depth-y',(y*d)+'px');el.style.setProperty('--depth-turn',(r*d)+'deg');});
@@ -305,7 +305,10 @@ if(typeof window!=='undefined'){
   stage.style.setProperty('--bottle-y',((1-bottleEntry)*-130+bottleTravel)+'svh');
   stage.style.setProperty('--package-swap',(clamp((p-.52)/.1)*124-12)+'%');
   stage.style.setProperty('--bottle-swap',(clamp((p-.52)/.1)*124-12)+'%');
-  const transition=clamp((p-.52)/.1),edge=transition>0&&transition<1?6*Math.sin(Math.PI*transition):0;stage.style.setProperty('--swap-soft-blur',edge+'px');
+  const transition=clamp((p-.52)/.1);stage.classList.toggle('swap-white-only',transition===0);stage.classList.toggle('swap-black-only',transition===1);const edge=transition>0&&transition<1?6*Math.sin(Math.PI*transition):0;stage.style.setProperty('--swap-soft-blur',edge+'px');
+  // Reframe the end pose around the package, independent of viewport aspect ratio.
+  const planeWidth=Math.min(object.clientWidth,innerHeight*1.1733),planeHeight=planeWidth*.75,packageCenterX=object.offsetLeft+object.clientWidth*.5+planeWidth*.195,packageCenterY=object.offsetTop+object.clientHeight*.5-planeHeight*.105+innerHeight*.39,reframe=smooth((p-.55)/.4);
+  stage.style.setProperty('--product-reframe-x',((innerWidth*.5-packageCenterX)*reframe)+'px');stage.style.setProperty('--product-reframe-y',((innerHeight*.55-packageCenterY)*reframe)+'px');
   stage.style.setProperty('--collection-travel','0px');stage.classList.toggle('depth-active',b.top<innerHeight&&b.bottom>0);
  }
  function schedule(){if(!frame)frame=requestAnimationFrame(draw);}
@@ -313,7 +316,7 @@ if(typeof window!=='undefined'){
  const follower=object.querySelector('.collection-view');stage.append(follower);let pointerX=innerWidth/2,pointerY=innerHeight/2,pointerKnown=false;
  function followView(){const b=stage.getBoundingClientRect(),inside=pointerKnown&&pointerX>=b.left&&pointerX<=b.right&&pointerY>=b.top&&pointerY<=b.bottom;stage.classList.toggle('view-follow-active',inside);if(!inside)return;follower.style.left=(pointerX-b.left+20)+'px';follower.style.top=(pointerY-b.top+20)+'px';}
  window.addEventListener('pointermove',event=>{if(event.pointerType!=='mouse')return;pointerX=event.clientX;pointerY=event.clientY;pointerKnown=true;followView();},{passive:true});
- window.addEventListener('scroll',followView,{passive:true});window.addEventListener('resize',followView);
+ let viewFrame=0;function scheduleView(){if(!viewFrame)viewFrame=requestAnimationFrame(()=>{viewFrame=0;followView();});}window.addEventListener('scroll',scheduleView,{passive:true});window.addEventListener('resize',scheduleView);
  function reveal(){details.hidden=false;object.setAttribute('aria-expanded','true');}
  object.addEventListener('click',()=>{reveal();details.scrollIntoView({behavior:reduce.matches?'instant':'smooth',block:'start'});});
  document.querySelectorAll('[data-filter-link]').forEach(link=>link.addEventListener('click',()=>{reveal();requestAnimationFrame(()=>details.scrollIntoView({behavior:reduce.matches?'instant':'smooth',block:'start'}));}));
