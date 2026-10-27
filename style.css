@@ -429,3 +429,9 @@
 @keyframes bottle-drift{0%,100%{transform:translate3d(0,3px,16px) rotateY(1.5deg) rotateZ(.35deg)}50%{transform:translate3d(-4px,-5px,26px) rotateY(-1.5deg) rotateZ(-.35deg)}}
 .collection-stage:not(.depth-active) .collection-product-layer img{animation-play-state:paused}
 @media(prefers-reduced-motion:reduce){.collection-product-layer img{animation:none!important;transform:none!important}}
+
+/* Longer descent and a broader product transition. */
+.collection-showcase{height:460svh}
+.collection-package-part{transform:translate3d(0,calc(var(--package-y) + var(--collection-travel,0px)),0)}
+.collection-bottle-part{transform:translate3d(0,calc(var(--bottle-y) + var(--collection-travel,0px)*1.18),0)}
+@media(prefers-reduced-motion:reduce){.collection-showcase{height:180svh}.collection-package-part,.collection-bottle-part{transform:none}}
