@@ -459,6 +459,6 @@ if(typeof window!=='undefined'){
    const sb=section.getBoundingClientRect(),depth=clamp((innerHeight*.5-sb.top)/Math.max(1,sb.height));scene.querySelectorAll('.final-object').forEach((el,i)=>{el.style.setProperty('--final-dx',((i%2?1:-1)*depth*(16+i*6))+'px');el.style.setProperty('--final-dy',(-depth*(45+i*24))+'px');el.style.setProperty('--final-dr',(depth*(i%2?10:-8))+'deg');});
   }
   function schedule(){if(!frame)frame=requestAnimationFrame(draw);}window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);reduce.addEventListener('change',schedule);draw();
-  stores.querySelectorAll('button').forEach(button=>button.addEventListener('click',()=>{stores.querySelector('.store-status').textContent=button.textContent.trim()+' · 매장 안내 준비 중';}));
+
  }
 }
