@@ -663,3 +663,8 @@
 .frequency-black:has(.frequency-car-link:focus-visible) .frequency-target,.frequency-white:has(.white-snow a:focus-visible) .frequency-target{--target-size:18px;--target-half:9px}
 .frequency-black:has(.frequency-car-link:focus-visible) .target-box,.frequency-white:has(.white-snow a:focus-visible) .target-box{background:currentColor;animation:none!important;box-shadow:none}
 @media(prefers-reduced-motion:reduce){.frequency-target .target-box,.target-h,.target-v{transition:none}}
+
+/* Smaller, fully opaque contact marker. */
+.frequency-target{opacity:1}
+@media(hover:hover) and (pointer:fine){.frequency-black:has(.frequency-car-link:hover) .frequency-target,.frequency-white:has(.white-snow a:hover) .frequency-target{--target-size:10px;--target-half:5px;opacity:1}}
+.frequency-black:has(.frequency-car-link:focus-visible) .frequency-target,.frequency-white:has(.white-snow a:focus-visible) .frequency-target{--target-size:10px;--target-half:5px;opacity:1}
