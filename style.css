@@ -961,3 +961,27 @@
 .sense-content .sense-fig img,.sense-content .sense-moon{filter:blur(var(--typing-art-blur,0px))}
 .sense-content .sense-car img{filter:blur(calc(var(--typing-art-blur,0px) + var(--car-photo-zoom-blur,0px)))}
 @media(prefers-reduced-motion:reduce){.temperature-heading img,.sense-content h2 img{filter:none!important;opacity:1!important}}
+
+/* Match the scents heading to the established Alexandria story titles. */
+#collection-details .collection-heading h2{font-family:'NOISE Alexandria Story',sans-serif;font-weight:400;letter-spacing:-.025em}
+
+/* Shared size and an additional lift for both frequency product groups. */
+@media(min-width:1024px){
+ .frequency-black .frequency-car,.frequency-white .white-snow{top:calc(41.2% - 48px);width:39.54%}
+ .frequency-black .frequency-detail,.frequency-white .white-frequency-detail{top:calc(57.84% - 48px)}
+}
+@media(min-width:768px) and (max-width:1023px){
+ .frequency-black .frequency-car,.frequency-white .white-snow{top:calc(43% - 44px);width:46%}
+ .frequency-black .frequency-detail,.frequency-white .white-frequency-detail{top:calc(54% - 44px)}
+}
+.frequency-white .white-snow-crop{aspect-ratio:824/589}
+.frequency-white .white-snow-crop>img{width:100%;height:100%;object-fit:contain}
+
+/* Give only the taller snow artwork more clearance below the headline. */
+@media(min-width:1024px){.frequency-white .white-snow{top:calc(41.2% - 32px)}}
+@media(min-width:768px) and (max-width:1023px){.frequency-white .white-snow{top:calc(43% - 28px)}}
+
+/* Fine adjustment for the snow artwork only. */
+@media(min-width:1024px){.frequency-white .white-snow{top:calc(41.2% - 16px);left:calc(28.05% + 20px)}}
+@media(min-width:768px) and (max-width:1023px){.frequency-white .white-snow{top:calc(43% - 12px);left:calc(20% + 20px)}}
+@media(max-width:767px){.frequency-white .white-snow{margin-top:24px;margin-left:20px}}
