@@ -900,3 +900,64 @@
 /* Small lift for the upper frequency text group. */
 @media(min-width:1024px){.frequency-scene-title h2{top:-12px}.frequency-scene-intro{top:calc(32.5% - 12px)}}
 @media(min-width:768px) and (max-width:1023px){.frequency-scene-title h2{top:-8px}.frequency-scene-intro{top:calc(29% - 8px)}}
+
+/* Tighter frequency headline rhythm and a modest shared text lift. */
+.frequency-scene-title h2{line-height:1.1}
+@media(min-width:1024px){.frequency-scene-title h2{top:-22px;line-height:1.1}.frequency-scene-intro{top:calc(32.5% - 22px)}}
+@media(min-width:768px) and (max-width:1023px){.frequency-scene-title h2{top:-16px;line-height:1.1}.frequency-scene-intro{top:calc(29% - 16px)}}
+
+/* Empty typing slots keep the same height as completed lines from frame one. */
+.temperature-heading h2>.temperature-line{height:1.1em;min-height:1.1em;align-items:center}
+.temperature-heading .temperature-word{height:1.1em;line-height:1.1}
+.temperature-heading .scroll-typed{height:1.1em;min-height:1.1em;line-height:1.1;vertical-align:top}
+.temperature-heading .temperature-art,.temperature-heading .temperature-enter{animation:none;transition:none;translate:none}
+
+/* Keep black-story artwork stationary while its text is being typed. */
+.sense-content h2>.sense-line{height:1.1em;min-height:1.1em;align-items:center}
+.sense-content .sense-text,.sense-content h2 .scroll-typed{height:1.1em;min-height:1.1em;line-height:1.1;vertical-align:top}
+.sense-content .sense-fig,.sense-content .sense-car,.sense-content .sense-moon{animation:none;transition:none;translate:none}
+
+/* Compact upper frequency typography, shared by BLACK and WHITE. */
+.frequency-scene-title h2{line-height:1.05}
+@media(min-width:1024px){.frequency-scene-title h2{top:-34px;line-height:1.05}.frequency-scene-intro{top:calc(32.5% - 34px)}}
+@media(min-width:768px) and (max-width:1023px){.frequency-scene-title h2{top:-28px;line-height:1.05}.frequency-scene-intro{top:calc(29% - 28px)}}
+
+/* Lift the artwork and its paired information together. */
+@media(min-width:1024px){
+ .frequency-black .frequency-car,.frequency-white .white-snow{top:calc(41.2% - 20px)}
+ .frequency-black .frequency-detail,.frequency-white .white-frequency-detail{top:calc(57.84% - 20px)}
+}
+@media(min-width:768px) and (max-width:1023px){
+ .frequency-black .frequency-car,.frequency-white .white-snow{top:calc(43% - 16px)}
+ .frequency-black .frequency-detail,.frequency-white .white-frequency-detail{top:calc(54% - 16px)}
+}
+
+/* Additional small lift for the upper headline and introduction only. */
+@media(min-width:1024px){.frequency-scene-title h2{top:-46px}.frequency-scene-intro{top:calc(32.5% - 46px)}}
+@media(min-width:768px) and (max-width:1023px){.frequency-scene-title h2{top:-40px}.frequency-scene-intro{top:calc(29% - 40px)}}
+
+/* Lift only the information beside the car and snow. */
+@media(min-width:1024px){.frequency-black .frequency-detail,.frequency-white .white-frequency-detail{top:calc(57.84% - 32px)}}
+@media(min-width:768px) and (max-width:1023px){.frequency-black .frequency-detail,.frequency-white .white-frequency-detail{top:calc(54% - 28px)}}
+
+/* Keep artwork and information lifted together; tighten the main headline. */
+.frequency-scene-title h2{line-height:1}
+@media(min-width:1024px){.frequency-black .frequency-car,.frequency-white .white-snow{top:calc(41.2% - 32px)}}
+@media(min-width:768px) and (max-width:1023px){.frequency-black .frequency-car,.frequency-white .white-snow{top:calc(43% - 28px)}}
+
+/* Align the introduction's bottom with the two-line headline. */
+@media(min-width:1024px){
+ .frequency-scene-title h2{top:-38px}
+ .frequency-scene-intro{top:calc(5.4% + clamp(14px,.834vw,16px)*1.2 + clamp(24px,1.8vw,35px) - 38px + clamp(56px,6.667vw,128px)*2 - 3em*1.4);margin:0}
+}
+@media(min-width:768px) and (max-width:1023px){
+ .frequency-scene-title h2{top:-32px}
+ .frequency-scene-intro{top:calc(6% + 16.8px + 24px - 32px + 13vw - 4.2em);margin:0}
+}
+
+/* Photographs resolve as their place in the typed sentence is reached. */
+.temperature-heading .temp-fragment,.temperature-heading .temp-inline{filter:blur(var(--typing-art-blur,0px))}
+.temperature-heading .temp-strip{filter:blur(calc(var(--typing-art-blur,0px) + var(--lemon-zoom-blur,0px)))}
+.sense-content .sense-fig img,.sense-content .sense-moon{filter:blur(var(--typing-art-blur,0px))}
+.sense-content .sense-car img{filter:blur(calc(var(--typing-art-blur,0px) + var(--car-photo-zoom-blur,0px)))}
+@media(prefers-reduced-motion:reduce){.temperature-heading img,.sense-content h2 img{filter:none!important;opacity:1!important}}
