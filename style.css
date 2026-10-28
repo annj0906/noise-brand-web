@@ -985,3 +985,15 @@
 @media(min-width:1024px){.frequency-white .white-snow{top:calc(41.2% - 16px);left:calc(28.05% + 20px)}}
 @media(min-width:768px) and (max-width:1023px){.frequency-white .white-snow{top:calc(43% - 12px);left:calc(20% + 20px)}}
 @media(max-width:767px){.frequency-white .white-snow{margin-top:24px;margin-left:20px}}
+
+/* Match the final title to the other Alexandria headings. */
+.final-intro-stage .final-title{font-family:'NOISE Alexandria Story',sans-serif;font-weight:400;letter-spacing:-.025em}
+
+/* Clear glass: transparent centre, layered rim, restrained edge reflections. */
+.journey-glass{background:linear-gradient(135deg,rgba(255,255,255,.17),rgba(240,246,250,.025) 38%,rgba(255,255,255,.02) 65%,rgba(215,226,234,.12));border:1px solid rgba(145,160,172,.48);box-shadow:inset 2px 2px 3px rgba(255,255,255,.92),inset -3px -3px 6px rgba(75,94,110,.16),inset 0 0 14px rgba(225,236,245,.18),0 14px 32px rgba(28,44,60,.07);backdrop-filter:blur(5px) saturate(1.08);-webkit-backdrop-filter:blur(5px) saturate(1.08)}
+.journey-glass::before{display:block;content:'';position:absolute;inset:3px;border:1px solid rgba(255,255,255,.52);border-radius:50%;pointer-events:none}
+.journey-glass::after{display:block;content:'';position:absolute;inset:0;border-radius:50%;background:linear-gradient(140deg,rgba(255,255,255,.38),transparent 25%,transparent 77%,rgba(255,255,255,.2));pointer-events:none;filter:none;transform:none;width:auto;height:auto}
+
+/* One clean glass surface, without duplicated rim layers. */
+.journey-glass{background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.015) 55%,rgba(225,234,241,.045));border:1px solid rgba(135,151,164,.36);box-shadow:inset 0 1px 2px rgba(255,255,255,.6),0 10px 24px rgba(25,42,58,.045)}
+.journey-glass::before,.journey-glass::after{display:none}

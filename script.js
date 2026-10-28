@@ -207,6 +207,7 @@ world.classList.toggle('is-zooming',zoom>.02);section.style.setProperty('--zoom-
    if(cursorVisible){lensX+=(mouseX-lensX)*.12;lensY+=(mouseY-lensY)*.12;x=lensX;y=lensY;diameter=42;opacity=1;rx=ry=0;}
    else{lensX=x;lensY=y;}
    const covered=rect.top>0&&!cursorVisible?Math.max(0,Math.min(diameter,rect.top-(y-diameter/2))):0;
+   const glassReveal=cursorVisible?1:smooth((vh*.85-rect.top)/(vh*.95));opacity*=glassReveal;lens.style.filter='blur('+((1-glassReveal)*10)+'px)';
    lens.style.clipPath='inset('+covered+'px 0 0 0)';
    lens.style.setProperty('--glass-diameter',diameter+'px');lens.style.transform='translate('+x+'px,'+y+'px) translate(-50%,-50%) perspective(1000px) rotateX('+rx+'deg) rotateY('+ry+'deg)';lens.style.opacity=String(reduced.matches?0:opacity);
    // Move the editorial row down as the hero's final scroll segment passes, then clamp it.
