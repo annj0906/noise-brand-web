@@ -997,3 +997,44 @@
 /* One clean glass surface, without duplicated rim layers. */
 .journey-glass{background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.015) 55%,rgba(225,234,241,.045));border:1px solid rgba(135,151,164,.36);box-shadow:inset 0 1px 2px rgba(255,255,255,.6),0 10px 24px rgba(25,42,58,.045)}
 .journey-glass::before,.journey-glass::after{display:none}
+
+/* Hero slogan and inline navigation use 14px. */
+:root{--hero-slogan-size:14px}
+#top .hero-line nav a{font-size:14px}
+
+/* Fixed navigation matches the 14px hero navigation. */
+.header #navigation a{font-size:14px}
+
+/* Equal spacing above and below the frequency subheading. */
+@media(min-width:1024px){.frequency-detail h3,.white-frequency-detail h3{margin-bottom:clamp(12px,.625vw,16px)}}
+@media(min-width:768px) and (max-width:1023px){.frequency-detail h3,.white-frequency-detail h3{margin-bottom:14px}}
+
+/* Group the posters by their visible widths instead of oversized grid cells. */
+.final-intro-stage .final-posters{display:flex;justify-content:flex-start;gap:24px;width:max-content;max-width:100%}
+.final-intro-stage .final-posters figure{flex:0 1 auto;width:auto;min-width:0}
+.final-intro-stage .final-posters img{width:auto;max-width:100%;height:100%;object-position:center}
+@media(max-width:767px){.final-intro-stage .final-posters{width:100%;gap:12px}.final-intro-stage .final-posters figure{flex:1 1 0;width:0;height:auto;aspect-ratio:583/812}.final-intro-stage .final-posters img{width:100%;height:100%;object-fit:contain}}
+
+/* Hero wordmark balanced with the adjacent slogan. */
+#top .hero-line .hero-logo{font-size:22px}
+
+
+/* Frequency exploration links. */
+#frequencies a[data-filter-link]{font-size:16px}
+#frequencies a[data-filter-link] .ui-arrow{width:1em;height:1em}
+
+
+/* Store exploration links match the 16px action type. */
+.final-stores .store-button{font-size:18px}
+.final-stores .store-button .ui-arrow{width:1em;height:1em}
+
+
+/* Breathing room at the collection and final section boundaries. */
+#collection-details{padding-top:132px;padding-bottom:200px}
+.final-experience{padding-top:112px}
+.final-copy{font-size:18px}
+@media(max-width:767px){#collection-details{padding-top:92px;padding-bottom:144px}.final-experience{padding-top:96px}}
+
+/* Tighter two-line story headings, with stable typing slots. */
+.temperature-heading h2>.temperature-line,.sense-content h2>.sense-line{height:1em;min-height:1em}
+.temperature-heading h2>.temperature-line+.temperature-line,.sense-content h2>.sense-line+.sense-line{margin-top:0}
