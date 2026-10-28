@@ -1,6 +1,6 @@
 @font-face{font-family:Pretendard;src:url('Pretendard-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
 @font-face{font-family:Pretendard;src:url('Pretendard-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
-@font-face{font-family:Alexandria;src:url('Alexandria-Variable.ttf') format('truetype');font-weight:500;font-display:swap}
+@font-face{font-family:Alexandria;src:url('Alexandria-Variable.ttf') format('truetype');font-weight:100 900;font-display:swap}
 @font-face{font-family:'Pixelify Sans';src:url('PixelifySans-Variable.ttf') format('truetype');font-weight:400;font-display:swap}
 @font-face{font-family:'Anonymous Pro';src:url('AnonymousPro-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
 @font-face{font-family:'Anonymous Pro';src:url('AnonymousPro-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
@@ -1038,3 +1038,105 @@
 /* Tighter two-line story headings, with stable typing slots. */
 .temperature-heading h2>.temperature-line,.sense-content h2>.sense-line{height:1em;min-height:1em}
 .temperature-heading h2>.temperature-line+.temperature-line,.sense-content h2>.sense-line+.sense-line{margin-top:0}
+
+/* Figma 24:3–24:45: scroll narrative and reused product scene. */
+.brand-journey{background:#000;color:#f5f5f5;position:relative;isolation:isolate}
+.brand-words{height:220svh;position:relative}
+.brand-words p{position:absolute;left:var(--word-x);top:var(--word-y);transform:translate(-50%,-50%);font:600 clamp(20px,2.083vw,40px)/1.4 var(--font-ui);letter-spacing:-.025em;white-space:nowrap}
+.js .brand-words p{opacity:var(--word-alpha,0);filter:blur(var(--word-blur,14px));will-change:filter,opacity}
+.brand-statement{height:70svh;min-height:400px;display:grid;place-items:center;text-align:center;padding:60px 24px}
+.brand-statement h2{font:600 clamp(20px,2.083vw,40px)/1.4 var(--font-ui);letter-spacing:-.025em}
+.brand-inline-logo{display:inline-flex;font-family:var(--font-brand);letter-spacing:-.07em;white-space:nowrap}
+.brand-logo-i{display:inline-block;transform-origin:center bottom}
+.brand-statement.logo-play .brand-logo-i{animation:brand-i-arrive 900ms cubic-bezier(.2,.7,.2,1) both}
+@keyframes brand-i-arrive{from{opacity:0;transform:translateY(.65em) scaleY(.5)}to{opacity:1;transform:none}}
+.brand-journey .collection-stage{background:rgb(calc(var(--brand-white,0)*255),calc(var(--brand-white,0)*255),calc(var(--brand-white,0)*255));color:rgb(calc((1 - var(--brand-white,0))*245),calc((1 - var(--brand-white,0))*245),calc((1 - var(--brand-white,0))*245))}
+.brand-journey .collection-stage>.collection-view{display:none}
+.brand-product-copy{position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);text-align:center;z-index:5;pointer-events:none;white-space:nowrap;font:600 clamp(20px,2.083vw,40px)/1.4 var(--font-ui);letter-spacing:-.025em;opacity:var(--copy-alpha,0);filter:blur(var(--copy-blur,12px))}
+.brand-white-copy{color:#101010}.brand-black-copy{color:#f5f5f5}
+.brand-journey .collection-object{pointer-events:none}
+.journey-glass.brand-glass{z-index:35;background:linear-gradient(135deg,#ffffff10,#ffffff02 60%,#ffffff08);border-color:#cbd5df65;box-shadow:inset 0 1px 1px #ffffff50,0 12px 40px #00000012;backdrop-filter:blur(5px)}
+@media(max-width:767px){.brand-words{height:200svh}.brand-words p{left:var(--word-x);font-size:22px}.brand-statement{height:60svh;min-height:320px}.brand-statement h2{font-size:20px}.brand-product-copy{font-size:20px}.brand-journey .collection-showcase{height:480svh}}
+@media(prefers-reduced-motion:reduce){.brand-words{height:100svh}.brand-words p{opacity:1!important;filter:none!important}.brand-logo-i{animation:none!important}}
+
+/* Two pinned word compositions, rather than a long flowing list. */
+.brand-words{height:420svh}.brand-word-stage{position:sticky;top:0;height:100svh;overflow:hidden}.brand-word-screen{position:absolute;inset:0}.brand-word-screen p{margin:0}
+@media(max-width:767px){.brand-words{height:420svh}}
+@media(prefers-reduced-motion:reduce){.brand-words{height:auto}.brand-word-stage{position:relative;height:auto}.brand-word-screen{position:relative;height:90svh;opacity:1!important;visibility:visible!important}}
+
+/* Independent black-scene glass disc: transparent surface and a single lit rim. */
+.brand-disc{position:fixed;left:0;top:0;width:var(--glass-diameter,260px);height:var(--glass-diameter,260px);border-radius:50%;pointer-events:none;z-index:35;opacity:0;background:transparent;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);transform-style:preserve-3d;will-change:transform,opacity}
+.brand-disc::before{content:'';position:absolute;inset:0;padding:1px;border-radius:inherit;background:conic-gradient(from 28deg,transparent 0deg,rgba(255,255,255,.05) 50deg,rgba(255,255,255,.58) 160deg,rgba(255,255,255,.22) 235deg,transparent 300deg);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor}
+@media(prefers-reduced-motion:reduce){.brand-disc{display:none}}
+
+/* Rim light aims toward the currently revealed word. */
+.brand-disc::before{background:conic-gradient(from var(--rim-light-angle,270deg),rgba(255,255,255,var(--rim-light-strength,.85)) 0deg,rgba(255,255,255,.32) 28deg,rgba(255,255,255,.05) 85deg,transparent 150deg,transparent 245deg,rgba(255,255,255,.12) 320deg,rgba(255,255,255,var(--rim-light-strength,.85)) 360deg)}
+
+/* Soft upward word reveal and restrained glass reflections. */
+.brand-word-screen p{transform:translate(-50%,calc(-50% + var(--word-rise,0px)))}
+.brand-disc{background:linear-gradient(135deg,rgba(255,255,255,.035),rgba(255,255,255,.004) 48%,rgba(210,225,240,.018));box-shadow:inset 0 0 18px rgba(255,255,255,.022),0 0 12px rgba(220,235,255,.025)}
+.brand-disc::after{content:'';position:absolute;inset:0;padding:1px;border-radius:inherit;background:conic-gradient(from var(--rim-light-angle,270deg),rgba(235,245,255,.3),transparent 75deg,transparent 285deg,rgba(235,245,255,.3));mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;filter:blur(3px);opacity:.55}
+@media(prefers-reduced-motion:reduce){.brand-word-screen p{transform:translate(-50%,-50%)}}
+
+/* Pin the brand sentence; finish its reveal before a short logo-only glitch. */
+.brand-statement{height:210svh;min-height:0;display:block;padding:0}
+.brand-statement-stage{position:sticky;top:0;height:100svh;display:grid;place-items:center;padding:24px}
+.brand-statement h2{opacity:var(--statement-alpha,1);filter:blur(var(--statement-blur,0px));transform:translateY(var(--statement-rise,0px))}
+.brand-inline-logo{font-weight:400;letter-spacing:-.045em;font-synthesis:none;gap:0;margin-right:.06em}
+.brand-statement.logo-play .brand-logo-i{animation:none}
+.brand-statement.logo-glitch .brand-inline-logo{animation:brand-logo-static 260ms steps(1,end) 1}
+@keyframes brand-logo-static{0%,100%{transform:none;filter:none;clip-path:none}15%{transform:translateX(-1px);clip-path:inset(0 0 8% 0)}32%{transform:translateX(1px);filter:blur(.5px)}48%{transform:none;clip-path:inset(3% 0 0 0)}65%{transform:translateX(-1px);filter:none}80%{transform:none;clip-path:none}}
+@media(max-width:767px){.brand-statement{height:210svh;min-height:0}}
+@media(prefers-reduced-motion:reduce){.brand-statement{height:100svh}.brand-statement h2{opacity:1;filter:none;transform:none}.brand-statement.logo-glitch .brand-inline-logo{animation:none}}
+
+/* Local soft backing keeps collection copy readable over product labels. */
+.brand-product-copy{padding:.45em .7em;isolation:isolate}
+.brand-product-copy::before{content:'';position:absolute;inset:-.25em -.65em;z-index:-1;border-radius:50%;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);mask-image:radial-gradient(ellipse,#000 25%,transparent 73%);-webkit-mask-image:radial-gradient(ellipse,#000 25%,transparent 73%)}
+.brand-black-copy::before{background:rgba(0,0,0,.78)}
+.brand-white-copy::before{background:rgba(255,255,255,.88)}
+.brand-black-copy{text-shadow:0 1px 10px rgba(0,0,0,.65)}
+.brand-white-copy{text-shadow:0 1px 10px rgba(255,255,255,.65)}
+
+/* Omit Less to see; retain its data hooks for the existing frequency motion. */
+.sense-scroll[hidden]{display:none!important}.sense-scroll[hidden] .sense-black{display:none!important}
+.card-journey-intro,.card-journey-end{text-align:center;font:600 clamp(18px,1.25vw,24px)/1.5 var(--font-ui);margin:80px 0}
+.card-journey-track{height:280svh}.card-journey-track .scent-board.products{position:sticky;top:0;height:100svh;aspect-ratio:auto;margin:0}
+.card-journey-track .scent-board .scent-card{left:var(--gather-x,var(--card-x));top:var(--gather-y,var(--card-y));width:15.5%;transform:rotate(var(--gather-angle,var(--card-angle)));transition:filter 450ms,opacity 450ms}
+@media(max-width:767px){.card-journey-track{height:auto}.card-journey-track .scent-board.products{position:relative;height:auto;display:grid;gap:36px 20px}.card-journey-track .scent-board .scent-card{width:100%;left:auto;top:auto;transform:rotate(calc(var(--card-angle)*.15))}.card-journey-intro,.card-journey-end{margin:56px 0}}
+
+/* Finish the stationary white-to-black fade before exposing the next scene. */
+#frequencies.awaiting-blackout{visibility:hidden}
+.temperature-stage.is-sequence-pinned{z-index:32}
+
+/* Remove the legacy glass from the white sensory scene only. */
+.journey-glass{display:none!important}
+
+
+/* Brand sentence replays the NOSE → NOISE intro after becoming clear. */
+.brand-statement.logo-glitch .brand-inline-logo{animation:brand-logo-resolve 1100ms steps(1,end) 1}
+.brand-statement.logo-glitch .brand-logo-i{animation:brand-inline-i 1100ms cubic-bezier(.2,.7,.2,1) both}
+@keyframes brand-inline-i{0%{opacity:0;transform:translateY(.55em);width:0}35%{opacity:1;transform:translateY(0);width:.24em}55%,100%{opacity:1;transform:none;width:.24em}}
+@keyframes brand-logo-resolve{0%,48%{filter:none;transform:none;clip-path:none}52%{filter:none;transform:translateX(-2px);clip-path:inset(5% 0 18% 0)}57%{font-family:var(--font-pixel);transform:translateX(2px);clip-path:none}62%{font-family:var(--font-brand);transform:translateX(-1px);clip-path:inset(0 0 12% 0)}68%{font-family:var(--font-pixel);transform:none;clip-path:none}74%,100%{font-family:var(--font-brand);filter:none;transform:none;clip-path:none}}
+@media(prefers-reduced-motion:reduce){.brand-statement.logo-glitch .brand-inline-logo,.brand-statement.logo-glitch .brand-logo-i{animation:none!important}}
+
+/* Keep logo glyph metrics stable: pixel breakup uses cuts, never font swapping. */
+.intro-word .is-pixel{font-family:var(--font-brand)!important;font-weight:500!important;clip-path:polygon(0 0,100% 0,100% 22%,84% 22%,84% 28%,100% 28%,100% 65%,92% 65%,92% 71%,100% 71%,100% 100%,0 100%,0 58%,9% 58%,9% 51%,0 51%)}
+.brand-statement.logo-glitch .brand-logo-i{animation:none!important;width:auto;opacity:1;transform:none}
+.brand-statement.logo-glitch .brand-inline-logo{animation:brand-logo-pixel-cuts 380ms steps(1,end) 1;font-family:var(--font-brand);font-weight:400}
+@keyframes brand-logo-pixel-cuts{0%,100%{clip-path:none;transform:none}15%{clip-path:polygon(0 0,100% 0,100% 28%,80% 28%,80% 34%,100% 34%,100% 100%,0 100%);transform:translateX(-1px)}35%{clip-path:polygon(0 0,100% 0,100% 65%,90% 65%,90% 73%,100% 73%,100% 100%,0 100%,0 45%,12% 45%,12% 38%,0 38%);transform:translateX(1px)}55%{clip-path:inset(3% 0 5% 0);transform:none}75%{clip-path:polygon(0 0,100% 0,100% 22%,88% 22%,88% 29%,100% 29%,100% 100%,0 100%);transform:translateX(-1px)}}
+@media(prefers-reduced-motion:reduce){.brand-statement.logo-glitch .brand-inline-logo{animation:none!important}}
+
+/* The sentence logo uses the intro's exact random cuts and 7 × 65ms timing. */
+.brand-inline-logo.is-glitching{animation:none}
+.brand-inline-logo .is-pixel{font-family:var(--font-brand)!important;font-weight:400!important;clip-path:polygon(0 0,100% 0,100% 22%,84% 22%,84% 28%,100% 28%,100% 65%,92% 65%,92% 71%,100% 71%,100% 100%,0 100%,0 58%,9% 58%,9% 51%,0 51%)}
+
+/* Restore the original hero intro pixel-font flicker. */
+.intro-word .is-pixel{font-family:var(--font-pixel)!important;font-weight:400!important;clip-path:none}
+
+/* Match the restored intro flicker on the sentence logo, without I insertion. */
+.brand-inline-logo .is-pixel{font-family:var(--font-pixel)!important;font-weight:400!important;clip-path:none}
+
+/* Reveal the brand sentence one line at a time with scroll. */
+.brand-statement h2{opacity:1;filter:none;transform:none}
+.brand-sentence-line{display:block;opacity:var(--line-alpha,1);filter:blur(var(--line-blur,0px));transform:translateY(var(--line-rise,0px))}
+@media(prefers-reduced-motion:reduce){.brand-sentence-line{opacity:1;filter:none;transform:none}}
