@@ -1220,3 +1220,58 @@
 .snow-card-handoff img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
 .frequency-white.snow-handoff-active{filter:opacity(var(--handoff-fade,1))}
 #collection .scent-card{opacity:var(--handoff-cards,1)}
+
+/* A single SNOW card turns first; the same ten cards then scatter and gather. */
+.card-journey-track .card-gather-stage .scent-board .scent-card{transform:perspective(1200px) translateY(var(--card-lift,0px)) rotateX(var(--gather-tilt,0deg)) rotateY(var(--card-spin,0deg)) rotateZ(var(--gather-angle,0deg));opacity:calc(var(--handoff-cards,1)*var(--card-phase-alpha,1))!important;transform-origin:center center}
+@media(min-width:768px){.card-journey-track{height:650svh}.card-gather-stage .card-journey-intro{top:15%}}
+@media(prefers-reduced-motion:reduce){.card-journey-track .card-gather-stage .scent-board .scent-card{transform:none}.card-journey-track{height:auto;min-height:100svh}}
+
+/* Finish the snow-to-card transformation in the fixed WHITE scene. */
+@media(min-width:768px){.frequency-scroll{height:670svh}}
+.snow-card-handoff{background:rgba(238,238,238,var(--card-face,0));transform-origin:center;z-index:45}
+.snow-card-message{position:fixed;left:50%;top:20%;margin:0;z-index:46;font:600 clamp(18px,1.6vw,26px)/1.5 var(--font-body);color:#101010;text-align:center;pointer-events:none;width:90%}
+.snow-card-message[hidden]{display:none}
+.snow-bridge-pending .collection-heading,.snow-bridge-pending .scents-section-label,.snow-bridge-pending .card-journey-intro{visibility:hidden}
+.snow-is-travelling{visibility:hidden!important}
+@media(prefers-reduced-motion:reduce){.frequency-scroll{height:auto}}
+
+body:has(.snow-card-handoff:not([hidden]))::after{content:"";position:fixed;inset:0;background:#fff;z-index:40;pointer-events:none}
+.frequency-white.snow-handoff-active{z-index:41}
+
+body:has(.snow-card-handoff:not([hidden]))::after{opacity:var(--snow-backdrop,1)}
+.frequency-white.snow-handoff-active{position:fixed;inset:0;height:100svh}
+
+/* An opaque white stage keeps the previous BLACK layer out of the handoff. */
+body.snow-transition-active .frequency-black{visibility:hidden!important}
+body.snow-transition-active .frequency-scroll{background:#fff}
+body.snow-transition-active #collection{position:relative;z-index:42;background:#fff}
+.snow-card-handoff{padding:0;border:0;border-radius:0;box-sizing:border-box}
+.snow-card-handoff img{display:block;object-fit:fill;mix-blend-mode:normal}
+.snow-card-message{top:27%;font-family:var(--font-ui,'Pretendard'),sans-serif}
+
+.snow-card-handoff img{position:absolute;left:15%;top:15%;width:70%;height:70%;object-fit:contain}
+
+/* Keep the card landing sharp and match the real card face exactly. */
+.snow-card-message,.card-journey-intro{display:none!important}
+.card-journey-track .scent-card,.card-journey-track .card-front,.snow-card-handoff,.snow-card-handoff img{filter:none!important}
+.snow-card-handoff .snow-card-final{left:14%;top:26.6%;width:72%;height:46.8%;object-fit:contain}
+
+/* The opening sentence belongs only to the single centered SNOW card. */
+.snow-card-message:not([hidden]){display:block!important;filter:none!important;top:28%;font-family:var(--font-ui);font-weight:600}
+
+/* Compact card journey and consistent Korean guidance. */
+@media(min-width:768px) and (prefers-reduced-motion:no-preference){.card-journey-track{height:330svh}.card-journey-track .card-gather-stage .scent-board .scent-card{width:12.8%}}
+.snow-card-message,.card-gather-stage .card-journey-end{font:600 clamp(18px,1.6vw,26px)/1.5 var(--font-ui);letter-spacing:-.025em}
+
+/* Lower the guidance and its card composition together. */
+@media(min-width:768px){.card-gather-stage .card-journey-end{top:10%}.card-gather-stage .scent-board.products{transform:translateY(5svh)}.card-stack-shadow{margin-top:5svh}}
+
+/* Readable complete scent notes and a shared guidance position. */
+.scent-board .card-back.note{padding:8px!important;gap:6px;overflow:hidden;justify-content:flex-start}
+.scent-board .flip-card .card-identity,.scent-board .flip-card .card-identity span{font-size:14px;line-height:1.2}
+.scent-board .flip-card .card-description{font-size:14px;line-height:1.25;margin-top:0;word-break:normal;overflow-wrap:anywhere;flex-shrink:0}
+.scent-board .flip-card .card-keywords,.scent-board .flip-card .card-keywords span{font-size:14px;line-height:1.25;flex-shrink:0}
+.scent-board .flip-card .card-keywords{padding-top:0;margin-top:auto}
+@media(min-width:768px){.card-gather-stage{height:100svh}.card-journey-track .card-gather-stage .scent-board .scent-card{min-height:0;aspect-ratio:325/431}.card-gather-stage .card-journey-end{top:28%}.card-gather-stage .scent-board.products{transform:translateY(0)}.card-stack-shadow{margin-top:0}}
+
+@media(min-width:768px){.card-gather-stage .card-journey-end{top:31%}}
