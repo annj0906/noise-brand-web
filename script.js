@@ -530,11 +530,53 @@ if(typeof window!=='undefined')(()=>{
  const cards=[...board.querySelectorAll('.scent-card')];cards.forEach(card=>{card.classList.add('scent-data-card');card.setAttribute('aria-hidden','true');card.querySelector('button').tabIndex=-1});
  document.querySelector('.card-journey-intro')?.remove();document.querySelector('.card-journey-end')?.remove();
  const host=document.createElement('div');host.className='react-carousel-host';board.append(host);
- const dialog=document.createElement('dialog');dialog.className='scent-dialog';dialog.innerHTML='<button class="scent-dialog-close" aria-label="닫기">닫기 ×</button><div class="scent-detail"></div>';document.body.append(dialog);
- let closing=false;
- function close(){if(!dialog.open||closing)return;closing=true;dialog.classList.remove('detail-visible');setTimeout(()=>{window.unmountScentFlip?.();dialog.close();document.documentElement.style.overflow='';closing=false;host.querySelector('.circular-carousel')?.focus({preventScroll:true})},550)}
- dialog.querySelector('.scent-dialog-close').onclick=close;dialog.addEventListener('cancel',e=>{e.preventDefault();close()});dialog.addEventListener('click',e=>{if(e.target===dialog)close()});
- window.mountScentCarousel(host,cards,card=>{if(dialog.open)return;dialog.showModal();document.documentElement.style.overflow='hidden';window.mountScentFlip(dialog.querySelector('.scent-detail'),card);requestAnimationFrame(()=>dialog.classList.add('detail-visible'))}).catch(error=>console.error('Scent carousel failed to load',error));
+ const dialog=document.createElement('dialog');dialog.className='scent-dialog';dialog.setAttribute('aria-label','향 카드 상세');dialog.innerHTML='<div class="scent-detail"></div>';document.body.append(dialog);
+ let closing=false,sourceCard=null;
+ function close(){
+  if(!dialog.open||closing)return;closing=true;
+  const detail=dialog.querySelector('.scent-detail'),tile=sourceCard?.querySelector('.circular-carousel__tile'),to=tile?.getBoundingClientRect();
+  if(to){
+   detail.style.setProperty('--detail-origin-x',(to.left+to.width/2-innerWidth/2)+'px');
+   detail.style.setProperty('--detail-origin-y',(to.top+to.height/2-innerHeight/2)+'px');
+   detail.style.setProperty('--detail-origin-sx',to.width/Math.max(1,detail.offsetWidth));
+   detail.style.setProperty('--detail-origin-sy',to.height/Math.max(1,detail.offsetHeight));
+  }
+  dialog.classList.remove('detail-visible');
+  setTimeout(()=>{
+   if(!dialog.open)return;
+   if(sourceCard){sourceCard.style.opacity='0';sourceCard.style.visibility='';sourceCard.style.transition='opacity 160ms linear';void sourceCard.offsetWidth;sourceCard.style.opacity='1';}
+   dialog.classList.add('detail-returning');
+  },530);
+  setTimeout(()=>{if(sourceCard){sourceCard.style.visibility='';sourceCard.style.removeProperty('opacity');sourceCard.style.removeProperty('transition');}sourceCard=null;window.unmountScentFlip?.();dialog.close();dialog.classList.remove('detail-preparing','detail-returning');document.documentElement.style.overflow='';closing=false;host.querySelector('.circular-carousel')?.focus({preventScroll:true})},710);
+ }
+ dialog.addEventListener('cancel',e=>{e.preventDefault();close()});dialog.addEventListener('click',e=>{if(e.target===dialog)close()});
+ window.mountScentCarousel(host,cards,card=>{
+  if(dialog.open)return;
+  const ordered=[cards.find(c=>c.querySelector('[aria-controls="note-184"]')),...cards.filter(c=>!c.querySelector('[aria-controls="note-184"]'))];
+  const tile=host.querySelector('[data-cc-index="'+ordered.indexOf(card)+'"] .circular-carousel__tile');
+  sourceCard=tile?.closest('.circular-carousel__card');
+  dialog.classList.add('detail-preparing');dialog.showModal();document.documentElement.style.overflow='hidden';
+  const detail=dialog.querySelector('.scent-detail');detail.style.transition='none';detail.style.removeProperty('width');detail.style.removeProperty('height');
+  window.mountScentFlip(detail,card);
+  // Wait for React's first paint before starting the size transition.
+  let attempts=0;
+  function reveal(){
+   if(!dialog.open||closing)return;
+   const flip=detail.querySelector('.rb-flip-card');
+   if(!flip){if(++attempts<120)requestAnimationFrame(reveal);else close();return;}
+   // Measure the mounted card, not its differently sized layout wrapper.
+   const from=tile?.getBoundingClientRect(),w=flip.offsetWidth,h=flip.offsetHeight;
+   detail.style.width=w+'px';detail.style.height=h+'px';
+   detail.style.setProperty('--detail-origin-x',(from?from.left+from.width/2-innerWidth/2:0)+'px');
+   detail.style.setProperty('--detail-origin-y',(from?from.top+from.height/2-innerHeight/2:0)+'px');
+   detail.style.setProperty('--detail-origin-sx',from?from.width/Math.max(1,w):1);
+   detail.style.setProperty('--detail-origin-sy',from?from.height/Math.max(1,h):1);
+   if(sourceCard)sourceCard.style.visibility='hidden';
+   dialog.classList.remove('detail-preparing');void detail.offsetWidth;
+   requestAnimationFrame(()=>requestAnimationFrame(()=>{if(dialog.open&&!closing){detail.style.removeProperty('transition');dialog.classList.add('detail-visible')}}));
+  }
+  requestAnimationFrame(reveal);
+ }).catch(error=>console.error('Scent carousel failed to load',error));
 })();
 
 // Hand the logo from the hero editorial row to the fixed navigation.

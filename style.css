@@ -1330,9 +1330,23 @@ body.snow-transition-active .react-carousel-host .circular-carousel__card[data-c
 .snow-card-handoff{box-shadow:none}
 .snow-card-handoff .snow-card-final{object-fit:contain}
 .scent-detail{aspect-ratio:325/431}
+.scent-detail{transform:translate(calc(-50% + var(--detail-origin-x,0px)),calc(-50% + var(--detail-origin-y,0px))) scale(var(--detail-origin-scale,.83));transition:transform .65s cubic-bezier(.4,0,.2,1)}
+.detail-visible .scent-detail{transform:translate(-50%,-50%) scale(1)}
+.scent-dialog{transition:opacity .65s ease}
+.scent-dialog[open]{opacity:1;transition:none}
+.scent-dialog.detail-preparing .scent-detail{visibility:hidden}
+.scent-detail{opacity:1;transition:transform .65s cubic-bezier(.4,0,.2,1),opacity .16s linear}
+.scent-dialog.detail-returning .scent-detail{opacity:0}
+.scent-detail{transform:translate(calc(-50% + var(--detail-origin-x,0px)),calc(-50% + var(--detail-origin-y,0px))) scale(var(--detail-origin-sx,1),var(--detail-origin-sy,1))}
+.detail-visible .scent-detail{transform:translate(-50%,-50%) scale(1)}
+.scent-dialog::backdrop{background:transparent;transition:none}
+.scent-dialog.detail-visible::backdrop{background:transparent}
 .scent-react-front{padding:0}
 .scent-react-front img{width:68.1818%;height:51.4132%;object-fit:contain}
-.scent-dialog::backdrop{background:#ffffffde;backdrop-filter:none;-webkit-backdrop-filter:none}
+.scent-dialog::backdrop{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none}
+.react-carousel-host{filter:blur(0px);transition:filter .65s cubic-bezier(.4,0,.2,1)}
+body:has(.scent-dialog[open].detail-visible) .react-carousel-host{filter:blur(3px)}
+@media(prefers-reduced-motion:reduce){.react-carousel-host{transition:none}}
 body.snow-transition-active .react-carousel-host{pointer-events:none}
 
 /* Give the descent room, then hold the carousel at viewport center. */
@@ -1353,3 +1367,9 @@ body.snow-transition-active .react-carousel-host{opacity:var(--arrival-reveal,0)
 .react-carousel-host .circular-carousel__tile{pointer-events:auto;cursor:grab}
 .react-carousel-host .circular-carousel[data-dragging] .circular-carousel__tile{cursor:grabbing}
 body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointer-events:none}
+
+/* Reuse carousel depth: no extra animation loop or layout measurements. */
+@media(min-width:768px) and (hover:hover) and (prefers-reduced-motion:no-preference){
+ .react-carousel-host .circular-carousel__tile{filter:blur(clamp(0px,calc((var(--cc-depth,0) - .025)*78px),6px))}
+ .react-carousel-host .circular-carousel__shade{background:#fff;opacity:clamp(0,calc((var(--cc-depth,0) - .02)*4.7),.85)}
+}
