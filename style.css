@@ -1323,3 +1323,33 @@ body.snow-transition-active #collection{position:relative;z-index:42;background:
 .react-carousel-host .circular-carousel__caption{font-size:14px}
 body.snow-transition-active .react-carousel-host .circular-carousel__card[data-cc-index="0"]{visibility:hidden}
 @media(max-width:767px){.carousel-track .scent-board.products.react-scent-board,.react-carousel-host{height:480px!important}}
+
+/* Keep an opaque collection after the temporary handoff layer is released. */
+#collection{position:relative;z-index:42;background:#fff}
+.carousel-track{overflow:visible}
+.snow-card-handoff{box-shadow:none}
+.snow-card-handoff .snow-card-final{object-fit:contain}
+.scent-detail{aspect-ratio:325/431}
+.scent-react-front{padding:0}
+.scent-react-front img{width:68.1818%;height:51.4132%;object-fit:contain}
+.scent-dialog::backdrop{background:#ffffffde;backdrop-filter:none;-webkit-backdrop-filter:none}
+body.snow-transition-active .react-carousel-host{pointer-events:none}
+
+/* Give the descent room, then hold the carousel at viewport center. */
+@media(min-width:768px) and (prefers-reduced-motion:no-preference){
+ .carousel-track.card-journey-track{margin-top:70svh;height:190svh!important}
+ .carousel-track .scent-board.products.react-scent-board{position:sticky!important;top:0!important;height:100svh!important}
+ .react-carousel-host{height:100svh}
+ .react-carousel-host .circular-carousel__view{transform:translateY(38px)}
+ .carousel-hint{position:absolute;top:calc(100svh - 55px);left:0;width:100%;margin:0}
+ .react-carousel-host .circular-carousel__caption{bottom:85px}
+ .snow-card-message:not([hidden]){top:28%;transition:none}
+}
+
+body.snow-transition-active .react-carousel-host{opacity:var(--arrival-reveal,0)}
+
+/* Only visible card faces receive pointer input; empty stage space stays passive. */
+.react-carousel-host .circular-carousel{pointer-events:none;cursor:auto}
+.react-carousel-host .circular-carousel__tile{pointer-events:auto;cursor:grab}
+.react-carousel-host .circular-carousel[data-dragging] .circular-carousel__tile{cursor:grabbing}
+body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointer-events:none}
