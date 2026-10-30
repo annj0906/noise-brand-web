@@ -1045,7 +1045,7 @@
 .brand-words p{position:absolute;left:var(--word-x);top:var(--word-y);transform:translate(-50%,-50%);font:600 clamp(20px,2.083vw,40px)/1.4 var(--font-ui);letter-spacing:-.025em;white-space:nowrap}
 .js .brand-words p{opacity:var(--word-alpha,0);filter:blur(var(--word-blur,14px));will-change:filter,opacity}
 .brand-statement{height:70svh;min-height:400px;display:grid;place-items:center;text-align:center;padding:60px 24px}
-.brand-statement h2{font:600 clamp(20px,2.083vw,40px)/1.4 var(--font-ui);letter-spacing:-.025em}
+.brand-statement h2{font:600 clamp(24px,2.5vw,48px)/1.4 var(--font-ui);letter-spacing:-.025em}
 .brand-inline-logo{display:inline-flex;font-family:var(--font-brand);letter-spacing:-.07em;white-space:nowrap}
 .brand-logo-i{display:inline-block;transform-origin:center bottom}
 .brand-statement.logo-play .brand-logo-i{animation:brand-i-arrive 900ms cubic-bezier(.2,.7,.2,1) both}
@@ -1275,3 +1275,42 @@ body.snow-transition-active #collection{position:relative;z-index:42;background:
 @media(min-width:768px){.card-gather-stage{height:100svh}.card-journey-track .card-gather-stage .scent-board .scent-card{min-height:0;aspect-ratio:325/431}.card-gather-stage .card-journey-end{top:28%}.card-gather-stage .scent-board.products{transform:translateY(0)}.card-stack-shadow{margin-top:0}}
 
 @media(min-width:768px){.card-gather-stage .card-journey-end{top:31%}}
+
+@media(min-width:768px){.card-stack-shadow.white{left:30.125%}.card-stack-shadow.black{left:49.875%}.card-stack-shadow{top:68%}}
+
+@media(min-width:768px){.card-gather-stage .card-journey-end{top:23%}}
+/* Circular scent exploration replaces the scattered / stack sequence. */
+.carousel-track.card-journey-track{height:110svh!important;min-height:620px;position:relative}
+.carousel-track .scent-board.products.scent-carousel{position:relative!important;top:auto!important;display:block!important;width:100%;height:90svh!important;min-height:540px;margin:0;aspect-ratio:auto;perspective:1800px;overflow:visible;touch-action:pan-y;cursor:grab;isolation:auto}
+.scent-carousel:active{cursor:grabbing}
+.carousel-track .scent-board.scent-carousel .scent-card{position:absolute!important;left:50%!important;top:52%!important;width:var(--carousel-card-width,220px)!important;height:auto!important;min-height:0!important;aspect-ratio:325/431!important;transform:translate(-50%,-50%) translate3d(var(--orbit-x),0,var(--orbit-z)) rotateY(var(--orbit-turn))!important;transform-origin:center!important;opacity:var(--orbit-opacity,1)!important;filter:none!important;transition:opacity .3s;box-shadow:0 12px 25px #0000000a}
+.scent-carousel .flip-card.note-toggle{transform:none!important;translate:none!important}
+.scent-carousel .scent-card.is-flipped .flip-inner{transform:none!important}
+.carousel-hint{text-align:center;font:400 14px/1.6 var(--font-ui);color:#666;margin:0 0 40px}
+.scent-dialog{position:fixed;inset:0;width:100vw;max-width:none;height:100dvh;max-height:none;border:0;padding:0;background:transparent;overflow:hidden;color:#111;opacity:0;transition:opacity .3s}
+.scent-dialog.detail-visible{opacity:1}
+.scent-dialog::backdrop{background:#ffffffa8;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.scent-dialog-close{position:absolute;right:5%;top:5%;z-index:5;border:0;background:transparent;color:#222;font:400 16px var(--font-ui);cursor:pointer;padding:12px}
+.scent-detail{position:absolute;left:50%;top:50%;width:min(360px,76vw,calc(76dvh * 325 / 431));aspect-ratio:325/431;transform:translate(-50%,-50%) scale(.83);transition:transform .55s cubic-bezier(.2,.7,.2,1);perspective:1400px}
+.detail-visible .scent-detail{transform:translate(-50%,-50%) scale(1)}
+.scent-detail .scent-card{position:absolute;inset:0;width:100%;height:100%;margin:0;--card-paper:#eee;--card-ink:#111}
+.scent-detail .scent-card[data-family=BLACK]{--card-paper:#000;--card-ink:#fff}
+.scent-detail .note-toggle{position:absolute;inset:0;display:block;width:100%;height:100%;border:0;padding:0;background:none;color:var(--card-ink);text-align:left;cursor:pointer;perspective:1400px}
+.scent-detail .flip-inner{display:block;position:absolute;inset:0;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.scent-detail .card-back.note,.scent-detail .card-back.note[hidden]{display:flex!important;position:absolute;inset:0;transform:rotateY(180deg);padding:24px;gap:20px;background:var(--card-paper);color:var(--card-ink);font:400 14px/1.5 var(--font-ui);overflow:auto;backface-visibility:hidden}
+.scent-detail .card-identity,.scent-detail .card-identity span{font:400 18px/1.35 var(--font-label)}
+.scent-detail .card-description{font:400 14px/1.5 var(--font-ui);margin:0;word-break:keep-all}
+.scent-detail .card-keywords,.scent-detail .card-keywords span{font:400 14px/1.5 var(--font-label)}
+@media(max-width:767px){.carousel-track.card-journey-track{min-height:500px;height:85svh!important}.carousel-track .scent-board.products.scent-carousel{height:70svh!important;min-height:420px}.scent-detail .card-back.note{padding:18px;gap:14px}}
+@media(prefers-reduced-motion:reduce){.scent-detail,.scent-detail .flip-inner,.scent-dialog{transition:none}}
+
+.scent-carousel .scent-card{backface-visibility:hidden;-webkit-backface-visibility:hidden}.scent-detail{--card-flip-time:700ms}.scent-detail .card-back.note{flex-direction:column;box-sizing:border-box}.scent-detail .card-keywords{margin-top:auto}.carousel-track{overflow:clip}
+.scent-detail{width:min(300px,76vw,54dvh);aspect-ratio:3/4}
+.scent-react-front{height:100%;display:flex;align-items:center;justify-content:center;padding:14%;box-sizing:border-box}
+.scent-react-front img{width:100%;height:70%;object-fit:contain}
+.scent-react-back{height:100%;box-sizing:border-box;padding:24px;display:flex;flex-direction:column;gap:20px;overflow:auto;font:400 14px/1.5 var(--font-ui);text-align:left}
+.scent-react-back .card-identity{font:400 18px/1.35 var(--font-label)}
+.scent-react-back .card-identity span{font:inherit}
+.scent-react-back .card-description{margin:0;font:400 14px/1.5 var(--font-ui)}
+.scent-react-back .card-keywords{margin-top:auto;font:400 14px/1.5 var(--font-label)}
+.scent-react-back .card-keywords span{font:inherit}
