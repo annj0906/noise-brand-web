@@ -523,29 +523,19 @@ if(typeof window!=='undefined'){
  }
 }
 
-// Circular scent gallery: one animation loop, paused outside the viewport.
+// React Bits original carousel, with the existing scent detail modal.
 if(typeof window!=='undefined')(()=>{
  const track=document.querySelector('.card-journey-track'),board=track?.querySelector('.scent-board');if(!board)return;
- track.classList.add('carousel-track');board.classList.add('scent-carousel');
- const cards=[...board.querySelectorAll('.scent-card')],reduce=matchMedia('(prefers-reduced-motion: reduce)');
+ track.classList.add('carousel-track');board.classList.add('react-scent-board');
+ const cards=[...board.querySelectorAll('.scent-card')];cards.forEach(card=>{card.classList.add('scent-data-card');card.setAttribute('aria-hidden','true');card.querySelector('button').tabIndex=-1});
  document.querySelector('.card-journey-intro')?.remove();document.querySelector('.card-journey-end')?.remove();
+ const host=document.createElement('div');host.className='react-carousel-host';board.append(host);
  const hint=document.createElement('p');hint.className='carousel-hint';hint.textContent='좌우로 움직여 향을 살펴보고, 카드를 눌러 열어보세요.';track.append(hint);
  const dialog=document.createElement('dialog');dialog.className='scent-dialog';dialog.innerHTML='<button class="scent-dialog-close" aria-label="닫기">닫기 ×</button><div class="scent-detail"></div>';document.body.append(dialog);
- let angle=-144,velocity=0,hover=false,press=null,visible=false,raf=0,last=0,selected=null,returnFocus=null,pressedCard=null;
- const step=360/cards.length;let width=220,radius=380;
- function measure(){width=Math.min(250,Math.max(150,innerWidth*.15));radius=Math.min(innerWidth*.33,480);board.style.setProperty('--carousel-card-width',width+'px');paint()}
- function paint(){cards.forEach((card,i)=>{const deg=i*step+angle,rad=deg*Math.PI/180,z=Math.cos(rad)*radius;card.style.setProperty('--orbit-x',Math.sin(rad)*radius+'px');card.style.setProperty('--orbit-z',z-radius+'px');card.style.setProperty('--orbit-turn',deg+'deg');card.style.setProperty('--orbit-opacity',String(.3+.7*(Math.cos(rad)+1)/2));card.style.zIndex=String(Math.round(z+radius));card.style.setProperty('--paper-rx','0deg');card.style.setProperty('--paper-ry','0deg')})}
- function tick(now){raf=0;const dt=Math.min((now-last)/1000||.016,.04);last=now;if(document.body.classList.contains('snow-transition-active')){angle=-144;velocity=0}else if(!press&&!dialog.open){if(!hover&&!reduce.matches)angle+=dt*5;angle+=velocity*dt;velocity*=Math.exp(-dt*5)}paint();if(visible&&!document.hidden)raf=requestAnimationFrame(tick)}
- function wake(){if(!raf&&visible){last=performance.now();raf=requestAnimationFrame(tick)}}
- new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)wake();else {cancelAnimationFrame(raf);raf=0}},{threshold:.05}).observe(board);
- board.addEventListener('pointerenter',()=>hover=true);board.addEventListener('pointerleave',()=>hover=false);
- board.addEventListener('pointerdown',e=>{if(e.button!==0)return;pressedCard=e.target.closest('.scent-card');press={x:e.clientX,last:e.clientX,time:performance.now(),moved:false};velocity=0;board.setPointerCapture(e.pointerId)});
- board.addEventListener('pointermove',e=>{if(!press)return;const now=performance.now(),dx=e.clientX-press.last;if(Math.abs(e.clientX-press.x)>5)press.moved=true;if(press.moved){angle+=dx*.2;velocity=dx/Math.max(8,now-press.time)*160;paint()}press.last=e.clientX;press.time=now});
- let dragged=false;board.addEventListener('pointerup',e=>{dragged=!!press?.moved;press=null;if(board.hasPointerCapture(e.pointerId))board.releasePointerCapture(e.pointerId);setTimeout(()=>dragged=false,0)});board.addEventListener('pointercancel',()=>{press=null;dragged=true});
- function close(){if(!dialog.open)return;selected?.classList.remove('is-flipped');dialog.classList.remove('detail-visible');setTimeout(()=>{window.unmountScentFlip?.();dialog.close();document.documentElement.style.overflow='';selected=null;returnFocus?.focus({preventScroll:true});wake()},700)}
+ let closing=false;
+ function close(){if(!dialog.open||closing)return;closing=true;dialog.classList.remove('detail-visible');setTimeout(()=>{window.unmountScentFlip?.();dialog.close();document.documentElement.style.overflow='';closing=false;host.querySelector('.circular-carousel')?.focus({preventScroll:true})},550)}
  dialog.querySelector('.scent-dialog-close').onclick=close;dialog.addEventListener('cancel',e=>{e.preventDefault();close()});dialog.addEventListener('click',e=>{if(e.target===dialog)close()});
- board.addEventListener('click',e=>{const card=e.target.closest('.scent-card')||pressedCard;pressedCard=null;if(!card)return;e.preventDefault();e.stopImmediatePropagation();if(dragged)return;returnFocus=card.querySelector('button');const i=cards.indexOf(card);angle=-i*step;velocity=0;paint();dialog.showModal();document.documentElement.style.overflow='hidden';window.mountScentFlip(dialog.querySelector('.scent-detail'),card);requestAnimationFrame(()=>dialog.classList.add('detail-visible'));},true);
- board.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();angle+=e.key==='ArrowRight'?-step:step;paint()}});addEventListener('resize',measure);document.addEventListener('visibilitychange',wake);measure();
+ window.mountScentCarousel(host,cards,card=>{if(dialog.open)return;dialog.showModal();document.documentElement.style.overflow='hidden';window.mountScentFlip(dialog.querySelector('.scent-detail'),card);requestAnimationFrame(()=>dialog.classList.add('detail-visible'))}).catch(error=>console.error('Scent carousel failed to load',error));
 })();
 
 // Hand the logo from the hero editorial row to the fixed navigation.
@@ -571,11 +561,11 @@ if(typeof window!=='undefined')(()=>{
  const region=document.querySelector('.frequency-scroll'),white=document.querySelector('.frequency-white'),section=document.querySelector('#collection'),track=document.querySelector('.card-journey-track'),snow=document.querySelector('.white-snow-crop'),card=document.querySelector('[aria-controls="note-184"]')?.closest('.scent-card');if(!region||!white||!card)return;
  const reduce=matchMedia('(prefers-reduced-motion: reduce)'),bridge=document.createElement('div'),message=document.createElement('p');bridge.className='snow-card-handoff';bridge.setAttribute('aria-hidden','true');const image=card.querySelector('.card-front img').cloneNode();image.loading='eager';image.className='snow-card-final';const sourceImage=snow.querySelector('img').cloneNode();sourceImage.className='snow-card-source';sourceImage.loading='eager';bridge.append(sourceImage,image);message.className='snow-card-message';message.textContent='처음부터 취향을 정할 필요는 없습니다.';document.body.append(bridge,message);
  const clamp=n=>Math.max(0,Math.min(1,n)),ease=n=>{n=clamp(n);return n*n*(3-2*n)},mix=(a,b,t)=>a+(b-a)*t;let frame=0,origin=null;
- function render(){frame=0;const vh=innerHeight,r=region.getBoundingClientRect(),tail=innerWidth>=768?vh*2.5:0,base=region.offsetHeight-vh-tail,elapsed=-r.top-base,t=track.getBoundingClientRect(),active=tail>0&&!reduce.matches&&elapsed>=0&&t.top>0;
+ function render(){frame=0;const vh=innerHeight,r=region.getBoundingClientRect(),tail=innerWidth>=768?vh*2.5:0,base=region.offsetHeight-vh-tail,elapsed=-r.top-base,t=track.getBoundingClientRect(),active=tail>0&&!reduce.matches&&elapsed>=0&&t.top>vh*.8;
  bridge.hidden=message.hidden=!active;white.classList.toggle('snow-handoff-active',active);section.classList.toggle('snow-bridge-pending',active);document.body.classList.toggle('snow-transition-active',active);card.classList.toggle('snow-is-travelling',active);
  if(!active){origin=null;return}if(!origin){const b=snow.getBoundingClientRect();origin={x:b.left+b.width/2,y:b.top+b.height/2,w:b.width,h:b.height}}
- const p=clamp(elapsed/tail),shrink=ease(p/.45),travel=ease((elapsed-tail)/Math.max(1,t.top+elapsed-tail-120)),board=track.querySelector('.scent-board').getBoundingClientRect(),cw=Math.min(innerWidth*.148,vh*.33*325/431),ch=cw*431/325,dw=card.offsetWidth,dh=card.offsetHeight;document.body.style.setProperty('--snow-backdrop','1');
- const centeredX=mix(origin.x,innerWidth*.5,shrink),centeredY=mix(origin.y,vh*.59,shrink),centerX=mix(centeredX,board.left+board.width/2,travel),centerY=mix(centeredY,board.top+board.height*.52,travel),w=mix(mix(origin.w,cw,shrink),dw,travel),h=mix(mix(origin.h,ch,shrink),dh,travel);
+ const p=clamp(elapsed/tail),shrink=ease(p/.45),travel=ease((elapsed-tail)/Math.max(1,t.top+elapsed-tail-120)),board=track.querySelector('.scent-board').getBoundingClientRect(),cw=Math.min(innerWidth*.148,vh*.33*325/431),ch=cw*431/325,dw=220,dh=220;document.body.style.setProperty('--snow-backdrop','1');
+ const centeredX=mix(origin.x,innerWidth*.5,shrink),centeredY=mix(origin.y,vh*.59,shrink),centerX=mix(centeredX,board.left+board.width/2,travel),centerY=mix(centeredY,board.top+board.height*.5,travel),w=mix(mix(origin.w,cw,shrink),dw,travel),h=mix(mix(origin.h,ch,shrink),dh,travel);
  bridge.style.cssText='left:'+centerX+'px;top:'+centerY+'px;width:'+w+'px;height:'+h+'px;--card-face:'+ease((p-.25)/.2)+';transform:translate(-50%,-50%) perspective(1200px) rotateY('+(360*ease(travel))+'deg) rotateZ('+((parseFloat(card.style.getPropertyValue('--gather-angle'))||0)*travel)+'deg)';
  const swap=ease((p-.32)/.16);sourceImage.style.opacity=String(1-swap);image.style.opacity=String(swap*.8);const facePadding=dw*.14,faceHeight=(dh-facePadding*2)*.65;image.style.left='14%';image.style.top=((dh-faceHeight)/dh*50)+'%';image.style.width='72%';image.style.height=(faceHeight/dh*100)+'%';const inset=15*shrink;sourceImage.style.cssText='left:'+inset+'%;top:'+inset+'%;width:'+(100-2*inset)+'%;height:'+(100-2*inset)+'%;opacity:'+(1-swap);white.style.setProperty('--handoff-fade',String(1-ease(p/.3)));const a=ease((p-.5)/.18)*(1-travel);message.style.opacity=a;message.style.transform='translate(-50%,'+((1-a)*20)+'px)';message.style.filter='blur('+((1-a)*8)+'px)';
  }

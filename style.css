@@ -1314,3 +1314,12 @@ body.snow-transition-active #collection{position:relative;z-index:42;background:
 .scent-react-back .card-description{margin:0;font:400 14px/1.5 var(--font-ui)}
 .scent-react-back .card-keywords{margin-top:auto;font:400 14px/1.5 var(--font-label)}
 .scent-react-back .card-keywords span{font:inherit}
+
+/* React Bits owns carousel transforms. Original nodes only supply scent data. */
+.carousel-track .scent-board.products.react-scent-board{position:relative!important;top:auto!important;display:block!important;width:100%;height:560px!important;min-height:0;margin:0;aspect-ratio:auto;overflow:hidden;transform:none!important}
+.react-scent-board>.scent-data-card{display:none!important}
+.react-carousel-host{position:relative;width:100%;height:560px}
+.react-carousel-host .circular-carousel{color:#111;font-family:var(--font-ui)}
+.react-carousel-host .circular-carousel__caption{font-size:14px}
+body.snow-transition-active .react-carousel-host .circular-carousel__card[data-cc-index="0"]{visibility:hidden}
+@media(max-width:767px){.carousel-track .scent-board.products.react-scent-board,.react-carousel-host{height:480px!important}}
