@@ -616,3 +616,6 @@ if(typeof window!=='undefined')(()=>{
  }
  function schedule(){if(!frame)frame=requestAnimationFrame(render)}addEventListener('scroll',schedule,{passive:true});addEventListener('resize',()=>{origin=null;schedule()});reduce.addEventListener('change',schedule);new MutationObserver(schedule).observe(track,{subtree:true,childList:true,attributes:true,attributeFilter:['data-ready']});render();
 })();
+
+// Align visible capital letters with the viewport center after fonts resolve.
+{const word=document.querySelector('.intro-word');if(word){const ctx=document.createElement('canvas').getContext('2d');const align=()=>{const s=getComputedStyle(word);ctx.font=s.fontWeight+' '+s.fontSize+' '+s.fontFamily;const m=ctx.measureText('NOISE');const a=m.fontBoundingBoxAscent,d=m.fontBoundingBoxDescent;if(Number.isFinite(a)&&Number.isFinite(d))word.style.setProperty('--intro-optical-y',((m.actualBoundingBoxAscent-m.actualBoundingBoxDescent-a+d)/2)+'px')};document.fonts.ready.then(align);addEventListener('resize',align);align()}}

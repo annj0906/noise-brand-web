@@ -1,0 +1,3 @@
+.particles-container{position:relative;width:100%;height:100%;overflow:hidden}.particles-canvas{position:absolute;inset:0;display:block;width:100%;height:100%}
+
+.brand-particles{position:absolute;inset:0;z-index:0;pointer-events:none}.brand-word-stage{isolation:isolate}.brand-word-screen{z-index:1}
