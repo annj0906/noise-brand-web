@@ -1380,3 +1380,68 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 .intro-word > .intro-no{position:absolute;inset:auto;right:calc(50% + var(--insert,0)*.135em);top:0;transform:none}
 .intro-word > .intro-se{position:absolute;inset:auto;left:calc(50% + var(--insert,0)*.135em);top:0;transform:none}
 .intro-word > .intro-i{position:absolute;inset:auto;left:50%!important;top:0;flex:none;width:.27em;letter-spacing:0;transform:translate(-50%,calc((1 - var(--insert,0))*55px));opacity:var(--insert,0)}
+/* Inspiration story between the temperature zoom and frequencies. */
+.inspiration-story{position:relative;background:#000;color:#f5f5f5;isolation:isolate;overflow:hidden;z-index:1}
+.inspiration-canvas{position:relative;width:100%;max-width:1600px;margin:auto;height:clamp(1500px,187vw,2992px)}
+.inspiration-copy{position:absolute;margin:0;font-family:Pretendard,sans-serif;font-size:20px;font-weight:400;line-height:1.5;letter-spacing:-.025em}
+.inspiration-opening{left:11%;top:3.5%}.inspiration-stone{left:36.7%;top:11%}.inspiration-car{left:74.8%;top:18.5%}.inspiration-lemon{left:65.2%;top:33.3%}
+.inspiration-photos{position:absolute;left:50%;transform:translateX(-50%);top:36.9%;width:78.2%;height:15.5%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px}
+.inspiration-photos img{display:block;width:100%;height:100%;object-fit:cover}
+.inspiration-wood{left:13.3%;top:57.4%}.inspiration-everyday{left:61%;top:67.7%}.inspiration-ten{left:9.6%;top:79.3%}
+.inspiration-door{position:absolute;left:69.7%;top:81.5%;width:19.4%;height:15.5%;object-fit:cover;display:block}
+.inspiration-square{position:absolute;display:block;width:12px;height:12px;background:#ff1717}
+.square-1{left:69.5%;top:7.1%}.square-2{left:32.7%;top:21.8%}.square-3{left:78.7%;top:79.2%}.square-4{left:25.1%;top:94.3%}
+@media(max-width:767px){.inspiration-canvas{height:1550px}.inspiration-opening{left:8%;right:8%;max-width:300px}.inspiration-stone{left:27%}.inspiration-car{left:69%}.inspiration-lemon{left:auto;right:8%;top:31.5%}.inspiration-photos{left:50%;width:88%;top:36%;height:14%}.inspiration-wood{left:8%;top:54%}.inspiration-everyday{left:35%;right:7%;top:65%}.inspiration-ten{left:8%;right:8%;top:77%}.inspiration-door{left:62%;width:30%;top:82%;height:14%}.inspiration-square{width:8px;height:8px}}
+
+/* Generous breathing room around the inspiration story. */
+.inspiration-story{padding-block:clamp(180px,18vh,320px)} 
+@media(max-width:767px){.inspiration-story{padding-block:140px}}
+/* Compact photo strip, preserving the original portrait proportions. */
+.inspiration-photos{width:58.65%;height:11.625%}
+@media(max-width:767px){.inspiration-photos{width:99%;height:15.75%}}
+/* Bring the scattered copy inward without changing its vertical rhythm. */
+.inspiration-opening{left:22.7%}
+.inspiration-stone{left:40.7%}
+.inspiration-car{left:67.4%}
+.inspiration-lemon{left:60.6%}
+.inspiration-wood{left:24.3%}
+.inspiration-everyday{left:57.7%}
+.inspiration-ten{left:21.7%}
+@media(max-width:767px){
+ .inspiration-opening{left:14%;right:10%}
+ .inspiration-stone{left:33%}
+ .inspiration-car{left:60%}
+ .inspiration-lemon{left:auto;right:15%}
+ .inspiration-wood{left:16%}
+ .inspiration-everyday{left:29%;right:10%}
+ .inspiration-ten{left:14%;right:10%}
+}
+/* Align the caption with the photo strip's right edge. */
+.inspiration-lemon{left:auto;right:20.675%;text-align:right}
+@media(max-width:767px){.inspiration-lemon{left:auto;right:.5%}}
+
+/* Three viewport-sized story beats; keep captions with their imagery. */
+.inspiration-canvas{height:300svh;min-height:2100px;max-height:none}
+.inspiration-opening{top:4%}
+.inspiration-stone{top:13%}
+.inspiration-car{top:23%}
+.inspiration-lemon{top:37%}
+.inspiration-photos{top:42%;height:auto;aspect-ratio:2.7}
+.inspiration-wood{top:calc(42% + min(21.73vw,347.6px) + 48px)}
+.inspiration-everyday{top:71%}
+.inspiration-ten{top:82%}
+.inspiration-door{top:80%;height:auto;aspect-ratio:733/1096;width:15%;left:64.35%}
+.square-1{top:8%}.square-2{top:26%}.square-3{top:77%}.square-4{top:94%}
+@media(max-width:767px){
+ .inspiration-canvas{height:2400px;min-height:0}
+ .inspiration-opening{top:4%}.inspiration-stone{top:13%}.inspiration-car{top:23%}
+ .inspiration-lemon{top:36%;right:8%}
+ .inspiration-photos{top:41%;width:84%;height:auto;aspect-ratio:2.7}
+ .inspiration-wood{top:calc(41% + 31.12vw + 36px)}
+ .inspiration-everyday{top:70%;left:25%;right:10%}
+ .inspiration-ten{top:79%;left:14%;right:10%}
+ .inspiration-door{top:84%;left:62%;width:26%;height:auto}
+}
+/* Wood caption follows the second image's left edge (four columns, 2px gaps). */
+.inspiration-wood{left:calc(35.3375% + .5px)}
+@media(max-width:767px){.inspiration-wood{left:calc(29% + .5px)}}

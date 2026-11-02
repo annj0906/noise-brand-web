@@ -200,10 +200,10 @@ if(typeof window!=='undefined'){
    motions.forEach(([selector,x,y,rotation])=>{const object=world.querySelector(selector);if(!object)return;const progress=reduced.matches?0:depth;object.style.setProperty('--depth-x',(x*progress*motionScale)+'px');object.style.setProperty('--depth-y',(y*progress*motionScale)+'px');object.style.setProperty('--depth-turn',(rotation*progress)+'deg');});
    const zoom=reduced.matches?0:smooth((p-.67)/.32),fade=smooth((zoom-.58)/.4);
    section.style.setProperty('--temp-progress',String(p));section.style.setProperty('--temp-exit',String(fade));section.style.setProperty('--black-arrival',String(fade));
-   let blackout=document.querySelector('.temperature-viewport-blackout');if(!blackout){blackout=document.createElement('div');blackout.className='temperature-viewport-blackout';blackout.setAttribute('aria-hidden','true');document.body.append(blackout);}blackout.style.opacity=String(!reduced.matches&&rect.top<=0&&document.querySelector('.frequency-scroll').getBoundingClientRect().top>0?fade:0);
+   let blackout=document.querySelector('.temperature-viewport-blackout');if(!blackout){blackout=document.createElement('div');blackout.className='temperature-viewport-blackout';blackout.setAttribute('aria-hidden','true');document.body.append(blackout);}blackout.style.opacity=String(!reduced.matches&&rect.top<=0&&document.querySelector('.inspiration-story').getBoundingClientRect().top>0?fade:0);
 
    const landing=rect.top<0&&rect.bottom>0&&fade>0&&!reduced.matches;next.classList.remove('is-landing');next.classList.toggle('is-sequence-pinned',landing||(!reduced.matches&&document.querySelector('.sense-scroll').getBoundingClientRect().top<=0&&document.querySelector('.sense-scroll').getBoundingClientRect().bottom>0));
-   stage.classList.toggle('is-sequence-pinned',!reduced.matches&&rect.top<=0&&document.querySelector('.frequency-scroll').getBoundingClientRect().top>0);
+   stage.classList.toggle('is-sequence-pinned',!reduced.matches&&rect.top<=0&&document.querySelector('.inspiration-story').getBoundingClientRect().top>0);
    const fullyBlack=fade>=.999999;
    if(!fullyBlack){clearTimeout(blackStartTimer);blackStartTimer=0;next.classList.remove('sense-content-active');}
    else if(next.classList.contains('sense-ready'))next.classList.add('sense-content-active');
