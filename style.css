@@ -1445,3 +1445,76 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 /* Wood caption follows the second image's left edge (four columns, 2px gaps). */
 .inspiration-wood{left:calc(35.3375% + .5px)}
 @media(max-width:767px){.inspiration-wood{left:calc(29% + .5px)}}
+
+/* Words approach from depth while their layout anchors stay fixed. */
+.brand-word-screen p{transform:translate(-50%,calc(-50% + var(--word-rise,0px))) scale(var(--word-scale,1));transform-origin:50% 50%;will-change:transform,opacity,filter}
+@media(prefers-reduced-motion:reduce){.brand-word-screen p{transform:translate(-50%,-50%)}}
+
+.brand-depth-english{position:absolute;display:block;pointer-events:none;white-space:nowrap;font:400 14px/1.3 var(--font-ui);letter-spacing:.08em;color:#b9bdc3;transform-origin:center;will-change:transform,opacity;opacity:0}
+@media(prefers-reduced-motion:reduce){.brand-depth-english{display:none}}
+
+/* Scroll-directed camera journey: each image and caption share one scene. */
+.inspiration-story.inspiration-camera{height:650svh;padding:0;overflow:clip}
+.inspiration-camera-stage{position:sticky;top:0;height:100svh;overflow:hidden;perspective:1200px}
+.inspiration-camera-space{position:absolute;inset:0;transform-style:preserve-3d}
+.inspiration-camera-scene{position:absolute;inset:0;opacity:0;pointer-events:none;will-change:transform,opacity;transform-origin:35% 50%}
+.inspiration-camera-scene img{position:absolute;left:16%;top:20%;width:36%;height:60%;object-fit:cover}
+.inspiration-camera-scene p{position:absolute;left:62%;right:8%;top:48%;margin:0;font:400 20px/1.6 Pretendard,sans-serif;letter-spacing:-.025em;will-change:transform,opacity}
+.inspiration-camera-ending{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;margin:0;text-align:center;font:400 20px/1.7 Pretendard,sans-serif;opacity:0;pointer-events:none}
+@media(max-width:767px){.inspiration-camera-scene img{left:9%;top:14%;width:64%;height:49%}.inspiration-camera-scene p{left:31%;right:7%;top:73%;font-size:20px}.inspiration-camera-ending{padding:24px;font-size:20px}}
+@media(prefers-reduced-motion:reduce){.inspiration-story.inspiration-camera{height:auto}.inspiration-camera-stage{position:relative;height:auto}.inspiration-camera-space{position:relative}.inspiration-camera-scene{position:relative;height:100svh;opacity:1!important;transform:none!important}.inspiration-camera-scene p{opacity:1!important;transform:none!important}.inspiration-camera-ending{position:relative;min-height:60svh;opacity:1!important}}
+
+/* Alternating planes create a hallway, with a visible vanishing point. */
+.inspiration-camera-stage{perspective:1000px;perspective-origin:50% 48%}
+.inspiration-camera-space{will-change:transform}
+.inspiration-camera-scene{transform-origin:50% 50%;transform-style:preserve-3d;backface-visibility:hidden}
+.inspiration-camera-scene img{left:18%;top:22%;width:30%;height:56%}
+.inspiration-camera-scene[data-side="right"] img{left:43%;top:19%;width:28%;height:59%}
+.inspiration-camera-scene p{left:76%;right:2%;top:48%;font-size:20px}
+.inspiration-camera-scene[data-side="left"] p{left:57%;right:14%}
+@media(max-width:767px){.inspiration-camera-stage{perspective:700px}.inspiration-camera-scene img{left:12%;top:22%;width:47%;height:48%}.inspiration-camera-scene[data-side="right"] img{left:40%;top:19%;width:46%;height:48%}.inspiration-camera-scene p,.inspiration-camera-scene[data-side="left"] p{left:20%;right:8%;top:76%}}
+
+/* Captions occupy the open side of the corridor. */
+.inspiration-camera-scene[data-side="right"] p{left:6%;right:auto;width:29%;text-align:left;overflow-wrap:break-word}
+.inspiration-camera-scene[data-side="left"] p{left:57%;right:auto;width:29%;text-align:left;overflow-wrap:break-word}
+@media(max-width:767px){.inspiration-camera-scene[data-side="right"] p{left:7%;right:auto;width:65%;top:76%}.inspiration-camera-scene[data-side="left"] p{left:27%;right:auto;width:65%;top:76%}}
+@media(prefers-reduced-motion:reduce){.inspiration-camera-scene img{filter:none!important;opacity:1!important}}
+
+
+/* Preserve the camera projection without intersecting CSS 3D filter layers. */
+.inspiration-camera-stage{perspective:none}
+.inspiration-camera-space{transform-style:flat}
+.inspiration-camera-scene{transform-style:flat;transform-origin:50% 48%;backface-visibility:visible}
+
+.inspiration-camera-render{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+@media(prefers-reduced-motion:no-preference){.inspiration-camera-scene img{visibility:hidden!important;filter:none!important}.inspiration-camera-space,.inspiration-camera-scene{will-change:auto}}
+/* Alternating, consistently sized photographs with captions across the aisle. */
+.inspiration-camera-scene img,.inspiration-camera-scene[data-side="right"] img{left:29%;top:23%;width:18%;height:54%;object-fit:cover}
+.inspiration-camera-scene[data-side="right"] img{left:53%}
+.inspiration-camera-scene p,.inspiration-camera-scene[data-side="left"] p{left:56%;right:auto;top:50%;width:27%;font-size:20px;line-height:1.5;text-align:left;translate:0 -50%}
+.inspiration-camera-scene[data-side="right"] p{left:17%;right:auto;top:50%;width:27%;text-align:right}
+@media(max-width:700px){.inspiration-camera-scene img,.inspiration-camera-scene[data-side="right"] img{left:14%;top:25%;width:30%;height:48%}.inspiration-camera-scene[data-side="right"] img{left:56%}.inspiration-camera-scene[data-side="left"] p{left:51%;width:39%;font-size:16px}.inspiration-camera-scene[data-side="right"] p{left:10%;width:39%;font-size:16px}}
+
+.inspiration-camera-scene p{font-weight:600}
+
+/* Bring carousel identification closer without moving the cards. */
+.react-carousel-host .circular-carousel__caption{translate:0 -70px}
+
+/* Text-only slogan and continuous photograph arrival. */
+.temperature-world .temperature-art,.temperature-glass,.temperature-debris,.temperature-footnote{visibility:hidden!important}
+.temperature-heading h2 .temperature-art,.temperature-heading .temperature-enter{display:none!important}
+.temperature-world .temperature-line{gap:.18em}
+.temperature-viewport-blackout,.temperature-exit{display:none!important}
+.slogan-photo-handoff{position:fixed;inset:0;z-index:51;pointer-events:none;visibility:hidden;overflow:hidden;background:transparent}
+.slogan-photo-handoff img{position:absolute;width:18%;height:54%;object-fit:cover;transform-origin:50% 50%;will-change:transform,top,left}
+@media(max-width:700px){.slogan-photo-handoff img{width:30%;height:48%}}
+
+.slogan-photo-caption{position:absolute;left:56%;top:50%;width:27%;margin:0;color:#fff;font-family:Pretendard,sans-serif;font-size:20px;font-weight:600;line-height:1.5;transform:translateY(-50%)}
+@media(max-width:700px){.slogan-photo-caption{left:52%;width:43%;font-size:20px}}
+
+/* Match the caption at the slogan-to-corridor handoff. */
+.inspiration-camera-ending{font-size:20px;font-weight:600;line-height:1.5;letter-spacing:-.025em}
+.slogan-photo-caption{left:54%;letter-spacing:-.025em}
+@media(max-width:700px){.slogan-photo-caption{left:49%;width:39%;font-size:16px}}
+
+.inspiration-camera-ending{position:fixed;z-index:40;visibility:hidden}.inspiration-camera:has(.inspiration-camera-stage) .inspiration-camera-ending{pointer-events:none}
