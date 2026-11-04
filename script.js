@@ -552,21 +552,26 @@ if(typeof window!=='undefined'){
  const sp=clamp(-s.top/Math.max(1,statement.offsetHeight-vh)),reveal=reduce.matches?1:smooth(sp/.28);renderStatementRibbon(sp);statement.querySelectorAll('.brand-sentence-line').forEach((line,index)=>{const a=reduce.matches?1:smooth((sp-index*.32)/.28);line.style.setProperty('--line-alpha',a);line.style.setProperty('--line-blur',(1-a)*12+'px');line.style.setProperty('--line-rise',(1-a)*32+'px')});if(!played&&reveal>=1){played=true;setTimeout(()=>{const word=statement.querySelector('.brand-inline-logo'),letters=[...word.children];let step=0;word.classList.add('is-glitching');function tick(){letters.forEach(letter=>letter.classList.toggle('is-pixel',Math.random()>.5));if(++step<7)setTimeout(tick,65);else{word.classList.remove('is-glitching');letters.forEach(letter=>letter.classList.remove('is-pixel'))}}if(!reduce.matches)tick()},0)}
  if(lens&&b.top<vh&&b.bottom>0){const handoff=smooth((vh*.9-s.top)/(vh*.8)),cursor=handoff>=1,travel=clamp((vh*.5-w.top)/Math.max(vh,words.offsetHeight)),baseSize=Math.min(260,innerWidth*.20)*(1-smooth((travel-.75)/.25)*.8),size=baseSize+(68-baseSize)*handoff;lens.classList.add('is-active');lens.style.clipPath='none';lens.style.filter='none';lens.style.opacity=reduce.matches?'0':String(smooth((vh-b.top)/(vh*.5)));lens.style.setProperty('--glass-diameter',size+'px');const baseX=innerWidth/2,baseY=vh*(.34+wp*.28),x=baseX+(followX-baseX)*handoff,y=baseY+(followY-baseY)*handoff;const turn=wp*1080*(1-handoff);const wordIndex=Math.min(5,Math.floor(wp*6)),word=words.querySelectorAll('p')[wordIndex],wordRect=word.getBoundingClientRect();let lightX=wordRect.left+wordRect.width/2,lightY=wordRect.top+wordRect.height/2;if(handoff>0){let nearest=null,best=Infinity;[...statement.querySelectorAll('.brand-sentence-line'),...stage.querySelectorAll('.brand-product-copy')].forEach(line=>{const r=line.getBoundingClientRect();if(r.bottom<0||r.top>vh||Number(getComputedStyle(line).opacity)<.05)return;const tx=Math.max(r.left,Math.min(x,r.right)),ty=Math.max(r.top,Math.min(y,r.bottom)),distance=Math.hypot(tx-x,ty-y);if(distance<best){best=distance;nearest={x:tx,y:ty,r}}});if(nearest){const tx=best<2?nearest.r.left+nearest.r.width/2:nearest.x,ty=best<2?nearest.r.top+nearest.r.height/2:nearest.y;lightX+=(tx-lightX)*handoff;lightY+=(ty-lightY)*handoff;}}const lightAngle=Math.atan2(lightY-y,lightX-x)*180/Math.PI+90;aimRim(lightAngle);lens.style.setProperty('--rim-light-strength',String(.85-.5*handoff));lens.style.transform='translate('+x+'px,'+y+'px) translate(-50%,-50%) perspective(1000px) rotateY('+turn+'deg)'}else if(lens){lens.classList.remove('is-active');lens.style.opacity='0';}
  const t=track.getBoundingClientRect(),p=clamp(-t.top/Math.max(1,track.offsetHeight-vh));
-  // Product movement and the black-to-white swap stay independent of the editorial headlines.
-  // Scrub each headline continuously from right to left in its own scene.
+  // Choreography: reveal the BLACK product first, then the BLACK title + description;
+  // swap to WHITE products, then reveal the WHITE title + description.
+  // Keep the product placement and swap timeline controlled by the existing collection draw().
   const titleScenes=[
-   {copy:'.brand-black-copy',meta:'.brand-black-meta',start:.10,end:.48,active:p<.52},
-   {copy:'.brand-white-copy',meta:'.brand-white-meta',start:.59,end:.97,active:p>=.52}
+   {group:'.brand-black-editorial',start:.34,settle:.46,exit:.52,finish:.59,active:p<.52},
+   {group:'.brand-white-editorial',start:.66,settle:.79,exit:.91,finish:.99,active:p>=.52}
   ];
-  titleScenes.forEach(({copy,meta,start,end,active})=>{
-   const el=stage.querySelector(copy),info=stage.querySelector(meta);
-   if(!el||!info)return;
-   const phase=clamp((p-start)/(end-start));
-   const alpha=reduce.matches?(active?1:0):smooth((phase-.02)/.12)*(1-smooth((phase-.88)/.12));
-   el.style.setProperty('--copy-progress',String(reduce.matches?.5:phase));
-   el.style.setProperty('--copy-alpha',String(alpha));
-   el.style.setProperty('--copy-blur',(reduce.matches?0:(1-alpha)*3)+'px');
-   info.style.setProperty('--copy-alpha',String(alpha));
+  titleScenes.forEach(({group,start,settle,exit,finish,active})=>{
+   const editorial=stage.querySelector(group);
+   if(!editorial)return;
+   const heading=editorial.querySelector('.brand-product-copy');
+   const description=editorial.querySelector('.brand-product-meta');
+   const entering=smooth((p-start)/Math.max(.001,settle-start));
+   const leaving=smooth((p-exit)/Math.max(.001,finish-exit));
+   const alpha=reduce.matches?(active?1:0):smooth((p-start)/.075)*(1-smooth((p-exit)/Math.max(.001,finish-exit)));
+   const offset=reduce.matches?0:(1-entering)*innerWidth*.85-leaving*innerWidth*.42;
+   editorial.style.setProperty('--editorial-x',offset+'px');
+   heading.style.setProperty('--copy-alpha',String(alpha));
+   heading.style.setProperty('--copy-blur',reduce.matches?'0px':((1-alpha)*2)+'px');
+   description.style.setProperty('--copy-alpha',String(alpha));
   });
  }
  function schedule(){if(!raf)raf=requestAnimationFrame(render)}let followFrame=0;function followPointer(now){followFrame=0;const dt=Math.min(now-followTime||16,50);followTime=now;const ease=reduce.matches?1:1-Math.exp(-dt/170);followX+=(mx-followX)*ease;followY+=(my-followY)*ease;schedule();if(Math.hypot(mx-followX,my-followY)>.15)followFrame=requestAnimationFrame(followPointer);}window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);window.addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY;const b=story.getBoundingClientRect();if(b.top<innerHeight&&b.bottom>0&&!followFrame){followTime=performance.now();followFrame=requestAnimationFrame(followPointer)}},{passive:true});render();
