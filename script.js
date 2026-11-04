@@ -556,21 +556,25 @@ if(typeof window!=='undefined'){
   // swap to WHITE products, then reveal the WHITE title + description.
   // Keep the product placement and swap timeline controlled by the existing collection draw().
   const titleScenes=[
-   {group:'.brand-black-editorial',start:.34,settle:.46,exit:.52,finish:.59,active:p<.52},
-   {group:'.brand-white-editorial',start:.66,settle:.79,exit:.91,finish:.99,active:p>=.52}
+   // BLACK bottle has reached its resting height by about 40% of this track.
+   {group:'.brand-black-editorial',start:.40,settle:.47,exit:.51,finish:.55,active:p<.52},
+   // WHITE product swap finishes near 62%, before the second editorial arrives.
+   {group:'.brand-white-editorial',start:.67,settle:.75,exit:.91,finish:.99,active:p>=.52}
   ];
   titleScenes.forEach(({group,start,settle,exit,finish,active})=>{
    const editorial=stage.querySelector(group);
    if(!editorial)return;
    const heading=editorial.querySelector('.brand-product-copy');
    const description=editorial.querySelector('.brand-product-meta');
+   // Pin the copy horizontally. On scroll it rises a little from below, holds
+   // beside the perfume, then gently rises out; never travels behind the product.
    const entering=smooth((p-start)/Math.max(.001,settle-start));
    const leaving=smooth((p-exit)/Math.max(.001,finish-exit));
-   const alpha=reduce.matches?(active?1:0):smooth((p-start)/.075)*(1-smooth((p-exit)/Math.max(.001,finish-exit)));
-   const offset=reduce.matches?0:(1-entering)*innerWidth*.85-leaving*innerWidth*.42;
-   editorial.style.setProperty('--editorial-x',offset+'px');
+   const alpha=reduce.matches?(active?1:0):entering*(1-leaving);
+   const rise=reduce.matches?0:(1-entering)*30-leaving*16;
+   editorial.style.setProperty('--editorial-rise',rise+'px');
    heading.style.setProperty('--copy-alpha',String(alpha));
-   heading.style.setProperty('--copy-blur',reduce.matches?'0px':((1-alpha)*2)+'px');
+   heading.style.setProperty('--copy-blur',reduce.matches?'0px':((1-alpha)*1.5)+'px');
    description.style.setProperty('--copy-alpha',String(alpha));
   });
  }
