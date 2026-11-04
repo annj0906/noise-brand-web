@@ -1592,8 +1592,8 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  position:absolute;left:21%;top:50%;z-index:1;
  display:flex;flex-direction:column;align-items:flex-start;gap:20px;
  width:max-content;max-width:75%;pointer-events:none;
- transform:translate3d(var(--editorial-x,85vw),-50%,0);
- will-change:transform;
+ transform:translate3d(0,calc(-50% + var(--editorial-rise,32px)),0);
+ will-change:transform,opacity;
 }
 .brand-journey .collection-stage .brand-product-editorial .brand-product-copy{
  position:static;left:auto;top:auto;z-index:auto;
@@ -1629,4 +1629,20 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
   transform:translate3d(0,-50%,0);will-change:auto;
  }
  .brand-journey .collection-stage .brand-product-editorial .brand-product-copy{filter:none!important}
+}
+
+/* Keep the editorial block anchored on the left while it rises into place.
+   Shift both product layers together without changing their dimensions or spacing. */
+@media(min-width:1024px){
+ .brand-journey .collection-stage .collection-object{
+  transform:translate3d(clamp(38px,5vw,92px),0,0);
+ }
+}
+@media(min-width:768px) and (max-width:1023px){
+ .brand-journey .collection-stage .collection-object{
+  transform:translate3d(3vw,0,0);
+ }
+}
+@media(max-width:767px){
+ .brand-journey .collection-stage .collection-object{transform:none}
 }
