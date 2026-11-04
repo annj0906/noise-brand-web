@@ -1545,8 +1545,8 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 .brand-journey .collection-stage .brand-product-copy{
  position:absolute;top:51%;left:0;z-index:6;margin:0;padding:0;
  width:max-content;max-width:none;white-space:nowrap;text-align:left;
- font:500 clamp(76px,9vw,168px)/1 var(--font-brand);
- letter-spacing:-.065em;line-height:1;
+ font:400 128px/1 var(--font-brand);
+ letter-spacing:-.025em;line-height:1;
  transform:translate3d(calc(100vw - var(--copy-progress,0) * 165vw),-50%,0);
  opacity:var(--copy-alpha,0);filter:blur(var(--copy-blur,0px));
  pointer-events:none;will-change:transform,opacity;color:#fff;
@@ -1577,7 +1577,7 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 @media(prefers-reduced-motion:reduce){
  .brand-journey .collection-stage .brand-product-copy{
   left:50%;transform:translate(-50%,-50%);filter:none!important;
-  will-change:auto;font-size:clamp(64px,9vw,140px);
+  will-change:auto;
  }
  .brand-journey .collection-stage .brand-product-meta{transition:none}
 }
