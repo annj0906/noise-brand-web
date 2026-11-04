@@ -1581,3 +1581,8 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  }
  .brand-journey .collection-stage .brand-product-meta{transition:none}
 }
+
+/* Place scrolling BLACK/WHITE headlines behind the perfume bottle and package.
+   Keep their existing horizontal scroll motion, and retain labels above the scene. */
+.brand-journey .collection-stage .brand-product-copy{z-index:1}
+.brand-journey .collection-stage .collection-object{z-index:2}
