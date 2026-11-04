@@ -1079,14 +1079,13 @@
 @media(prefers-reduced-motion:reduce){.brand-word-screen p{transform:translate(-50%,-50%)}}
 
 /* Pin the brand sentence; finish its reveal before a short logo-only glitch. */
-.brand-statement{height:210svh;min-height:0;display:block;padding:0}
+.brand-statement{height:240svh;min-height:0;display:block;padding:0}
 .brand-statement-stage{position:sticky;top:0;height:100svh;display:grid;place-items:center;padding:24px}
 .brand-statement h2{opacity:var(--statement-alpha,1);filter:blur(var(--statement-blur,0px));transform:translateY(var(--statement-rise,0px))}
 .brand-inline-logo{font-weight:400;letter-spacing:-.045em;font-synthesis:none;gap:0;margin-right:.06em}
 .brand-statement.logo-play .brand-logo-i{animation:none}
 .brand-statement.logo-glitch .brand-inline-logo{animation:brand-logo-static 260ms steps(1,end) 1}
 @keyframes brand-logo-static{0%,100%{transform:none;filter:none;clip-path:none}15%{transform:translateX(-1px);clip-path:inset(0 0 8% 0)}32%{transform:translateX(1px);filter:blur(.5px)}48%{transform:none;clip-path:inset(3% 0 0 0)}65%{transform:translateX(-1px);filter:none}80%{transform:none;clip-path:none}}
-@media(max-width:767px){.brand-statement{height:210svh;min-height:0}}
 @media(prefers-reduced-motion:reduce){.brand-statement{height:100svh}.brand-statement h2{opacity:1;filter:none;transform:none}.brand-statement.logo-glitch .brand-inline-logo{animation:none}}
 
 /* Local soft backing keeps collection copy readable over product labels. */
@@ -1144,6 +1143,15 @@
 /* The header wordmark takes over only after the hero wordmark leaves. */
 .header>.wordmark{transition:opacity 220ms ease,visibility 220ms}
 .header.hero-wordmark-visible>.wordmark{opacity:0;visibility:hidden;pointer-events:none}
+.header,.header.on-dark{border-bottom-color:transparent}
+@media(min-width:1024px){
+ #top .hero-line nav,.header>#navigation{width:max-content;gap:32px;flex-wrap:nowrap;justify-content:flex-end}
+ #top .hero-line nav{justify-self:end}
+ #top .hero-line nav a,.header #navigation a{display:flex;align-items:center;gap:8px;min-height:44px;font:400 14px/1.4 var(--font-ui);letter-spacing:0;white-space:nowrap}
+ #top .hero-line nav .ui-arrow,.header #navigation .ui-arrow{width:16px;height:16px;margin:0;flex:none}
+ .header>#navigation{transition:opacity .35s ease}
+ .header.hero-wordmark-visible>#navigation{opacity:0;visibility:hidden;pointer-events:none}
+}
 @media(prefers-reduced-motion:reduce){.header>.wordmark{transition:none}}
 
 /* Quiet information footer — Pretendard 14px. */
@@ -1377,8 +1385,8 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 /* Anchor the incoming I at the viewport center; open both sides equally. */
 .js .hero-intro{min-height:0}
 .intro-word{display:block;position:relative;width:calc(2 * max(var(--no-width,1.5em),var(--se-width,1.3em)) + .27em);height:1em;line-height:1;transform:translateY(var(--intro-optical-y,0px))}
-.intro-word > .intro-no{position:absolute;inset:auto;right:calc(50% + var(--insert,0)*.135em);top:0;transform:none}
-.intro-word > .intro-se{position:absolute;inset:auto;left:calc(50% + var(--insert,0)*.135em);top:0;transform:none}
+.intro-word > .intro-no{position:absolute;inset:auto;right:50%;top:0;transform:translateX(calc(var(--insert,0)*-.135em))}
+.intro-word > .intro-se{position:absolute;inset:auto;left:50%;top:0;transform:translateX(calc(var(--insert,0)*.135em))}
 .intro-word > .intro-i{position:absolute;inset:auto;left:50%!important;top:0;flex:none;width:.27em;letter-spacing:0;transform:translate(-50%,calc((1 - var(--insert,0))*55px));opacity:var(--insert,0)}
 /* Inspiration story between the temperature zoom and frequencies. */
 .inspiration-story{position:relative;background:#000;color:#f5f5f5;isolation:isolate;overflow:hidden;z-index:1}
@@ -1520,18 +1528,17 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 .inspiration-camera-ending{position:fixed;z-index:40;visibility:hidden}.inspiration-camera:has(.inspiration-camera-stage) .inspiration-camera-ending{pointer-events:none}
 
 
-.brand-statement-stage{isolation:isolate;overflow:clip}
+.brand-statement-stage{width:100%;isolation:isolate;overflow:clip}
 .brand-statement-ribbon{
  position:absolute;inset:0;opacity:0;pointer-events:none;
  overflow:visible;
+ mask-image:linear-gradient(to right,transparent,black 23%,black 77%,transparent);
 }
 .brand-statement-ribbon img{
  position:absolute;top:50%;left:50%;width:0;
- height:clamp(88px, 24svh, 320px);object-fit:cover;border-radius:6%;
- filter:brightness(.32);
-}
-@media(max-width:700px){
- .brand-statement-ribbon img{height:clamp(64px, 24vw, 150px)}
+ transform-origin:0 0;
+ height:auto;max-width:none;aspect-ratio:325/431;object-fit:cover;border-radius:0;
+ filter:brightness(.24);
 }
 .brand-statement-stage h2{position:relative;z-index:1}
 @media(prefers-reduced-motion:reduce){.brand-statement-ribbon{display:none}}
