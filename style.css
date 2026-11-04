@@ -1518,3 +1518,20 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 @media(max-width:700px){.slogan-photo-caption{left:49%;width:39%;font-size:16px}}
 
 .inspiration-camera-ending{position:fixed;z-index:40;visibility:hidden}.inspiration-camera:has(.inspiration-camera-stage) .inspiration-camera-ending{pointer-events:none}
+
+
+.brand-statement-stage{isolation:isolate;overflow:clip}
+.brand-statement-ribbon{
+ position:absolute;inset:0;opacity:0;pointer-events:none;
+ overflow:visible;
+}
+.brand-statement-ribbon img{
+ position:absolute;top:50%;left:50%;width:0;
+ height:clamp(88px, 24svh, 320px);object-fit:cover;border-radius:6%;
+ filter:brightness(.32);
+}
+@media(max-width:700px){
+ .brand-statement-ribbon img{height:clamp(64px, 24vw, 150px)}
+}
+.brand-statement-stage h2{position:relative;z-index:1}
+@media(prefers-reduced-motion:reduce){.brand-statement-ribbon{display:none}}
