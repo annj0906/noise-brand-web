@@ -1599,7 +1599,7 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  position:static;left:auto;top:auto;z-index:auto;
  margin:0;padding:0;width:max-content;max-width:100%;
  transform:none;text-align:left;
- font:400 128px/1 var(--font-brand);letter-spacing:-.025em;
+ font:400 96px/1 var(--font-brand);letter-spacing:-.025em;
  opacity:var(--copy-alpha,0);filter:blur(var(--copy-blur,0px));
  white-space:nowrap;text-shadow:none;
 }
@@ -1635,14 +1635,33 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
    Shift both product layers together without changing their dimensions or spacing. */
 @media(min-width:1024px){
  .brand-journey .collection-stage .collection-object{
-  transform:translate3d(clamp(38px,5vw,92px),0,0);
+  transform:translate3d(clamp(82px,9vw,160px),0,0);
  }
 }
 @media(min-width:768px) and (max-width:1023px){
  .brand-journey .collection-stage .collection-object{
-  transform:translate3d(3vw,0,0);
+  transform:translate3d(5.5vw,0,0);
  }
 }
 @media(max-width:767px){
  .brand-journey .collection-stage .collection-object{transform:none}
+}
+
+/* Figma typography for the BLACK / WHITE collections.
+   Maintain the centered product composition as a group and its layer priority. */
+.brand-journey .collection-stage .brand-product-editorial .brand-product-meta strong{
+ font-family:var(--font-ui);font-size:24px;font-weight:600;line-height:1.35;
+ letter-spacing:-.025em;
+}
+.brand-journey .collection-stage .brand-product-editorial .brand-product-meta>span{
+ font-family:Pretendard,sans-serif;font-size:20px;font-weight:400;line-height:1.5;
+ letter-spacing:-.025em;
+}
+@media(max-width:767px){
+ .brand-journey .collection-stage .brand-product-editorial .brand-product-meta strong{
+  font-size:clamp(16px,4.5vw,21px);
+ }
+ .brand-journey .collection-stage .brand-product-editorial .brand-product-meta>span{
+  font-size:clamp(14px,4vw,18px);
+ }
 }
