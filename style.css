@@ -1586,3 +1586,47 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
    Keep their existing horizontal scroll motion, and retain labels above the scene. */
 .brand-journey .collection-stage .brand-product-copy{z-index:1}
 .brand-journey .collection-stage .collection-object{z-index:2}
+
+/* Sequence product → editorial → product → editorial, without moving the supplied product art. */
+.brand-journey .collection-stage .brand-product-editorial{
+ position:absolute;left:21%;top:50%;z-index:1;
+ display:flex;flex-direction:column;align-items:flex-start;gap:20px;
+ width:max-content;max-width:75%;pointer-events:none;
+ transform:translate3d(var(--editorial-x,85vw),-50%,0);
+ will-change:transform;
+}
+.brand-journey .collection-stage .brand-product-editorial .brand-product-copy{
+ position:static;left:auto;top:auto;z-index:auto;
+ margin:0;padding:0;width:max-content;max-width:100%;
+ transform:none;text-align:left;
+ font:400 128px/1 var(--font-brand);letter-spacing:-.025em;
+ opacity:var(--copy-alpha,0);filter:blur(var(--copy-blur,0px));
+ white-space:nowrap;text-shadow:none;
+}
+.brand-journey .collection-stage .brand-product-editorial .brand-product-meta{
+ position:static;left:auto;bottom:auto;z-index:auto;
+ display:flex;align-items:flex-start;flex-direction:column;gap:8px;
+ margin:0;padding:0;width:auto;max-width:100%;text-align:left;
+ transform:none;opacity:var(--copy-alpha,0);
+}
+.brand-journey .collection-stage .brand-product-editorial .brand-heading-period{
+ display:inline;position:static;transform:none;color:#f00;letter-spacing:inherit;
+}
+.brand-journey .collection-stage .collection-object{z-index:2}
+@media(max-width:767px){
+ .brand-journey .collection-stage .brand-product-editorial{
+  left:7%;top:67%;gap:12px;max-width:88%;
+ }
+ .brand-journey .collection-stage .brand-product-editorial .brand-product-copy{
+  font-size:clamp(58px,17vw,100px);
+ }
+ .brand-journey .collection-stage .brand-product-editorial .brand-product-meta{
+  gap:5px;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .brand-journey .collection-stage .brand-product-editorial{
+  transform:translate3d(0,-50%,0);will-change:auto;
+ }
+ .brand-journey .collection-stage .brand-product-editorial .brand-product-copy{filter:none!important}
+}
