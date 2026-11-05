@@ -1669,3 +1669,44 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 .brand-journey .collection-showcase{height:900svh}
 @media(max-width:767px){.brand-journey .collection-showcase{height:820svh}}
 @media(prefers-reduced-motion:reduce){.brand-journey .collection-showcase{height:180svh}}
+
+
+/* FOLLOW THE SCENT — the original full-bleed hero photo darkens on scroll.
+   A cursor-following flashlight reveals the photograph beneath the dark.
+   Existing Alexandria/Pretendard typography and scroll typing are reused. */
+.temperature-section.scent-spotlight{background:#111}
+.temperature-section.scent-spotlight .temperature-scroll{height:340svh}
+.temperature-section.scent-spotlight .temperature-stage{position:sticky;top:0;height:100svh;min-height:0;overflow:hidden;background:#111;color:#fff;isolation:isolate}
+.temperature-section.scent-spotlight .temperature-world{position:absolute;inset:0;transform:none!important;opacity:1!important;transform-origin:center!important;will-change:auto}
+.temperature-section.scent-spotlight .temperature-scent-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0}
+.temperature-section.scent-spotlight .temperature-scent-shade{position:absolute;inset:0;z-index:1;pointer-events:none;background:rgba(0,0,0,var(--scent-dim,0))}
+.temperature-section.scent-spotlight .temperature-scent-shade::after{content:"";position:absolute;inset:0;opacity:var(--scent-vignette-alpha,0);background:radial-gradient(ellipse 74% 75% at 50% 46%,transparent 15%,rgba(0,0,0,.66) 100%)}
+.temperature-section.scent-spotlight .temperature-scent-beam{
+ position:absolute;inset:0;z-index:2;pointer-events:none;
+ background:url("lemon-concrete-set.webp") center / cover no-repeat;
+ opacity:var(--scent-beam-alpha,0);
+ -webkit-mask-image:radial-gradient(circle clamp(165px,18vw,315px) at var(--scent-x,64%) var(--scent-y,47%),#000 0%,rgba(0,0,0,.93) 34%,rgba(0,0,0,.35) 67%,transparent 100%);
+ mask-image:radial-gradient(circle clamp(165px,18vw,315px) at var(--scent-x,64%) var(--scent-y,47%),#000 0%,rgba(0,0,0,.93) 34%,rgba(0,0,0,.35) 67%,transparent 100%);
+ filter:brightness(.69) saturate(.9);
+}
+.temperature-section.scent-spotlight .temperature-heading{
+ position:absolute;left:50%;top:55%;width:96%;max-width:none;
+ transform:translate(-50%,-50%);z-index:3;text-align:center;
+ pointer-events:none;color:#fff;
+}
+.temperature-section.scent-spotlight .temperature-heading h2{color:#fff}
+.temperature-section.scent-spotlight .temperature-heading h2>.temperature-line{display:flex;justify-content:center;align-items:center;height:1.1em;min-height:1.1em;gap:0;width:100%;margin:0}
+.temperature-section.scent-spotlight .temperature-heading .temperature-word{height:1.1em;line-height:1.1;white-space:nowrap}
+.temperature-section.scent-spotlight .temperature-heading p{color:#fff}
+@media(max-width:767px){
+ .temperature-section.scent-spotlight .temperature-scroll{height:300svh}
+ .temperature-section.scent-spotlight .temperature-heading{top:54%;width:94%}
+ .temperature-section.scent-spotlight .temperature-scent-beam{
+  -webkit-mask-image:radial-gradient(circle 32vw at var(--scent-x,64%) var(--scent-y,47%),#000 0%,rgba(0,0,0,.8) 40%,transparent 100%);
+  mask-image:radial-gradient(circle 32vw at var(--scent-x,64%) var(--scent-y,47%),#000 0%,rgba(0,0,0,.8) 40%,transparent 100%);
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .temperature-section.scent-spotlight .temperature-scroll{height:100svh}
+ .temperature-section.scent-spotlight .temperature-scent-beam{display:none}
+}
