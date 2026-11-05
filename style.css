@@ -1799,3 +1799,28 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 /* Crosshair and target marker follow each frequency's monochrome palette. */
 .frequency-black .frequency-target{color:#fff}
 .frequency-white .frequency-target{color:#000}
+
+/* Primary chapter labels: one small index per major NOISE section. */
+.temperature-section.scent-spotlight .scent-chapter-label{
+ position:absolute;left:clamp(20px,3vw,54px);top:clamp(24px,5svh,58px);
+ z-index:5;margin:0;pointer-events:none;
+ font:400 clamp(11px,.8vw,14px)/1.3 var(--font-label);
+ letter-spacing:.015em;color:#fff;mix-blend-mode:difference;
+}
+@media(max-width:767px){
+ .temperature-section.scent-spotlight .scent-chapter-label{
+  left:6%;top:5%;font-size:clamp(11px,3vw,13px)
+ }
+}
+/* Announce the chapter once on BLACK; keep WHITE's header aligned. */
+.frequency-white .frequency-scene-title>.label{visibility:hidden}
+/* The EXPERIENCE index shares the sticky title's coordinates and scroll. */
+.final-intro-stage .final-title-group{position:relative;flex:none}
+.final-intro-stage .final-title-group>.final-label{
+ position:absolute;left:0;bottom:calc(100% + clamp(14px,2svh,30px));
+ margin:0;z-index:2;white-space:nowrap;
+ font:400 14px/1.4 var(--font-label);letter-spacing:.015em;
+}
+@media(max-width:767px){
+ .final-intro-stage .final-title-group>.final-label{font-size:12px}
+}
