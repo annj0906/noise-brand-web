@@ -1663,3 +1663,9 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
   transform:none;will-change:auto;
  }
 }
+
+/* Give the final product descent more real scroll distance without increasing
+   the object's speed or changing its bottle/package spacing. */
+.brand-journey .collection-showcase{height:900svh}
+@media(max-width:767px){.brand-journey .collection-showcase{height:820svh}}
+@media(prefers-reduced-motion:reduce){.brand-journey .collection-showcase{height:180svh}}
