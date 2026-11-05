@@ -332,8 +332,12 @@ if(typeof window!=='undefined'){
   const bottleRest=(innerHeight*.43-(baseCenter+planeHeight*.105))/innerHeight*100;
   const bottleTravel=reduce.matches?0:smooth((p-.4)/.22)*bottleRest;
   const packageTravel=reduce.matches?0:smooth((p-.4)/.24)*packageRest+smooth((p-.66)/.16)*2;
-  stage.style.setProperty('--package-y',((1-packageEntry)*-110+packageTravel)+'svh');
-  stage.style.setProperty('--bottle-y',((1-bottleEntry)*-130+bottleTravel)+'svh');
+  // End the pinned showcase with the package leaving first, then the bottle.
+  // Existing stage overflow clips both as they move below the next section edge.
+  const packageExit=reduce.matches?0:smooth((p-.875)/.10)*125;
+  const bottleExit=reduce.matches?0:smooth((p-.915)/.085)*125;
+  stage.style.setProperty('--package-y',((1-packageEntry)*-110+packageTravel+packageExit)+'svh');
+  stage.style.setProperty('--bottle-y',((1-bottleEntry)*-130+bottleTravel+bottleExit)+'svh');
   stage.style.setProperty('--package-swap',((1-clamp((p-.52)/.1))*124-12)+'%');
   stage.style.setProperty('--bottle-swap',((1-clamp((p-.52)/.1))*124-12)+'%');
   const transition=clamp((p-.52)/.1);stage.style.setProperty('--brand-white',String(transition));stage.classList.toggle('swap-white-only',transition===1);stage.classList.toggle('swap-black-only',transition===0);const edge=transition>0&&transition<1?6*Math.sin(Math.PI*transition):0;stage.style.setProperty('--swap-soft-blur',edge+'px');
