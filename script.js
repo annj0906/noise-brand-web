@@ -912,10 +912,13 @@ if(typeof window!=='undefined')(()=>{
   const typingSlots=[[4.60,4.83],[4.84,5.10]];
   koreanLines.forEach((line,index)=>{
    const full=line.dataset.fullText||'';
+   const visible=line.querySelector('.inspiration-typed-visible');
+   if(!visible)return;
    const [from,to]=typingSlots[index]||typingSlots[typingSlots.length-1];
    const count=Math.floor(clamp((elapsed-from)/Math.max(.01,to-from))*full.length);
    const typed=full.slice(0,count);
-   if(line.textContent!==typed)line.textContent=typed;
+   // Never rewrite the sizing element: both line origins stay fixed.
+   if(visible.textContent!==typed)visible.textContent=typed;
   });
   const koreanIn=ease((elapsed-4.58)/.10);
   const koreanOut=ease((elapsed-5.36)/.27);
