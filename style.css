@@ -1074,7 +1074,7 @@
 
 /* Soft upward word reveal and restrained glass reflections. */
 .brand-word-screen p{transform:translate(-50%,calc(-50% + var(--word-rise,0px)))}
-.brand-disc{background:linear-gradient(135deg,rgba(255,255,255,.035),rgba(255,255,255,.004) 48%,rgba(210,225,240,.018));box-shadow:inset 0 0 18px rgba(255,255,255,.022),0 0 12px rgba(220,235,255,.025)}
+.brand-disc{background:linear-gradient(135deg,rgba(255,255,255,.035),rgba(255,255,255,.004) 48%,rgba(210,225,240,.018));box-shadow:inset 0 0 18px rgba(255,255,255,.022),0 0 16px rgba(232,240,255,.075),0 0 42px 4px rgba(232,240,255,.11),0 8px 38px 3px rgba(16,20,28,.16)}
 .brand-disc::after{content:'';position:absolute;inset:0;padding:1px;border-radius:inherit;background:conic-gradient(from var(--rim-light-angle,270deg),rgba(235,245,255,.3),transparent 75deg,transparent 285deg,rgba(235,245,255,.3));mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;filter:blur(3px);opacity:.55}
 @media(prefers-reduced-motion:reduce){.brand-word-screen p{transform:translate(-50%,-50%)}}
 
