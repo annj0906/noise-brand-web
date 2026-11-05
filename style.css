@@ -1628,17 +1628,3 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  }
 }
 
-/* WHITE editorial uses one fixed text position; only the sentence changes. */
-.brand-journey .collection-stage .brand-white-copy{display:grid}
-.brand-journey .collection-stage .brand-white-copy .editorial-line{
- display:block;grid-area:1 / 1;white-space:nowrap;
-}
-.brand-journey .collection-stage .brand-white-copy .editorial-line-1{
- opacity:var(--first-line-alpha,1);
-}
-.brand-journey .collection-stage .brand-white-copy .editorial-line-2{
- opacity:var(--second-line-alpha,0);
-}
-@media(max-width:767px){
- .brand-journey .collection-stage .brand-white-copy .editorial-line{white-space:normal}
-}
