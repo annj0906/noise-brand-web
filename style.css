@@ -1628,3 +1628,38 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  }
 }
 
+
+/* Keep both WHITE messages on the SAME line/anchor during their brief handoff.
+   The outgoing message leaves a faint echo while the incoming one settles in. */
+.brand-journey .collection-stage .brand-product-editorial .brand-product-copy.brand-white-copy{
+ display:grid;
+}
+.brand-journey .collection-stage .brand-product-editorial .brand-white-copy .white-line-first,
+.brand-journey .collection-stage .brand-product-editorial .brand-white-copy .white-line-second{
+ grid-area:1 / 1;
+ display:block;
+ white-space:nowrap;
+ opacity:var(--line-alpha,0);
+ transform:translate3d(0,var(--line-rise,0px),0);
+ will-change:opacity,transform;
+}
+.brand-journey .collection-stage .brand-product-editorial .brand-white-copy .white-line-first{
+ --line-alpha:var(--white-first-alpha,1);
+ --line-rise:var(--white-first-rise,0px);
+}
+.brand-journey .collection-stage .brand-product-editorial .brand-white-copy .white-line-second{
+ --line-alpha:var(--white-second-alpha,0);
+ --line-rise:var(--white-second-rise,24px);
+}
+@media(max-width:767px){
+ .brand-journey .collection-stage .brand-product-editorial .brand-white-copy .white-line-first,
+ .brand-journey .collection-stage .brand-product-editorial .brand-white-copy .white-line-second{
+  white-space:normal;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .brand-journey .collection-stage .brand-product-editorial .brand-white-copy .white-line-first,
+ .brand-journey .collection-stage .brand-product-editorial .brand-white-copy .white-line-second{
+  transform:none;will-change:auto;
+ }
+}
