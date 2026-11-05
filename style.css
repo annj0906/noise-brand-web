@@ -1710,3 +1710,9 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  .temperature-section.scent-spotlight .temperature-scroll{height:100svh}
  .temperature-section.scent-spotlight .temperature-scent-beam{display:none}
 }
+
+/* The finished story copy disappears with the original photo-card rise,
+   leaving black behind the card once its entrance settles. */
+.temperature-section.scent-spotlight .temperature-heading{
+ opacity:var(--scent-copy-alpha,1);
+}
