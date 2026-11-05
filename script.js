@@ -889,5 +889,55 @@ if(typeof window!=='undefined')(()=>{
  render();
 })();
 
-/* The first inspiration photograph enters the slogan before the corridor. */
-(()=>{const region=document.querySelector('.temperature-scroll'),world=document.querySelector('.temperature-world'),story=document.querySelector('.inspiration-camera');if(!region||!story)return;const overlay=document.createElement('div');overlay.className='slogan-photo-handoff';overlay.setAttribute('aria-hidden','true');const photo=document.createElement('img');photo.src='inspiration-70.webp';photo.alt='';const label=document.createElement('p');label.className='slogan-photo-caption';label.textContent=story.querySelector('.inspiration-camera-scene p')?.textContent||'';overlay.append(photo,label);document.body.append(overlay);const c=x=>Math.max(0,Math.min(1,x)),e=x=>{x=c(x);return x*x*(3-2*x)};let frame=0;function render(){frame=0;const r=region.getBoundingClientRect(),vh=innerHeight,p=c(-r.top/Math.max(1,region.offsetHeight-vh)),arrival=e((p-.48)/.26),transfer=e((p-.76)/.18),active=r.top<=0&&story.getBoundingClientRect().top>0;world.style.transform='none';world.dataset.scale='1';world.style.opacity=String(1-e((p-.54)/.2));overlay.style.visibility=active&&p>.48?'visible':'hidden';overlay.style.background='rgba('+Math.round(255*(1-transfer))+','+Math.round(255*(1-transfer))+','+Math.round(255*(1-transfer))+','+transfer+')';photo.style.opacity=String(arrival);label.style.opacity=String(e((p-.90)/.04));const mobile=innerWidth<=700;photo.style.left=((mobile?35:41)-(mobile?23:14)*transfer)+'%';photo.style.top=((mobile?25:23)+(1-arrival)*95)+'%';photo.style.transform='rotate('+(-24*(1-arrival))+'deg)';}function schedule(){if(!frame)frame=requestAnimationFrame(render)}addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule);render()})();
+/* Wait for the complete FOLLOW THE SCENT title and description before
+   introducing the first inspiration card. The typed copy finishes at .74;
+   the handoff deliberately begins at .88 after a readable pause. */
+(()=>{
+ const region=document.querySelector('.temperature-scroll');
+ const world=document.querySelector('.temperature-world');
+ const story=document.querySelector('.inspiration-camera');
+ if(!region||!world||!story)return;
+ const scent=!!region.closest('.scent-spotlight');
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ const overlay=document.createElement('div');
+ overlay.className='slogan-photo-handoff';
+ overlay.setAttribute('aria-hidden','true');
+ const photo=document.createElement('img');
+ photo.src='inspiration-70.webp';photo.alt='';
+ const label=document.createElement('p');
+ label.className='slogan-photo-caption';
+ label.textContent=story.querySelector('.inspiration-camera-scene p')?.textContent||'';
+ overlay.append(photo,label);document.body.append(overlay);
+ const c=x=>Math.max(0,Math.min(1,x));
+ const e=x=>{x=c(x);return x*x*(3-2*x);};
+ let frame=0;
+ function render(){
+  frame=0;
+  const r=region.getBoundingClientRect(),vh=innerHeight;
+  const p=c(-r.top/Math.max(1,region.offsetHeight-vh));
+  // Do not show the card while FOLLOW THE SCENT is still being typed.
+  const arrival=e((p-(scent?.88:.48))/(scent?.10:.26));
+  const transfer=e((p-(scent?.95:.76))/(scent?.045:.18));
+  const active=!reduced.matches&&r.top<=0&&story.getBoundingClientRect().top>0;
+  if(!scent){
+   world.style.transform='none';world.dataset.scale='1';
+   world.style.opacity=String(1-e((p-.54)/.2));
+  }
+  overlay.style.visibility=active&&p>(scent?.88:.48)?'visible':'hidden';
+  // The new spotlight scene ends in darkness, not the old white flash.
+  overlay.style.background=scent
+   ?'rgba(0,0,0,'+e((p-.88)/.09)+')'
+   :'rgba('+Math.round(255*(1-transfer))+','+Math.round(255*(1-transfer))+','+Math.round(255*(1-transfer))+','+transfer+')';
+  photo.style.opacity=String(arrival);
+  label.style.opacity=String(e((p-(scent?.965:.90))/(scent?.03:.04)));
+  const mobile=innerWidth<=700;
+  photo.style.left=((mobile?35:41)-(mobile?23:14)*transfer)+'%';
+  photo.style.top=((mobile?25:23)+(1-arrival)*95)+'%';
+  photo.style.transform='rotate('+(-24*(1-arrival))+'deg)';
+ }
+ function schedule(){if(!frame)frame=requestAnimationFrame(render);}
+ addEventListener('scroll',schedule,{passive:true});
+ addEventListener('resize',schedule);
+ reduced.addEventListener('change',schedule);
+ render();
+})();
