@@ -1628,17 +1628,17 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  }
 }
 
-/* Two WHITE sentences appear in sequence on scroll without reflowing the layout. */
-.brand-journey .collection-stage .brand-white-copy .editorial-line{display:block;white-space:nowrap}
+/* WHITE editorial uses one fixed text position; only the sentence changes. */
+.brand-journey .collection-stage .brand-white-copy{display:grid}
+.brand-journey .collection-stage .brand-white-copy .editorial-line{
+ display:block;grid-area:1 / 1;white-space:nowrap;
+}
+.brand-journey .collection-stage .brand-white-copy .editorial-line-1{
+ opacity:var(--first-line-alpha,1);
+}
 .brand-journey .collection-stage .brand-white-copy .editorial-line-2{
  opacity:var(--second-line-alpha,0);
- transform:translate3d(0,var(--second-line-rise,14px),0);
 }
 @media(max-width:767px){
  .brand-journey .collection-stage .brand-white-copy .editorial-line{white-space:normal}
-}
-@media(prefers-reduced-motion:reduce){
- .brand-journey .collection-stage .brand-white-copy .editorial-line-2{
-  transform:none;
- }
 }
