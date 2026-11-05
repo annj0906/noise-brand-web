@@ -1716,3 +1716,51 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 .temperature-section.scent-spotlight .temperature-heading{
  opacity:var(--scent-copy-alpha,1);
 }
+
+/* NOISE INSPIRATION ENDING EDITORIAL — reserve additional runway only for
+   the closing typography and existing-brand-glass center/zoom sequence. */
+.inspiration-story.inspiration-camera{height:850svh}
+.inspiration-camera .inspiration-camera-ending{
+ position:fixed;inset:0;z-index:40;display:block;padding:0;
+ text-align:left;transform:none!important;pointer-events:none;
+ color:#f5f5f5;overflow:hidden;
+}
+.inspiration-camera .inspiration-ending-korean{
+ position:absolute;left:8%;top:12%;width:max-content;max-width:84%;margin:0;
+ font:600 20px/1.5 Pretendard,var(--font-ui),sans-serif;
+ letter-spacing:-.025em;color:#f5f5f5;text-align:left;
+ opacity:var(--ending-korean-alpha,0);
+ transform:translate3d(0,var(--ending-korean-rise,20px),0);
+}
+.inspiration-camera .inspiration-ending-english{
+ position:absolute;left:24%;bottom:9%;width:max-content;max-width:none;margin:0;
+ font:400 clamp(36px,4.55vw,88px)/1.12 'NOISE Alexandria Story',Alexandria,sans-serif;
+ letter-spacing:-.025em;color:#f5f5f5;text-align:left;
+ opacity:var(--ending-english-alpha,0);
+ transform:translate3d(var(--ending-english-slide,220px),0,0);
+}
+.inspiration-camera .inspiration-ending-english span{display:block;white-space:nowrap}
+.brand-disc.inspiration-portal-glass{
+ z-index:54;pointer-events:none;visibility:hidden;transform-origin:center center;
+ will-change:transform,opacity;
+}
+@media(max-width:767px){
+ .inspiration-story.inspiration-camera{height:820svh}
+ .inspiration-camera .inspiration-ending-korean{
+  left:7%;top:13%;max-width:86%;font-size:16px;line-height:1.55;
+ }
+ .inspiration-camera .inspiration-ending-english{
+  left:6%;bottom:14%;font-size:clamp(20px,5.1vw,38px);
+  line-height:1.18;letter-spacing:-.035em;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .inspiration-story.inspiration-camera{height:auto}
+ .inspiration-camera .inspiration-camera-ending{
+  position:relative!important;visibility:visible!important;opacity:1!important;
+  min-height:100svh;padding:0;
+ }
+ .inspiration-camera .inspiration-ending-korean,
+ .inspiration-camera .inspiration-ending-english{opacity:1!important;transform:none!important}
+ .brand-disc.inspiration-portal-glass{display:none!important}
+}
