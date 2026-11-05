@@ -921,9 +921,11 @@ if(typeof window!=='undefined')(()=>{
    if(visible.textContent!==typed)visible.textContent=typed;
   });
   const koreanIn=ease((elapsed-4.58)/.10);
-  const koreanOut=ease((elapsed-5.36)/.27);
-  const englishIn=ease((elapsed-5.48)/.50);
-  const textOut=ease((elapsed-7.00)/.43);
+  // Keep the completed Korean paragraph on screen for another ~0.7 viewport
+  // of scrolling; preserve its original typing speed and line geometry.
+  const koreanOut=ease((elapsed-6.06)/.27);
+  const englishIn=ease((elapsed-6.18)/.50);
+  const textOut=ease((elapsed-7.70)/.43);
   ending.style.visibility=elapsed>=4.57?'visible':'hidden';
   ending.style.opacity=String(1-textOut);
   ending.style.transform='none';
@@ -934,9 +936,9 @@ if(typeof window!=='undefined')(()=>{
   // Use the introductory brand-disc motion: three full Y rotations as it
   // descends from above, and an illuminated rim tracking nearby copy.
   // Hold at the exact screen center before the existing final zoom to the car.
-  const travel=ease((elapsed-4.69)/1.64);
-  const zoom=ease((elapsed-6.85)/.58);
-  const leave=ease((elapsed-7.35)/.15);
+  const travel=ease((elapsed-4.69)/2.34);
+  const zoom=ease((elapsed-7.55)/.58);
+  const leave=ease((elapsed-8.05)/.15);
   const diameter=Math.min(260,innerWidth*.20);
   const coverScale=Math.hypot(innerWidth,viewportHeight)/Math.max(1,diameter)*1.28;
   const scale=1+(coverScale-1)*zoom;
