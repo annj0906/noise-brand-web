@@ -675,12 +675,12 @@ if(typeof window!=='undefined'){
    heading.style.setProperty('--copy-alpha',String(alpha));
    heading.style.setProperty('--copy-blur',reduce.matches?'0px':((1-alpha)*1.5)+'px');
    description.style.setProperty('--copy-alpha',String(alpha));
-   // In the WHITE scene, reveal sentence one with the product swap, then sentence two.
-   // The first sentence keeps its position; scrolling backwards reverses this naturally.
+   // After WHITE fully arrives, crossfade its first sentence into the second
+   // in exactly the same anchored slot (also works in reverse scroll).
    if(selector==='.brand-white-editorial'){
-    const secondLine=reduce.matches?1:smooth((p-.60)/.075);
+    const secondLine=reduce.matches?(p>=.77?1:0):smooth((p-.72)/.10);
+    heading.style.setProperty('--first-line-alpha',String(1-secondLine));
     heading.style.setProperty('--second-line-alpha',String(secondLine));
-    heading.style.setProperty('--second-line-rise',((1-secondLine)*14)+'px');
    }
   });
  }
