@@ -60,7 +60,19 @@ if(interactiveHero){
  }
  function updateScroll(){
   introFrame=0;
-  const box=interactiveHero.getBoundingClientRect();if(box.bottom < -innerHeight)return;const distance=Math.max(0,-box.top),height=photo.offsetHeight;
+  const box=interactiveHero.getBoundingClientRect();
+  // A browser may restore the page at the footer. Release the fixed NOISE
+  // boot screen before the offscreen hero's scroll handler returns.
+  if(box.bottom < -innerHeight){
+   intro.hidden=true;
+   intro.style.setProperty('--intro-opacity','0');
+   interactiveHero.querySelector('.hero-line').classList.add('copy-visible');
+   document.body.classList.remove('intro-active','hero-header-hidden');
+   document.querySelector('.header').inert=false;
+   document.documentElement.classList.remove('intro-boot');
+   return;
+  }
+  const distance=Math.max(0,-box.top),height=photo.offsetHeight;
   const progress=Math.max(0,Math.min(1,distance/(height*3.5)));
   const insert=Math.max(0,Math.min(1,(progress-.05)/.4));
   const fade=Math.max(0,Math.min(1,(progress-.88)/.12));
