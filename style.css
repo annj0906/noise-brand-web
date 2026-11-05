@@ -1675,7 +1675,7 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
    A cursor-following flashlight reveals the photograph beneath the dark.
    Existing Alexandria/Pretendard typography and scroll typing are reused. */
 .temperature-section.scent-spotlight{background:#111}
-.temperature-section.scent-spotlight .temperature-scroll{height:340svh}
+.temperature-section.scent-spotlight .temperature-scroll{height:440svh}
 .temperature-section.scent-spotlight .temperature-stage{position:sticky;top:0;height:100svh;min-height:0;overflow:hidden;background:#111;color:#fff;isolation:isolate}
 .temperature-section.scent-spotlight .temperature-world{position:absolute;inset:0;transform:none!important;opacity:1!important;transform-origin:center!important;will-change:auto}
 .temperature-section.scent-spotlight .temperature-scent-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0}
@@ -1699,7 +1699,7 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 .temperature-section.scent-spotlight .temperature-heading .temperature-word{height:1.1em;line-height:1.1;white-space:nowrap}
 .temperature-section.scent-spotlight .temperature-heading p{color:#fff}
 @media(max-width:767px){
- .temperature-section.scent-spotlight .temperature-scroll{height:300svh}
+ .temperature-section.scent-spotlight .temperature-scroll{height:400svh}
  .temperature-section.scent-spotlight .temperature-heading{top:54%;width:94%}
  .temperature-section.scent-spotlight .temperature-scent-beam{
   -webkit-mask-image:radial-gradient(circle 32vw at var(--scent-x,64%) var(--scent-y,47%),#000 0%,rgba(0,0,0,.8) 40%,transparent 100%);
