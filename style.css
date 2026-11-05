@@ -1771,7 +1771,7 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
    Invisible full-copy placeholders hold its position while letters appear. */
 .inspiration-camera .inspiration-typed-line{
  display:block;position:relative;width:max-content;max-width:none;
- margin-inline:auto;white-space:nowrap;
+ margin-inline:auto;white-space:nowrap;text-align:left;
 }
 .inspiration-camera .inspiration-typed-line::before{
  content:attr(data-full-text);display:block;height:0;
