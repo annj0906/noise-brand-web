@@ -198,7 +198,10 @@ if(typeof window!=='undefined'){
     frame=0;
     const b=region.getBoundingClientRect();
     const p=clamp(-b.top/Math.max(1,region.offsetHeight-stage.offsetHeight));
-    const dim=reduced.matches?.83:smooth((p-.04)/.61)*.94;
+    // Begin dimming as the product photograph first rises into the viewport.
+    // Carry that gentle entrance fade into the slower pinned-scene blackout.
+    const entrance=smooth((innerHeight-b.top)/Math.max(1,innerHeight));
+    const dim=reduced.matches?.83:entrance*.18+smooth(p/.58)*.76;
     const beam=reduced.matches?0:smooth((p-.26)/.20)*.9;
     section.style.setProperty('--scent-dim',String(dim));
     section.style.setProperty('--scent-vignette-alpha',String(reduced.matches?1:smooth((p-.10)/.65)));
