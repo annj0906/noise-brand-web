@@ -327,7 +327,16 @@ if(typeof window!=='undefined'){
 frequency.classList.remove('has-fixed-landing');
   const settle=reduced.matches?1:journey?(fb.top>0?handoff*.2:.2+smooth(fp/.5)*.8):smooth(fp/.5),crop=product.querySelector('.frequency-car-crop'),figure=product.querySelector('.frequency-car').getBoundingClientRect(),centerX=figure.left+figure.width/2,centerY=figure.top+figure.width*589/824/2;
   crop.style.transform='translate('+((innerWidth/2-centerX)*(1-settle))+'px,'+((innerHeight/2-centerY)*(1-settle))+'px) scale('+(1+Math.pow(1-settle,2)*7)+')';
-  product.style.setProperty('--car-settle',String(smooth((settle-.78)/.22)));crop.style.filter='blur('+(reduced.matches?0:((1-settle)*2.5))+'px)';
+  // The old car transform and landing timing remain untouched.
+  // The image starts dark and soft behind the expanding glass, then slowly
+  // resolves before the WHITE product transition takes over.
+  const carReveal=reduced.matches?1:journey
+   ?(fb.top>0?.32*handoff:.32+.68*smooth(-fb.top/(vh*.48)))
+   :smooth(fp/.18);
+  product.style.setProperty('--car-transition-dim',String(reduced.matches?0:.84*(1-carReveal)));
+  const landingBlur=reduced.matches?0:(1-settle)*2.5+9*(1-carReveal);
+  crop.style.filter='blur('+landingBlur+'px) brightness('+(reduced.matches?1:.46+.54*carReveal)+')';
+  product.style.setProperty('--car-settle',String(smooth((settle-.78)/.22)));
   product.classList.toggle('car-arrived',reduced.matches||fp>=.5);
   const white=document.querySelector('.frequency-white'),whiteReveal=reduced.matches?1:smooth((fp-.76)/.21);white.style.opacity=String(whiteReveal);white.style.setProperty('--detail-blur',((1-whiteReveal)*9)+'px');white.style.setProperty('--detail-rise','0px');white.style.setProperty('--swap-art-blur',((1-whiteReveal)*10)+'px');product.style.setProperty('--swap-art-blur',(whiteReveal*10)+'px');white.style.pointerEvents=whiteReveal>.5?'auto':'none';white.classList.toggle('is-sequence-pinned',!reduced.matches&&fb.bottom>innerHeight&&fb.top<=0);
   product.style.setProperty('--black-leave',String(1-whiteReveal));product.classList.toggle('is-white-handoff',whiteReveal>.01);
