@@ -675,12 +675,11 @@ if(typeof window!=='undefined'){
    heading.style.setProperty('--copy-alpha',String(alpha));
    heading.style.setProperty('--copy-blur',reduce.matches?'0px':((1-alpha)*1.5)+'px');
    description.style.setProperty('--copy-alpha',String(alpha));
-   // After WHITE fully arrives, crossfade its first sentence into the second
-   // in exactly the same anchored slot (also works in reverse scroll).
+   // Swap one sentence at a scroll breakpoint: no overlap or crossfade.
+   // Reverse scrolling restores the first sentence in the exact same position.
    if(selector==='.brand-white-editorial'){
-    const secondLine=reduce.matches?(p>=.77?1:0):smooth((p-.72)/.10);
-    heading.style.setProperty('--first-line-alpha',String(1-secondLine));
-    heading.style.setProperty('--second-line-alpha',String(secondLine));
+    const nextText=p>=.77?'서로 다른 향을 만나보세요.':'밝고 가벼운 WHITE.';
+    if(heading.textContent!==nextText)heading.textContent=nextText;
    }
   });
  }
