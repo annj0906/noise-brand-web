@@ -1846,11 +1846,12 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 @media(min-width:768px){
  .final-intro-stage .final-posters figure:nth-child(3){
   flex:0 0 auto;
-  width:29.42svh;
+  width:37.52svh;
  }
 }
 .final-intro-stage .final-posters figure:nth-child(3) img{
- width:100%;height:100%;object-fit:contain;object-position:center;
+ width:100%;height:100%;aspect-ratio:auto;
+ object-fit:cover;object-position:center;
 }
 /* During the SNOW-to-cards transition the chapter previously scrolled away
    while the intro was hidden. Pin only the small label inside the collection
