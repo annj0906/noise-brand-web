@@ -558,7 +558,6 @@ if(typeof window!=='undefined'){
   new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)stores.classList.add('stores-visible');});},{threshold:.15}).observe(stores);
   let frame=0;function draw(){frame=0;const b=track.getBoundingClientRect(),p=reduce.matches?1:clamp(-b.top/Math.max(1,track.offsetHeight-innerHeight));let count=Math.floor(clamp(p/.8)*total);lines.forEach(line=>{const full=line.dataset.finalLine;line.textContent=full.slice(0,Math.min(full.length,count));count=Math.max(0,count-full.length);});
    posters.forEach((el,i)=>{const q=reduce.matches?1:clamp((p-i*.075)/.7),ease=1-Math.pow(1-q,3);el.style.opacity=String(clamp(q*3));el.style.transform='translate3d('+((1-ease)*(innerWidth*(.8+i*.12)))+'px,0,0)';});
-   const sb=section.getBoundingClientRect(),depth=clamp((innerHeight*.5-sb.top)/Math.max(1,sb.height));scene.querySelectorAll('.final-object').forEach((el,i)=>{el.style.setProperty('--final-dx',((i%2?1:-1)*depth*(16+i*6))+'px');el.style.setProperty('--final-dy',(-depth*(45+i*24))+'px');el.style.setProperty('--final-dr',(depth*(i%2?10:-8))+'deg');});
   }
   function schedule(){if(!frame)frame=requestAnimationFrame(draw);}window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);reduce.addEventListener('change',schedule);draw();
 
