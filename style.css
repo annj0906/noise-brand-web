@@ -291,7 +291,7 @@
 .frequency-description{position:relative;font:400 clamp(14px,.834vw,16px)/1.4 var(--font-ui);letter-spacing:-.025em}
 .frequency-detail>a{position:relative;display:inline-flex;align-items:center;min-height:44px;margin-top:clamp(24px,3vw,58px);font:400 clamp(16px,1.25vw,24px)/1.4 var(--font-ui);gap:8px}
 .frequency-dark-art{position:absolute;top:-4%;left:0;width:100%;aspect-ratio:572/526;overflow:hidden;opacity:.22;pointer-events:none}.frequency-dark-art img{max-width:none;width:100%;height:100%}
-.frequency-target{position:absolute;inset:0;z-index:3;pointer-events:none;color:#ff0000;opacity:.6}.target-h{position:absolute;left:0;right:0;top:var(--target-y,36.1%);height:.5px;background:currentColor}.target-v{position:absolute;top:0;bottom:0;left:var(--target-x,16.9%);width:.5px;background:currentColor}.target-box{position:absolute;left:var(--target-x,16.9%);top:var(--target-y,36.1%);width:10.26%;aspect-ratio:197/143;border:.5px solid;transform:translate(-50%,-50%)}
+.frequency-target{position:absolute;inset:0;z-index:3;pointer-events:none;color:inherit;opacity:.6}.target-h{position:absolute;left:0;right:0;top:var(--target-y,36.1%);height:.5px;background:currentColor}.target-v{position:absolute;top:0;bottom:0;left:var(--target-x,16.9%);width:.5px;background:currentColor}.target-box{position:absolute;left:var(--target-x,16.9%);top:var(--target-y,36.1%);width:10.26%;aspect-ratio:197/143;border:.5px solid;transform:translate(-50%,-50%)}
 .frequency-white-preserved{background:var(--paper);max-width:none}.frequency-white-preserved>.frequency{max-width:900px;margin:auto}.frequency-white-preserved>.frequency figure{max-width:600px}.frequency-white-preserved .frequency-copy{margin-left:15%}
 @media(hover:hover) and (pointer:fine){.frequency-black{cursor:none}.frequency-black a{cursor:pointer}.frequency-car-link:hover img{filter:brightness(1.16)}}
 @media(max-width:767px){.frequency-black{height:1000px}.frequency-scene-title{left:7%;top:7%}.frequency-scene-title>.label{margin-bottom:24px}.frequency-scene-intro{left:54%;top:7%;max-width:41%;font-size:14px}.frequency-scene-title h2{font-size:26px}.frequency-car{left:4%;top:27%;width:89%}.frequency-detail{left:18%;top:65%;width:70%}.frequency-detail h3{margin:24px 0 16px}.frequency-detail>a{margin-top:20px}.frequency-car figcaption{font-size:16px!important}.target-box{width:24%}.sense-footnote{max-width:none}}
@@ -754,8 +754,8 @@
 #top .hero-photo{filter:none!important;opacity:1;overflow:hidden}
 #top .hero-photo>img{display:none!important}
 #top .hero-photo::before,#top .hero-photo::after{display:none!important}
-.hero-ascii-lemon{position:absolute;left:50%;top:50%;translate:-50% -50%;width:min(48vw,76svh);height:min(48vw,76svh);display:block;cursor:grab;touch-action:pan-y;z-index:1}
-.hero-ascii-lemon:active{cursor:grabbing}
+.hero-ascii-lemon{position:absolute;left:50%;top:50%;translate:-50% -50%;width:min(48vw,76svh);height:min(48vw,76svh);display:block;cursor:default;touch-action:pan-y;z-index:1}
+.hero-ascii-lemon:active{cursor:default}
 #top .hero-line{color:#f5f5f5}
 #top .hero-line a,#top .hero-logo,#top .hero-slogan{color:#f5f5f5}
 @media(max-width:767px){.hero-ascii-lemon{width:90vw;height:90vw}}
@@ -1542,132 +1542,260 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 .brand-statement-stage h2{position:relative;z-index:1}
 @media(prefers-reduced-motion:reduce){.brand-statement-ribbon{display:none}}
 
-/* Brand collection editorial typography — independent of the product artwork. */
+/* BLACK / WHITE collection layout: small category labels, Korean editorial copy, products on the right.
+   Matches the two supplied compositions while keeping the existing product-scroll animation. */
 .brand-journey .collection-stage .brand-collection-label{
- position:absolute;top:6%;left:3%;z-index:7;margin:0;
- color:inherit;font:400 clamp(12px,.85vw,16px)/1.3 var(--font-label);
- letter-spacing:.015em;pointer-events:none;
+ position:absolute;left:2.7%;top:auto;bottom:4%;z-index:5;
+ margin:0;color:inherit;pointer-events:none;
+ font:400 clamp(11px,.8vw,14px)/1.3 var(--font-label);
+ letter-spacing:.015em;
 }
-.brand-journey .collection-stage .brand-product-copy{
- position:absolute;top:51%;left:0;z-index:6;margin:0;padding:0;
- width:max-content;max-width:none;white-space:nowrap;text-align:left;
- font:400 128px/1 var(--font-brand);
- letter-spacing:-.025em;line-height:1;
- transform:translate3d(calc(100vw - var(--copy-progress,0) * 165vw),-50%,0);
- opacity:var(--copy-alpha,0);filter:blur(var(--copy-blur,0px));
- pointer-events:none;will-change:transform,opacity;color:#fff;
+.brand-journey .collection-stage .brand-product-editorial{
+ position:absolute;inset:0;z-index:1;pointer-events:none;
+ transform:none;width:auto;max-width:none;
 }
-.brand-journey .collection-stage .brand-white-copy{color:#000}
-.brand-journey .collection-stage .brand-heading-period{color:#f00}
+.brand-journey .collection-stage .brand-product-editorial .brand-product-meta{
+ position:absolute;left:2.7%;top:5.1%;bottom:auto;
+ display:flex;flex-direction:column;align-items:flex-start;gap:7px;
+ margin:0;padding:0;width:max-content;max-width:90%;text-align:left;
+ transform:none;opacity:var(--copy-alpha,0);
+ color:#f5f5f5;font-family:var(--font-ui);
+}
+.brand-journey .collection-stage .brand-product-editorial .brand-product-meta strong{
+ display:block;font:500 clamp(14px,1.02vw,18px)/1.3 var(--font-ui);
+ letter-spacing:-.025em;
+}
+.brand-journey .collection-stage .brand-product-editorial .brand-product-meta>span{
+ display:block;font:400 clamp(12px,.85vw,14px)/1.4 var(--font-ui);
+ letter-spacing:-.025em;
+}
+.brand-journey .collection-stage .brand-product-editorial .brand-product-copy{
+ position:absolute;left:23.8%;top:50%;bottom:auto;z-index:1;
+ display:block;margin:0;padding:0;width:max-content;max-width:70%;
+ text-align:left;white-space:normal;word-break:keep-all;
+ font:600 clamp(24px,1.95vw,34px)/1.5 var(--font-ui);
+ letter-spacing:-.025em;
+ transform:translate3d(0,var(--editorial-rise,0px),0);
+ opacity:var(--copy-alpha,0);
+ filter:blur(var(--copy-blur,0px));
+ color:#f5f5f5;text-shadow:none;pointer-events:none;
+ will-change:transform,opacity;
+}
 .brand-journey .collection-stage .brand-product-copy::before{
  content:none;display:none;backdrop-filter:none;-webkit-backdrop-filter:none;
 }
-.brand-journey .collection-stage .brand-product-copy{text-shadow:none}
-.brand-journey .collection-stage .brand-product-meta{
- position:absolute;left:50%;bottom:13%;z-index:6;
- display:flex;flex-direction:column;align-items:center;gap:7px;
- transform:translateX(-50%);width:max-content;max-width:90%;text-align:center;
- opacity:var(--copy-alpha,0);pointer-events:none;
- color:#f5f5f5;font:400 clamp(12px,.9vw,18px)/1.45 var(--font-ui);
-}
-.brand-journey .collection-stage .brand-white-meta{color:#101010}
-.brand-journey .collection-stage .brand-product-meta strong{font-weight:600}
-.brand-journey .collection-stage .brand-product-meta>span{font-size:.9em}
-@media(max-width:767px){
- .brand-journey .collection-stage .brand-product-copy{
-  top:53%;font-size:clamp(66px,18vw,110px);
-  transform:translate3d(calc(100vw - var(--copy-progress,0) * 190vw),-50%,0);
- }
- .brand-journey .collection-stage .brand-product-meta{bottom:12%}
-}
-@media(prefers-reduced-motion:reduce){
- .brand-journey .collection-stage .brand-product-copy{
-  left:50%;transform:translate(-50%,-50%);filter:none!important;
-  will-change:auto;
- }
- .brand-journey .collection-stage .brand-product-meta{transition:none}
-}
-
-/* Place scrolling BLACK/WHITE headlines behind the perfume bottle and package.
-   Keep their existing horizontal scroll motion, and retain labels above the scene. */
-.brand-journey .collection-stage .brand-product-copy{z-index:1}
-.brand-journey .collection-stage .collection-object{z-index:2}
-
-/* Sequence product → editorial → product → editorial, without moving the supplied product art. */
-.brand-journey .collection-stage .brand-product-editorial{
- position:absolute;left:21%;top:50%;z-index:1;
- display:flex;flex-direction:column;align-items:flex-start;gap:20px;
- width:max-content;max-width:75%;pointer-events:none;
- transform:translate3d(0,calc(-50% + var(--editorial-rise,32px)),0);
- will-change:transform,opacity;
-}
-.brand-journey .collection-stage .brand-product-editorial .brand-product-copy{
- position:static;left:auto;top:auto;z-index:auto;
- margin:0;padding:0;width:max-content;max-width:100%;
- transform:none;text-align:left;
- font:400 80px/1 var(--font-brand);letter-spacing:-.025em;
- opacity:var(--copy-alpha,0);filter:blur(var(--copy-blur,0px));
- white-space:nowrap;text-shadow:none;
-}
-.brand-journey .collection-stage .brand-product-editorial .brand-product-meta{
- position:static;left:auto;bottom:auto;z-index:auto;
- display:flex;align-items:flex-start;flex-direction:column;gap:8px;
- margin:0;padding:0;width:auto;max-width:100%;text-align:left;
- transform:none;opacity:var(--copy-alpha,0);
-}
-.brand-journey .collection-stage .brand-product-editorial .brand-heading-period{
- display:inline;position:static;transform:none;color:#f00;letter-spacing:inherit;
+/* WHITE text must override the generic light-on-dark editorial color. */
+.brand-journey .collection-stage .brand-product-editorial.brand-white-editorial .brand-product-copy,
+.brand-journey .collection-stage .brand-product-editorial.brand-white-editorial .brand-product-meta{
+ color:#101010;
 }
 .brand-journey .collection-stage .collection-object{z-index:2}
-@media(max-width:767px){
- .brand-journey .collection-stage .brand-product-editorial{
-  left:7%;top:67%;gap:12px;max-width:88%;
- }
- .brand-journey .collection-stage .brand-product-editorial .brand-product-copy{
-  font-size:clamp(48px,14vw,80px);
- }
- .brand-journey .collection-stage .brand-product-editorial .brand-product-meta{
-  gap:5px;
- }
-}
-@media(prefers-reduced-motion:reduce){
- .brand-journey .collection-stage .brand-product-editorial{
-  transform:translate3d(0,-50%,0);will-change:auto;
- }
- .brand-journey .collection-stage .brand-product-editorial .brand-product-copy{filter:none!important}
-}
-
-/* Keep the editorial block anchored on the left while it rises into place.
-   Shift both product layers together without changing their dimensions or spacing. */
+/* The bottle and package move as a single group; their size and distance are untouched. */
 @media(min-width:1024px){
  .brand-journey .collection-stage .collection-object{
-  transform:translate3d(clamp(82px,9vw,160px),0,0);
+  transform:translate3d(clamp(88px,10vw,174px),0,0);
  }
 }
 @media(min-width:768px) and (max-width:1023px){
  .brand-journey .collection-stage .collection-object{
-  transform:translate3d(5.5vw,0,0);
+  transform:translate3d(6.5vw,0,0);
+ }
+ .brand-journey .collection-stage .brand-product-editorial .brand-product-copy{
+  left:17%;font-size:clamp(22px,2.7vw,30px);max-width:75%;
  }
 }
 @media(max-width:767px){
  .brand-journey .collection-stage .collection-object{transform:none}
-}
-
-/* Figma typography for the BLACK / WHITE collections.
-   Maintain the centered product composition as a group and its layer priority. */
-.brand-journey .collection-stage .brand-product-editorial .brand-product-meta strong{
- font-family:var(--font-ui);font-size:20px;font-weight:600;line-height:1.35;
- letter-spacing:-.025em;
-}
-.brand-journey .collection-stage .brand-product-editorial .brand-product-meta>span{
- font-family:Pretendard,sans-serif;font-size:16px;font-weight:400;line-height:1.5;
- letter-spacing:-.025em;
-}
-@media(max-width:767px){
+ .brand-journey .collection-stage .brand-product-editorial .brand-product-meta{
+  left:6%;top:6%;gap:5px;
+ }
  .brand-journey .collection-stage .brand-product-editorial .brand-product-meta strong{
-  font-size:clamp(15px,4vw,18px);
+  font-size:clamp(13px,3.6vw,16px);
  }
  .brand-journey .collection-stage .brand-product-editorial .brand-product-meta>span{
-  font-size:clamp(13px,3.5vw,16px);
+  font-size:clamp(12px,3.2vw,14px);
+ }
+ .brand-journey .collection-stage .brand-product-editorial .brand-product-copy{
+  left:6%;top:68%;max-width:88%;font-size:clamp(19px,5vw,26px);
+ }
+ .brand-journey .collection-stage .brand-collection-label{
+  left:6%;bottom:5%;
  }
 }
+@media(prefers-reduced-motion:reduce){
+ .brand-journey .collection-stage .brand-product-editorial .brand-product-copy{
+  transform:none;filter:none!important;will-change:auto;
+ }
+}
+
+
+/* Keep both WHITE messages on the SAME line/anchor during their brief handoff.
+   The outgoing message leaves a faint echo while the incoming one settles in. */
+.brand-journey .collection-stage .brand-product-editorial .brand-product-copy.brand-white-copy{
+ display:grid;
+}
+.brand-journey .collection-stage .brand-product-editorial .brand-white-copy .white-line-first,
+.brand-journey .collection-stage .brand-product-editorial .brand-white-copy .white-line-second{
+ grid-area:1 / 1;
+ display:block;
+ white-space:nowrap;
+ opacity:var(--line-alpha,0);
+ transform:translate3d(0,var(--line-rise,0px),0);
+ will-change:opacity,transform;
+}
+.brand-journey .collection-stage .brand-product-editorial .brand-white-copy .white-line-first{
+ --line-alpha:var(--white-first-alpha,1);
+ --line-rise:var(--white-first-rise,0px);
+}
+.brand-journey .collection-stage .brand-product-editorial .brand-white-copy .white-line-second{
+ --line-alpha:var(--white-second-alpha,0);
+ --line-rise:var(--white-second-rise,24px);
+}
+@media(max-width:767px){
+ .brand-journey .collection-stage .brand-product-editorial .brand-white-copy .white-line-first,
+ .brand-journey .collection-stage .brand-product-editorial .brand-white-copy .white-line-second{
+  white-space:normal;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .brand-journey .collection-stage .brand-product-editorial .brand-white-copy .white-line-first,
+ .brand-journey .collection-stage .brand-product-editorial .brand-white-copy .white-line-second{
+  transform:none;will-change:auto;
+ }
+}
+
+/* Give the final product descent more real scroll distance without increasing
+   the object's speed or changing its bottle/package spacing. */
+.brand-journey .collection-showcase{height:900svh}
+@media(max-width:767px){.brand-journey .collection-showcase{height:820svh}}
+@media(prefers-reduced-motion:reduce){.brand-journey .collection-showcase{height:180svh}}
+
+
+/* FOLLOW THE SCENT — the original full-bleed hero photo darkens on scroll.
+   A cursor-following flashlight reveals the photograph beneath the dark.
+   Existing Alexandria/Pretendard typography and scroll typing are reused. */
+.temperature-section.scent-spotlight{background:#111}
+.temperature-section.scent-spotlight .temperature-scroll{height:440svh}
+.temperature-section.scent-spotlight .temperature-stage{position:sticky;top:0;height:100svh;min-height:0;overflow:hidden;background:#111;color:#fff;isolation:isolate}
+.temperature-section.scent-spotlight .temperature-world{position:absolute;inset:0;transform:none!important;opacity:1!important;transform-origin:center!important;will-change:auto}
+.temperature-section.scent-spotlight .temperature-scent-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0}
+.temperature-section.scent-spotlight .temperature-scent-shade{position:absolute;inset:0;z-index:1;pointer-events:none;background:rgba(0,0,0,var(--scent-dim,0))}
+.temperature-section.scent-spotlight .temperature-scent-shade::after{content:"";position:absolute;inset:0;opacity:var(--scent-vignette-alpha,0);background:radial-gradient(ellipse 74% 75% at 50% 46%,transparent 15%,rgba(0,0,0,.66) 100%)}
+.temperature-section.scent-spotlight .temperature-scent-beam{
+ position:absolute;inset:0;z-index:2;pointer-events:none;
+ background:url("lemon-concrete-set.webp") center / cover no-repeat;
+ opacity:var(--scent-beam-alpha,0);
+ -webkit-mask-image:radial-gradient(circle clamp(165px,18vw,315px) at var(--scent-x,64%) var(--scent-y,47%),#000 0%,rgba(0,0,0,.93) 34%,rgba(0,0,0,.35) 67%,transparent 100%);
+ mask-image:radial-gradient(circle clamp(165px,18vw,315px) at var(--scent-x,64%) var(--scent-y,47%),#000 0%,rgba(0,0,0,.93) 34%,rgba(0,0,0,.35) 67%,transparent 100%);
+ filter:brightness(.69) saturate(.9);
+}
+.temperature-section.scent-spotlight .temperature-heading{
+ position:absolute;left:50%;top:55%;width:96%;max-width:none;
+ transform:translate(-50%,-50%);z-index:3;text-align:center;
+ pointer-events:none;color:#fff;
+}
+.temperature-section.scent-spotlight .temperature-heading h2{color:#fff}
+.temperature-section.scent-spotlight .temperature-heading h2>.temperature-line{display:flex;justify-content:center;align-items:center;height:1.1em;min-height:1.1em;gap:0;width:100%;margin:0}
+.temperature-section.scent-spotlight .temperature-heading .temperature-word{height:1.1em;line-height:1.1;white-space:nowrap}
+.temperature-section.scent-spotlight .temperature-heading p{color:#fff}
+@media(max-width:767px){
+ .temperature-section.scent-spotlight .temperature-scroll{height:400svh}
+ .temperature-section.scent-spotlight .temperature-heading{top:54%;width:94%}
+ .temperature-section.scent-spotlight .temperature-scent-beam{
+  -webkit-mask-image:radial-gradient(circle 32vw at var(--scent-x,64%) var(--scent-y,47%),#000 0%,rgba(0,0,0,.8) 40%,transparent 100%);
+  mask-image:radial-gradient(circle 32vw at var(--scent-x,64%) var(--scent-y,47%),#000 0%,rgba(0,0,0,.8) 40%,transparent 100%);
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .temperature-section.scent-spotlight .temperature-scroll{height:100svh}
+ .temperature-section.scent-spotlight .temperature-scent-beam{display:none}
+}
+
+/* The finished story copy disappears with the original photo-card rise,
+   leaving black behind the card once its entrance settles. */
+.temperature-section.scent-spotlight .temperature-heading{
+ opacity:var(--scent-copy-alpha,1);
+}
+
+/* NOISE INSPIRATION ENDING EDITORIAL — reserve additional runway only for
+   the closing typography and existing-brand-glass center/zoom sequence. */
+.inspiration-story.inspiration-camera{height:950svh}
+.inspiration-camera .inspiration-camera-ending{
+ position:fixed;inset:0;z-index:40;display:block;padding:0;
+ text-align:left;transform:none!important;pointer-events:none;
+ color:#f5f5f5;overflow:hidden;
+}
+.inspiration-camera .inspiration-ending-korean{
+ position:absolute;left:50%;top:50%;width:max-content;max-width:88%;margin:0;
+ font:600 20px/1.5 Pretendard,var(--font-ui),sans-serif;
+ letter-spacing:-.025em;color:#f5f5f5;text-align:center;
+ opacity:var(--ending-korean-alpha,0);
+ transform:translate(-50%,calc(-50% + var(--ending-korean-rise,20px)));
+}
+.inspiration-camera .inspiration-ending-english{
+ position:absolute;left:50%;top:50%;bottom:auto;width:max-content;max-width:96%;margin:0;
+ font:400 clamp(36px,4.55vw,88px)/1.12 'NOISE Alexandria Story',Alexandria,sans-serif;
+ letter-spacing:-.025em;color:#f5f5f5;text-align:center;
+ opacity:var(--ending-english-alpha,0);
+ transform:translate(calc(-50% + var(--ending-english-slide,220px)),-50%);
+}
+.inspiration-camera .inspiration-ending-english span{display:block;white-space:nowrap;text-align:center}
+.brand-disc.inspiration-portal-glass{
+ z-index:54;pointer-events:none;visibility:hidden;transform-origin:center center;
+ will-change:transform,opacity;
+}
+@media(max-width:767px){
+ .inspiration-story.inspiration-camera{height:930svh}
+ .inspiration-camera .inspiration-ending-korean{
+  left:50%;top:50%;max-width:90%;font-size:16px;line-height:1.55;
+ }
+ .inspiration-camera .inspiration-ending-english{
+  left:50%;top:50%;bottom:auto;max-width:96%;
+  font-size:clamp(20px,5.1vw,38px);
+  line-height:1.18;letter-spacing:-.035em;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .inspiration-story.inspiration-camera{height:auto}
+ .inspiration-camera .inspiration-camera-ending{
+  position:relative!important;visibility:visible!important;opacity:1!important;
+  min-height:100svh;padding:0;
+ }
+ .inspiration-camera .inspiration-ending-korean,
+ .inspiration-camera .inspiration-ending-english{opacity:1!important;transform:none!important}
+ .brand-disc.inspiration-portal-glass{display:none!important}
+}
+
+
+/* Both Korean lines keep their complete geometry from the first frame.
+   Invisible, full-height text reserves each line's width AND height; only an
+   absolutely positioned visible layer changes as the characters are typed. */
+.inspiration-camera .inspiration-typed-line{
+ display:block;position:relative;width:max-content;max-width:none;
+ margin-inline:auto;white-space:nowrap;text-align:left;
+}
+.inspiration-camera .inspiration-typed-line::before{
+ content:attr(data-full-text);display:block;
+ visibility:hidden;white-space:pre;
+ pointer-events:none;
+}
+.inspiration-camera .inspiration-typed-visible{
+ position:absolute;left:0;top:0;display:block;
+ white-space:pre;text-align:left;
+}
+
+
+/* RUSTED CAR arrives from the glass transition through a temporary
+   scroll-driven black veil. No change to the car's scale, movement or crop. */
+.frequency-black::before{
+ content:"";position:absolute;inset:0;z-index:7;
+ background:#000;opacity:var(--car-transition-dim,0);
+ pointer-events:none;
+}
+@media(prefers-reduced-motion:reduce){
+ .frequency-black::before{display:none}
+}
+
+/* Crosshair and target marker follow each frequency's monochrome palette. */
+.frequency-black .frequency-target{color:#fff}
+.frequency-white .frequency-target{color:#000}
