@@ -321,7 +321,7 @@ if(typeof window!=='undefined'){
   const zoom=reduced.matches?0:smooth((p-.68)/.3),fade=region.hidden?1:smooth((zoom-.63)/.37),car=world.querySelector('.sense-car'),cb=car.getBoundingClientRect(),wb=world.getBoundingClientRect(),previous=Number(world.dataset.scale||1),cx=(cb.left+cb.width/2-wb.left)/previous,cy=(cb.top+cb.height/2-wb.top)/previous,scale=1+zoom*zoom*36;
   world.style.transformOrigin=cx+'px '+cy+'px';world.style.transform='translate('+((scene.clientWidth/2-cx)*zoom)+'px,'+((scene.offsetHeight/2-cy)*zoom)+'px) scale('+scale+')';world.dataset.scale=String(scale);world.style.opacity=String(1-fade);scene.style.setProperty('--car-exit',String(fade));world.classList.toggle('is-car-zooming',zoom>.02);world.style.setProperty('--car-blur',(zoom*10)+'px');world.style.setProperty('--car-photo-zoom-blur',(smooth((zoom-.28)/.72)*3.5)+'px');frequency.style.setProperty('--frequency-arrival',String(fade));
   const fr=document.querySelector('.frequency-scroll'),fb=fr.getBoundingClientRect(),fp=clamp(-fb.top/Math.max(1,fr.offsetHeight-innerHeight-(innerWidth>=768?innerHeight*2.5:0)));frequency.classList.toggle('awaiting-blackout',region.hidden&&!reduced.matches&&fb.top>1);
-  const journey=document.querySelector(".inspiration-camera"),jb=journey?.getBoundingClientRect(),jp=jb?clamp(-jb.top/Math.max(1,journey.offsetHeight-vh)):0,handoff=journey?smooth((jp-.88)/.12):0;frequency.classList.toggle("awaiting-blackout",region.hidden&&!reduced.matches&&fb.top>1&&handoff===0);const productLanding=!reduced.matches&&((b.top<0&&fade>0&&fb.top>0&&(!journey||handoff>0))||(fb.top<=0&&fb.bottom>innerHeight));
+  const journey=document.querySelector(".inspiration-camera"),jb=journey?.getBoundingClientRect(),jp=jb?clamp(-jb.top/Math.max(1,journey.offsetHeight-vh)):0,handoff=journey?smooth((jp-.91)/.09):0;frequency.classList.toggle("awaiting-blackout",region.hidden&&!reduced.matches&&fb.top>1&&handoff===0);const productLanding=!reduced.matches&&((b.top<0&&fade>0&&fb.top>0&&(!journey||handoff>0))||(fb.top<=0&&fb.bottom>innerHeight));
   product.classList.remove('is-landing');product.classList.toggle('is-sequence-pinned',productLanding);product.classList.toggle('frequency-content-active',fade>=.999999);
   product.style.setProperty('--car-entry',String(reduced.matches?1:journey?(fb.top>0?handoff:1):smooth(fp/.14)));
 frequency.classList.remove('has-fixed-landing');
@@ -839,7 +839,15 @@ if(typeof window!=='undefined')(()=>{
  const section=document.querySelector('.inspiration-camera');
  if(!section)return;
  const ending=section.querySelector('.inspiration-camera-ending');
+ const korean=ending.querySelector('.inspiration-ending-korean');
+ const english=ending.querySelector('.inspiration-ending-english');
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ // Reuse the same .brand-disc surface, blur, and rim from the earlier scene.
+ // A separate instance prevents the earlier scene from changing this one.
+ const glass=document.createElement('div');
+ glass.className='brand-disc inspiration-portal-glass';
+ glass.setAttribute('aria-hidden','true');
+ document.body.append(glass);
  const scenes=[...section.querySelectorAll('.inspiration-camera-scene')].map((scene,index)=>{
   scene.dataset.side=index%2?'right':'left';
   scene.style.zIndex=String(20-index);
@@ -850,17 +858,21 @@ if(typeof window!=='undefined')(()=>{
  let frame=0,lastProgress=-1;
  function render(){
   frame=0;
-  if(reduced.matches){lastProgress=-1;return;}
+  if(reduced.matches){glass.style.visibility='hidden';lastProgress=-1;return;}
   const bounds=section.getBoundingClientRect();
   const viewportHeight=innerHeight;
   if(bounds.bottom<=0||bounds.top>=viewportHeight){
    ending.style.visibility='hidden';
+   glass.style.visibility='hidden';glass.style.opacity='0';
    lastProgress=-1;
    return;
   }
-  const progress=clamp(-bounds.top/Math.max(1,bounds.height-viewportHeight));
-  if(progress===lastProgress)return;
-  lastProgress=progress;
+  // Preserve all four existing card scenes at their original scroll speed.
+  // The 2 extra viewport heights are used only by the closing tableau.
+  const elapsed=Math.max(0,-bounds.top/Math.max(1,viewportHeight));
+  if(Math.abs(elapsed-lastProgress)<.0001)return;
+  lastProgress=elapsed;
+  const progress=clamp(elapsed/5.5);
   const position=progress*4.5;
   const sway=Math.cos(position*Math.PI)*5;
   const bob=Math.sin(position*Math.PI)*1.2;
@@ -884,10 +896,34 @@ if(typeof window!=='undefined')(()=>{
    caption.style.opacity=show*(1-hide);
    caption.style.transform='translateY('+((1-show)*24+hide*22)+'px)';
   });
-  const end=ease((position-3.75)/.55);
-  ending.style.visibility=progress>.78&&bounds.bottom>viewportHeight?'visible':'hidden';
-  ending.style.opacity=end*(1-ease((progress-.88)/.12));
-  ending.style.transform='translateY('+((1-end)*20)+'px)';
+  // Editorial order: Korean copy, a reading pause, then Alexandria from right.
+  const koreanIn=ease((elapsed-4.65)/.38);
+  const englishIn=ease((elapsed-5.35)/.52);
+  const textOut=ease((elapsed-7.00)/.43);
+  ending.style.visibility=elapsed>=4.57?'visible':'hidden';
+  ending.style.opacity=String(1-textOut);
+  ending.style.transform='none';
+  korean.style.setProperty('--ending-korean-alpha',String(koreanIn));
+  korean.style.setProperty('--ending-korean-rise',((1-koreanIn)*20)+'px');
+  english.style.setProperty('--ending-english-alpha',String(englishIn));
+  english.style.setProperty('--ending-english-slide',((1-englishIn)*Math.min(innerWidth*.23,280))+'px');
+  // Identical brand-disc material and rim lighting: descend, center at 50/50,
+  // hold briefly, then zoom to cover the viewport before the car handoff.
+  const travel=ease((elapsed-5.98)/.61);
+  const zoom=ease((elapsed-6.85)/.58);
+  const leave=ease((elapsed-7.35)/.15);
+  const diameter=Math.min(260,innerWidth*.20);
+  const coverScale=Math.hypot(innerWidth,viewportHeight)/Math.max(1,diameter)*1.28;
+  const scale=1+(coverScale-1)*zoom;
+  const x=innerWidth*.5;
+  const y=-diameter*.56+(viewportHeight*.5+diameter*.56)*travel;
+  const glassAlpha=ease((elapsed-5.97)/.18)*(1-leave);
+  glass.style.visibility=glassAlpha>.001?'visible':'hidden';
+  glass.style.opacity=String(glassAlpha);
+  glass.style.setProperty('--glass-diameter',diameter+'px');
+  glass.style.setProperty('--rim-light-angle',(270+travel*55)+'deg');
+  glass.style.setProperty('--rim-light-strength',String(.85-.5*travel));
+  glass.style.transform='translate('+x+'px,'+y+'px) translate(-50%,-50%) perspective(1000px) rotateY('+((1-travel)*100)+'deg) scale('+scale+')';
  }
  function schedule(){if(!frame)frame=requestAnimationFrame(render);}
  addEventListener('scroll',schedule,{passive:true});
