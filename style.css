@@ -1783,3 +1783,15 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  position:absolute;left:0;top:0;display:block;
  white-space:pre;text-align:left;
 }
+
+
+/* RUSTED CAR arrives from the glass transition through a temporary
+   scroll-driven black veil. No change to the car's scale, movement or crop. */
+.frequency-black::before{
+ content:"";position:absolute;inset:0;z-index:7;
+ background:#000;opacity:var(--car-transition-dim,0);
+ pointer-events:none;
+}
+@media(prefers-reduced-motion:reduce){
+ .frequency-black::before{display:none}
+}
