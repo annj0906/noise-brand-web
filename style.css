@@ -1726,20 +1726,20 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  color:#f5f5f5;overflow:hidden;
 }
 .inspiration-camera .inspiration-ending-korean{
- position:absolute;left:8%;top:12%;width:max-content;max-width:84%;margin:0;
+ position:absolute;left:50%;top:50%;width:max-content;max-width:88%;margin:0;
  font:600 20px/1.5 Pretendard,var(--font-ui),sans-serif;
- letter-spacing:-.025em;color:#f5f5f5;text-align:left;
+ letter-spacing:-.025em;color:#f5f5f5;text-align:center;
  opacity:var(--ending-korean-alpha,0);
- transform:translate3d(0,var(--ending-korean-rise,20px),0);
+ transform:translate(-50%,calc(-50% + var(--ending-korean-rise,20px)));
 }
 .inspiration-camera .inspiration-ending-english{
- position:absolute;left:24%;bottom:9%;width:max-content;max-width:none;margin:0;
+ position:absolute;left:50%;top:50%;bottom:auto;width:max-content;max-width:96%;margin:0;
  font:400 clamp(36px,4.55vw,88px)/1.12 'NOISE Alexandria Story',Alexandria,sans-serif;
- letter-spacing:-.025em;color:#f5f5f5;text-align:left;
+ letter-spacing:-.025em;color:#f5f5f5;text-align:center;
  opacity:var(--ending-english-alpha,0);
- transform:translate3d(var(--ending-english-slide,220px),0,0);
+ transform:translate(calc(-50% + var(--ending-english-slide,220px)),-50%);
 }
-.inspiration-camera .inspiration-ending-english span{display:block;white-space:nowrap}
+.inspiration-camera .inspiration-ending-english span{display:block;white-space:nowrap;text-align:center}
 .brand-disc.inspiration-portal-glass{
  z-index:54;pointer-events:none;visibility:hidden;transform-origin:center center;
  will-change:transform,opacity;
@@ -1747,10 +1747,11 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 @media(max-width:767px){
  .inspiration-story.inspiration-camera{height:820svh}
  .inspiration-camera .inspiration-ending-korean{
-  left:7%;top:13%;max-width:86%;font-size:16px;line-height:1.55;
+  left:50%;top:50%;max-width:90%;font-size:16px;line-height:1.55;
  }
  .inspiration-camera .inspiration-ending-english{
-  left:6%;bottom:14%;font-size:clamp(20px,5.1vw,38px);
+  left:50%;top:50%;bottom:auto;max-width:96%;
+  font-size:clamp(20px,5.1vw,38px);
   line-height:1.18;letter-spacing:-.035em;
  }
 }
