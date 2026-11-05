@@ -856,6 +856,16 @@ if(typeof window!=='undefined')(()=>{
  const clamp=value=>Math.max(0,Math.min(1,value));
  const ease=value=>{const t=clamp(value);return t*t*(3-2*t);};
  let frame=0,lastProgress=-1;
+ // Same soft rim rotation as the original introductory glass: the lit edge
+ // turns towards the closest readable text and eases into the target.
+ let rimAngle=null,rimTarget=0;
+ function aimRim(angle){
+  rimTarget=angle;
+  if(rimAngle===null)rimAngle=angle;
+  const delta=((rimTarget-rimAngle+540)%360+360)%360-180;
+  rimAngle+=delta*.32;
+  glass.style.setProperty('--rim-light-angle',rimAngle+'deg');
+ }
  function render(){
   frame=0;
   if(reduced.matches){glass.style.visibility='hidden';lastProgress=-1;return;}
@@ -898,18 +908,20 @@ if(typeof window!=='undefined')(()=>{
   });
   // Editorial order: Korean copy, a reading pause, then Alexandria from right.
   const koreanIn=ease((elapsed-4.65)/.38);
-  const englishIn=ease((elapsed-5.35)/.52);
+  const koreanOut=ease((elapsed-5.36)/.27);
+  const englishIn=ease((elapsed-5.48)/.50);
   const textOut=ease((elapsed-7.00)/.43);
   ending.style.visibility=elapsed>=4.57?'visible':'hidden';
   ending.style.opacity=String(1-textOut);
   ending.style.transform='none';
-  korean.style.setProperty('--ending-korean-alpha',String(koreanIn));
+  korean.style.setProperty('--ending-korean-alpha',String(koreanIn*(1-koreanOut)));
   korean.style.setProperty('--ending-korean-rise',((1-koreanIn)*20)+'px');
   english.style.setProperty('--ending-english-alpha',String(englishIn));
   english.style.setProperty('--ending-english-slide',((1-englishIn)*Math.min(innerWidth*.23,280))+'px');
-  // Identical brand-disc material and rim lighting: descend, center at 50/50,
-  // hold briefly, then zoom to cover the viewport before the car handoff.
-  const travel=ease((elapsed-5.98)/.61);
+  // Use the introductory brand-disc motion: three full Y rotations as it
+  // descends from above, and an illuminated rim tracking nearby copy.
+  // Hold at the exact screen center before the existing final zoom to the car.
+  const travel=ease((elapsed-4.69)/1.64);
   const zoom=ease((elapsed-6.85)/.58);
   const leave=ease((elapsed-7.35)/.15);
   const diameter=Math.min(260,innerWidth*.20);
@@ -917,13 +929,26 @@ if(typeof window!=='undefined')(()=>{
   const scale=1+(coverScale-1)*zoom;
   const x=innerWidth*.5;
   const y=-diameter*.56+(viewportHeight*.5+diameter*.56)*travel;
-  const glassAlpha=ease((elapsed-5.97)/.18)*(1-leave);
+  const glassAlpha=ease((elapsed-4.69)/.24)*(1-leave);
   glass.style.visibility=glassAlpha>.001?'visible':'hidden';
   glass.style.opacity=String(glassAlpha);
   glass.style.setProperty('--glass-diameter',diameter+'px');
-  glass.style.setProperty('--rim-light-angle',(270+travel*55)+'deg');
+  // Same target-selection logic as the earlier NOISE text-reactive rim.
+  const targets=[korean,english].filter((node,index)=>
+   index===0?koreanIn*(1-koreanOut)>.05:englishIn>.05);
+  let nearest=null,best=Infinity;
+  for(const node of targets){
+   const t=node.getBoundingClientRect();
+   const tx=Math.max(t.left,Math.min(x,t.right));
+   const ty=Math.max(t.top,Math.min(y,t.bottom));
+   const dist=Math.hypot(tx-x,ty-y);
+   if(dist<best){best=dist;nearest={x:dist<2?t.left+t.width/2:tx,y:dist<2?t.top+t.height/2:ty};}
+  }
+  const toward=nearest?Math.atan2(nearest.y-y,nearest.x-x)*180/Math.PI+90:270;
+  aimRim(toward);
   glass.style.setProperty('--rim-light-strength',String(.85-.5*travel));
-  glass.style.transform='translate('+x+'px,'+y+'px) translate(-50%,-50%) perspective(1000px) rotateY('+((1-travel)*100)+'deg) scale('+scale+')';
+  const turn=1080*(1-travel);
+  glass.style.transform='translate('+x+'px,'+y+'px) translate(-50%,-50%) perspective(1000px) rotateY('+turn+'deg) scale('+scale+')';
  }
  function schedule(){if(!frame)frame=requestAnimationFrame(render);}
  addEventListener('scroll',schedule,{passive:true});
