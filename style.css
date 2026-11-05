@@ -1570,7 +1570,7 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  letter-spacing:-.025em;
 }
 .brand-journey .collection-stage .brand-product-editorial .brand-product-copy{
- position:absolute;left:25%;top:50%;bottom:auto;z-index:1;
+ position:absolute;left:23.8%;top:50%;bottom:auto;z-index:1;
  display:block;margin:0;padding:0;width:max-content;max-width:70%;
  text-align:left;white-space:normal;word-break:keep-all;
  font:600 clamp(24px,1.95vw,34px)/1.5 var(--font-ui);
@@ -1593,15 +1593,15 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 /* The bottle and package move as a single group; their size and distance are untouched. */
 @media(min-width:1024px){
  .brand-journey .collection-stage .collection-object{
-  transform:translate3d(clamp(82px,9vw,160px),0,0);
+  transform:translate3d(clamp(88px,10vw,174px),0,0);
  }
 }
 @media(min-width:768px) and (max-width:1023px){
  .brand-journey .collection-stage .collection-object{
-  transform:translate3d(5.5vw,0,0);
+  transform:translate3d(6.5vw,0,0);
  }
  .brand-journey .collection-stage .brand-product-editorial .brand-product-copy{
-  left:18%;font-size:clamp(22px,2.7vw,30px);max-width:75%;
+  left:17%;font-size:clamp(22px,2.7vw,30px);max-width:75%;
  }
 }
 @media(max-width:767px){
@@ -1625,5 +1625,20 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 @media(prefers-reduced-motion:reduce){
  .brand-journey .collection-stage .brand-product-editorial .brand-product-copy{
   transform:none;filter:none!important;will-change:auto;
+ }
+}
+
+/* Two WHITE sentences appear in sequence on scroll without reflowing the layout. */
+.brand-journey .collection-stage .brand-white-copy .editorial-line{display:block;white-space:nowrap}
+.brand-journey .collection-stage .brand-white-copy .editorial-line-2{
+ opacity:var(--second-line-alpha,0);
+ transform:translate3d(0,var(--second-line-rise,14px),0);
+}
+@media(max-width:767px){
+ .brand-journey .collection-stage .brand-white-copy .editorial-line{white-space:normal}
+}
+@media(prefers-reduced-motion:reduce){
+ .brand-journey .collection-stage .brand-white-copy .editorial-line-2{
+  transform:none;
  }
 }
