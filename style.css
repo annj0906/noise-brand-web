@@ -1719,7 +1719,7 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 
 /* NOISE INSPIRATION ENDING EDITORIAL — reserve additional runway only for
    the closing typography and existing-brand-glass center/zoom sequence. */
-.inspiration-story.inspiration-camera{height:850svh}
+.inspiration-story.inspiration-camera{height:950svh}
 .inspiration-camera .inspiration-camera-ending{
  position:fixed;inset:0;z-index:40;display:block;padding:0;
  text-align:left;transform:none!important;pointer-events:none;
@@ -1745,7 +1745,7 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  will-change:transform,opacity;
 }
 @media(max-width:767px){
- .inspiration-story.inspiration-camera{height:820svh}
+ .inspiration-story.inspiration-camera{height:930svh}
  .inspiration-camera .inspiration-ending-korean{
   left:50%;top:50%;max-width:90%;font-size:16px;line-height:1.55;
  }
