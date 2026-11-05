@@ -291,7 +291,7 @@
 .frequency-description{position:relative;font:400 clamp(14px,.834vw,16px)/1.4 var(--font-ui);letter-spacing:-.025em}
 .frequency-detail>a{position:relative;display:inline-flex;align-items:center;min-height:44px;margin-top:clamp(24px,3vw,58px);font:400 clamp(16px,1.25vw,24px)/1.4 var(--font-ui);gap:8px}
 .frequency-dark-art{position:absolute;top:-4%;left:0;width:100%;aspect-ratio:572/526;overflow:hidden;opacity:.22;pointer-events:none}.frequency-dark-art img{max-width:none;width:100%;height:100%}
-.frequency-target{position:absolute;inset:0;z-index:3;pointer-events:none;color:#ff0000;opacity:.6}.target-h{position:absolute;left:0;right:0;top:var(--target-y,36.1%);height:.5px;background:currentColor}.target-v{position:absolute;top:0;bottom:0;left:var(--target-x,16.9%);width:.5px;background:currentColor}.target-box{position:absolute;left:var(--target-x,16.9%);top:var(--target-y,36.1%);width:10.26%;aspect-ratio:197/143;border:.5px solid;transform:translate(-50%,-50%)}
+.frequency-target{position:absolute;inset:0;z-index:3;pointer-events:none;color:inherit;opacity:.6}.target-h{position:absolute;left:0;right:0;top:var(--target-y,36.1%);height:.5px;background:currentColor}.target-v{position:absolute;top:0;bottom:0;left:var(--target-x,16.9%);width:.5px;background:currentColor}.target-box{position:absolute;left:var(--target-x,16.9%);top:var(--target-y,36.1%);width:10.26%;aspect-ratio:197/143;border:.5px solid;transform:translate(-50%,-50%)}
 .frequency-white-preserved{background:var(--paper);max-width:none}.frequency-white-preserved>.frequency{max-width:900px;margin:auto}.frequency-white-preserved>.frequency figure{max-width:600px}.frequency-white-preserved .frequency-copy{margin-left:15%}
 @media(hover:hover) and (pointer:fine){.frequency-black{cursor:none}.frequency-black a{cursor:pointer}.frequency-car-link:hover img{filter:brightness(1.16)}}
 @media(max-width:767px){.frequency-black{height:1000px}.frequency-scene-title{left:7%;top:7%}.frequency-scene-title>.label{margin-bottom:24px}.frequency-scene-intro{left:54%;top:7%;max-width:41%;font-size:14px}.frequency-scene-title h2{font-size:26px}.frequency-car{left:4%;top:27%;width:89%}.frequency-detail{left:18%;top:65%;width:70%}.frequency-detail h3{margin:24px 0 16px}.frequency-detail>a{margin-top:20px}.frequency-car figcaption{font-size:16px!important}.target-box{width:24%}.sense-footnote{max-width:none}}
@@ -1795,3 +1795,7 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 @media(prefers-reduced-motion:reduce){
  .frequency-black::before{display:none}
 }
+
+/* Crosshair and target marker follow each frequency's monochrome palette. */
+.frequency-black .frequency-target{color:#fff}
+.frequency-white .frequency-target{color:#000}
