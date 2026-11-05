@@ -1767,14 +1767,19 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 }
 
 
-/* Korean editorial types by scroll, one centered line at a time.
-   Invisible full-copy placeholders hold its position while letters appear. */
+/* Both Korean lines keep their complete geometry from the first frame.
+   Invisible, full-height text reserves each line's width AND height; only an
+   absolutely positioned visible layer changes as the characters are typed. */
 .inspiration-camera .inspiration-typed-line{
  display:block;position:relative;width:max-content;max-width:none;
  margin-inline:auto;white-space:nowrap;text-align:left;
 }
 .inspiration-camera .inspiration-typed-line::before{
- content:attr(data-full-text);display:block;height:0;
- visibility:hidden;overflow:hidden;white-space:pre;
+ content:attr(data-full-text);display:block;
+ visibility:hidden;white-space:pre;
  pointer-events:none;
+}
+.inspiration-camera .inspiration-typed-visible{
+ position:absolute;left:0;top:0;display:block;
+ white-space:pre;text-align:left;
 }
