@@ -186,6 +186,46 @@ if(typeof window!=='undefined'){
 if(typeof window!=='undefined'){
  const section=document.querySelector('.temperature-section');
  if(section){
+  if(section.classList.contains('scent-spotlight')){
+   const region=section.querySelector('.temperature-scroll');
+   const stage=section.querySelector('.temperature-stage');
+   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+   const fine=matchMedia('(hover:hover) and (pointer:fine)');
+   const clamp=n=>Math.max(0,Math.min(1,n));
+   const smooth=n=>{const v=clamp(n);return v*v*(3-2*v);};
+   let frame=0,targetX=.64,targetY=.47,spotX=.64,spotY=.47;
+   function draw(){
+    frame=0;
+    const b=region.getBoundingClientRect();
+    const p=clamp(-b.top/Math.max(1,region.offsetHeight-stage.offsetHeight));
+    const dim=reduced.matches?.83:smooth((p-.04)/.61)*.94;
+    const beam=reduced.matches?0:smooth((p-.26)/.20)*.9;
+    section.style.setProperty('--scent-dim',String(dim));
+    section.style.setProperty('--scent-vignette-alpha',String(reduced.matches?1:smooth((p-.10)/.65)));
+    section.style.setProperty('--scent-beam-alpha',String(beam));
+    if(!fine.matches){targetX=.64;targetY=.47;}
+    const ease=reduced.matches?1:.16;
+    spotX+=(targetX-spotX)*ease;spotY+=(targetY-spotY)*ease;
+    stage.style.setProperty('--scent-x',spotX*100+'%');
+    stage.style.setProperty('--scent-y',spotY*100+'%');
+    if(b.bottom>0&&b.top<innerHeight&&Math.abs(spotX-targetX)+Math.abs(spotY-targetY)>.0007)schedule();
+   }
+   function schedule(){if(!frame)frame=requestAnimationFrame(draw);}
+   stage.addEventListener('pointermove',event=>{
+    if(!fine.matches||event.pointerType==='touch')return;
+    const b=stage.getBoundingClientRect();
+    targetX=clamp((event.clientX-b.left)/Math.max(1,b.width));
+    targetY=clamp((event.clientY-b.top)/Math.max(1,b.height));
+    schedule();
+   },{passive:true});
+   stage.addEventListener('pointerleave',()=>{targetX=.64;targetY=.47;schedule();},{passive:true});
+   section.classList.add('is-entered');
+   addEventListener('scroll',schedule,{passive:true});
+   addEventListener('resize',schedule);
+   reduced.addEventListener('change',schedule);
+   fine.addEventListener('change',schedule);
+   draw();
+  } else {
   const region=section.querySelector('.temperature-scroll'),stage=section.querySelector('.temperature-stage'),world=section.querySelector('.temperature-world'),next=section.querySelector('.sense-black'),hero=document.querySelector('#top'),line=hero.querySelector('.hero-line'),reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const lens=document.createElement('div');lens.className='journey-glass';lens.setAttribute('aria-hidden','true');document.body.append(lens);
   // Measure the zoom anchor in layout coordinates, never from its scaled bounds.
@@ -243,6 +283,7 @@ const zoomScale=1+zoom*zoom*42;world.classList.toggle('is-zooming',zoom>.02);sec
   window.addEventListener('pointermove',event=>{mouseX=event.clientX;mouseY=event.clientY;if(cursorVisible)schedule();},{passive:true});
   section.classList.add('is-entered');
   window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);document.fonts.ready.then(schedule);draw();
+  }
  }
 }
 
@@ -446,7 +487,7 @@ if(typeof window!=='undefined'){
  document.fonts.ready.then(()=>{
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const specs=[
-   {region:'.temperature-scroll',fallback:'#philosophy',scene:'.temperature-stage',world:'.temperature-world',groups:[['.temperature-word',.02,.4],['.temperature-heading p',.23,.52]]},
+   {region:'.temperature-scroll',fallback:'#philosophy',scene:'.temperature-stage',world:'.temperature-world',groups:[['.temperature-word',.24,.58],['.temperature-heading p',.50,.74]]},
    {region:'.sense-scroll',scene:'.sense-black',world:'.sense-world',groups:[['.sense-label',0,.1],['.sense-content h2',.04,.43],['.sense-copy',.25,.56]]}
   ];
   const clamp=n=>Math.max(0,Math.min(1,n));
