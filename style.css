@@ -730,13 +730,11 @@
 .store-status{font:400 14px/1.5 var(--font-ui);color:#aaa;margin-top:4px}
 .final-surround{transition:filter 450ms ease}
 .final-scene:has(.store-button:hover) .final-surround,.final-scene:has(.store-button:focus-visible) .final-surround{filter:blur(4px)}
-.final-object{position:absolute;pointer-events:none;z-index:1;transform:translate(var(--final-dx,0px),var(--final-dy,0px)) rotate(var(--final-dr,0deg));opacity:.65}
-.final-cross{left:80%;top:16%;width:32px;height:32px}.final-ring{left:77%;top:70%;width:64px;height:64px;opacity:.3}.final-red{left:37%;top:85%;width:16px;height:16px}.final-spark{left:3%;top:51%;width:30px;height:30px}
 .final-footer-section{background:#000;color:#f5f5f5;padding:0 7% 48px}
 .final-footer-section footer{max-width:1650px;margin:0 auto;padding-top:32px;border-top:1px solid #ffffff40;min-height:180px}
 .final-footer-section footer .wordmark,.final-footer-section footer a{color:#f5f5f5}
-@media(max-width:767px){.final-experience{padding-top:40px}.final-label{margin-bottom:56px}.final-title{font-size:clamp(48px,10vw,76px);margin-bottom:64px}.final-posters{width:calc(100% + 7vw);grid-template-columns:repeat(3,76vw);gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:18px}.final-posters figure{scroll-snap-align:start}.final-copy{margin:64px 0 40px}.final-footer-section footer{gap:20px}.final-object{opacity:.4}}
-@media(prefers-reduced-motion:reduce){.final-posters figure,.final-stores{opacity:1;transform:none!important;translate:none;filter:none;transition:none}.final-object{transform:none}.final-surround{transition:none}}
+@media(max-width:767px){.final-experience{padding-top:40px}.final-label{margin-bottom:56px}.final-title{font-size:clamp(48px,10vw,76px);margin-bottom:64px}.final-posters{width:calc(100% + 7vw);grid-template-columns:repeat(3,76vw);gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:18px}.final-posters figure{scroll-snap-align:start}.final-copy{margin:64px 0 40px}.final-footer-section footer{gap:20px}}
+@media(prefers-reduced-motion:reduce){.final-posters figure,.final-stores{opacity:1;transform:none!important;translate:none;filter:none;transition:none}.final-surround{transition:none}}
 
 /* A vertical scroll controls the whole entrance; no horizontal gallery scroller. */
 .final-experience{overflow:clip}
