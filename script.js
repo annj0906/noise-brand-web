@@ -663,8 +663,9 @@ if(typeof window!=='undefined'){
   const blackIntro=reduce.matches?1:smooth((p-.32)/.07);
   const productSwap=reduce.matches?(p>=.52?1:0):smooth((p-.52)/.10);
   const whiteFirstIntro=reduce.matches?1:smooth((p-.55)/.07);
-  const whiteSecondEnter=reduce.matches?(p>=.79?1:0):smooth((p-.755)/.075);
-  const whiteFirstExit=reduce.matches?(p>=.79?1:0):smooth((p-.765)/.065);
+  // Let the first WHITE line hold longer before the final line replaces it.
+  const whiteSecondEnter=reduce.matches?(p>=.86?1:0):smooth((p-.83)/.075);
+  const whiteFirstExit=reduce.matches?(p>=.86?1:0):smooth((p-.825)/.065);
   const editorialStates=[
    {selector:'.brand-black-editorial',alpha:blackIntro*(1-productSwap),rise:reduce.matches?0:(1-blackIntro)*24},
    {selector:'.brand-white-editorial',alpha:productSwap,rise:0}
