@@ -730,13 +730,11 @@
 .store-status{font:400 14px/1.5 var(--font-ui);color:#aaa;margin-top:4px}
 .final-surround{transition:filter 450ms ease}
 .final-scene:has(.store-button:hover) .final-surround,.final-scene:has(.store-button:focus-visible) .final-surround{filter:blur(4px)}
-.final-object{position:absolute;pointer-events:none;z-index:1;transform:translate(var(--final-dx,0px),var(--final-dy,0px)) rotate(var(--final-dr,0deg));opacity:.65}
-.final-cross{left:80%;top:16%;width:32px;height:32px}.final-ring{left:77%;top:70%;width:64px;height:64px;opacity:.3}.final-red{left:37%;top:85%;width:16px;height:16px}.final-spark{left:3%;top:51%;width:30px;height:30px}
 .final-footer-section{background:#000;color:#f5f5f5;padding:0 7% 48px}
 .final-footer-section footer{max-width:1650px;margin:0 auto;padding-top:32px;border-top:1px solid #ffffff40;min-height:180px}
 .final-footer-section footer .wordmark,.final-footer-section footer a{color:#f5f5f5}
-@media(max-width:767px){.final-experience{padding-top:40px}.final-label{margin-bottom:56px}.final-title{font-size:clamp(48px,10vw,76px);margin-bottom:64px}.final-posters{width:calc(100% + 7vw);grid-template-columns:repeat(3,76vw);gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:18px}.final-posters figure{scroll-snap-align:start}.final-copy{margin:64px 0 40px}.final-footer-section footer{gap:20px}.final-object{opacity:.4}}
-@media(prefers-reduced-motion:reduce){.final-posters figure,.final-stores{opacity:1;transform:none!important;translate:none;filter:none;transition:none}.final-object{transform:none}.final-surround{transition:none}}
+@media(max-width:767px){.final-experience{padding-top:40px}.final-label{margin-bottom:56px}.final-title{font-size:clamp(48px,10vw,76px);margin-bottom:64px}.final-posters{width:calc(100% + 7vw);grid-template-columns:repeat(3,76vw);gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:18px}.final-posters figure{scroll-snap-align:start}.final-copy{margin:64px 0 40px}.final-footer-section footer{gap:20px}}
+@media(prefers-reduced-motion:reduce){.final-posters figure,.final-stores{opacity:1;transform:none!important;translate:none;filter:none;transition:none}.final-surround{transition:none}}
 
 /* A vertical scroll controls the whole entrance; no horizontal gallery scroller. */
 .final-experience{overflow:clip}
@@ -1799,3 +1797,65 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 /* Crosshair and target marker follow each frequency's monochrome palette. */
 .frequency-black .frequency-target{color:#fff}
 .frequency-white .frequency-target{color:#000}
+
+/* Chapter indexing follows the actual scroll order from the first
+   story frame. Markers are always anchored to each scene, never to the viewport
+   across unrelated sections. The decorative motion is unchanged. */
+.brand-journey .brand-word-stage>.chapter-story,
+.inspiration-camera .inspiration-camera-stage>.chapter-inspiration{
+ position:absolute;left:clamp(20px,3vw,54px);top:clamp(24px,5svh,58px);
+ z-index:8;display:block;width:max-content;max-width:88%;
+ color:#f5f5f5;pointer-events:none;
+ font:400 clamp(11px,.8vw,14px)/1.3 var(--font-label);
+ letter-spacing:.015em;transform:none;opacity:1;filter:none;
+}
+@media(max-width:767px){
+ .brand-journey .brand-word-stage>.chapter-story,
+ .inspiration-camera .inspiration-camera-stage>.chapter-inspiration{
+  left:6%;top:5%;font-size:clamp(11px,3vw,13px);
+ }
+}
+.temperature-section.scent-spotlight .scent-chapter-label{
+ position:absolute;left:clamp(20px,3vw,54px);top:clamp(24px,5svh,58px);
+ z-index:5;margin:0;pointer-events:none;
+ font:400 clamp(11px,.8vw,14px)/1.3 var(--font-label);
+ letter-spacing:.015em;color:#fff;mix-blend-mode:difference;
+}
+@media(max-width:767px){
+ .temperature-section.scent-spotlight .scent-chapter-label{
+  left:6%;top:5%;font-size:clamp(11px,3vw,13px)
+ }
+}
+/* Announce the chapter once on BLACK; keep WHITE's header aligned. */
+.frequency-white .frequency-scene-title>.label{visibility:hidden}
+/* The EXPERIENCE index shares the sticky title's coordinates and scroll. */
+.final-intro-stage .final-title-group{position:relative;flex:none}
+.final-intro-stage .final-title-group>.final-label{
+ position:absolute;left:0;bottom:calc(100% + clamp(14px,2svh,30px));
+ margin:0;z-index:2;white-space:nowrap;
+ font:400 14px/1.4 var(--font-label);letter-spacing:.015em;
+}
+@media(max-width:767px){
+ .final-intro-stage .final-title-group>.final-label{font-size:12px}
+}
+
+/* Correct the final product poster without resizing or shifting its frame.
+   The replacement has a different aspect ratio; contain avoids cropping. */
+@media(min-width:768px){
+ .final-intro-stage .final-posters figure:nth-child(3){
+  flex:0 0 auto;
+  width:37.52svh;
+ }
+}
+.final-intro-stage .final-posters figure:nth-child(3) img{
+ width:100%;height:100%;aspect-ratio:auto;
+ object-fit:cover;object-position:center;
+}
+/* During the SNOW-to-cards transition the chapter previously scrolled away
+   while the intro was hidden. Pin only the small label inside the collection
+   so it becomes readable once the bridge clears. */
+#collection-details .scents-section-label{
+ position:sticky;top:clamp(24px,5svh,60px);
+ z-index:25;width:max-content;
+ max-width:100%;pointer-events:none;
+}
