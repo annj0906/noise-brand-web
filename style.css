@@ -1765,3 +1765,16 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  .inspiration-camera .inspiration-ending-english{opacity:1!important;transform:none!important}
  .brand-disc.inspiration-portal-glass{display:none!important}
 }
+
+
+/* Korean editorial types by scroll, one centered line at a time.
+   Invisible full-copy placeholders hold its position while letters appear. */
+.inspiration-camera .inspiration-typed-line{
+ display:block;position:relative;width:max-content;max-width:none;
+ margin-inline:auto;white-space:nowrap;
+}
+.inspiration-camera .inspiration-typed-line::before{
+ content:attr(data-full-text);display:block;height:0;
+ visibility:hidden;overflow:hidden;white-space:pre;
+ pointer-events:none;
+}
