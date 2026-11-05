@@ -840,6 +840,7 @@ if(typeof window!=='undefined')(()=>{
  if(!section)return;
  const ending=section.querySelector('.inspiration-camera-ending');
  const korean=ending.querySelector('.inspiration-ending-korean');
+ const koreanLines=[...korean.querySelectorAll('.inspiration-typed-line')];
  const english=ending.querySelector('.inspiration-ending-english');
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  // Reuse the same .brand-disc surface, blur, and rim from the earlier scene.
@@ -906,8 +907,17 @@ if(typeof window!=='undefined')(()=>{
    caption.style.opacity=show*(1-hide);
    caption.style.transform='translateY('+((1-show)*24+hide*22)+'px)';
   });
-  // Editorial order: Korean copy, a reading pause, then Alexandria from right.
-  const koreanIn=ease((elapsed-4.65)/.38);
+  // Type the Korean lines in sequence, reserving their full widths so they
+  // never jump horizontally. The lines finish before the English slide.
+  const typingSlots=[[4.60,4.83],[4.84,5.10]];
+  koreanLines.forEach((line,index)=>{
+   const full=line.dataset.fullText||'';
+   const [from,to]=typingSlots[index]||typingSlots[typingSlots.length-1];
+   const count=Math.floor(clamp((elapsed-from)/Math.max(.01,to-from))*full.length);
+   const typed=full.slice(0,count);
+   if(line.textContent!==typed)line.textContent=typed;
+  });
+  const koreanIn=ease((elapsed-4.58)/.10);
   const koreanOut=ease((elapsed-5.36)/.27);
   const englishIn=ease((elapsed-5.48)/.50);
   const textOut=ease((elapsed-7.00)/.43);
@@ -915,7 +925,7 @@ if(typeof window!=='undefined')(()=>{
   ending.style.opacity=String(1-textOut);
   ending.style.transform='none';
   korean.style.setProperty('--ending-korean-alpha',String(koreanIn*(1-koreanOut)));
-  korean.style.setProperty('--ending-korean-rise',((1-koreanIn)*20)+'px');
+  korean.style.setProperty('--ending-korean-rise','0px');
   english.style.setProperty('--ending-english-alpha',String(englishIn));
   english.style.setProperty('--ending-english-slide',((1-englishIn)*Math.min(innerWidth*.23,280))+'px');
   // Use the introductory brand-disc motion: three full Y rotations as it
