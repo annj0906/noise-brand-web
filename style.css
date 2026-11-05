@@ -1584,8 +1584,11 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 .brand-journey .collection-stage .brand-product-copy::before{
  content:none;display:none;backdrop-filter:none;-webkit-backdrop-filter:none;
 }
-.brand-journey .collection-stage .brand-white-copy,
-.brand-journey .collection-stage .brand-white-meta{color:#101010}
+/* WHITE text must override the generic light-on-dark editorial color. */
+.brand-journey .collection-stage .brand-product-editorial.brand-white-editorial .brand-product-copy,
+.brand-journey .collection-stage .brand-product-editorial.brand-white-editorial .brand-product-meta{
+ color:#101010;
+}
 .brand-journey .collection-stage .collection-object{z-index:2}
 /* The bottle and package move as a single group; their size and distance are untouched. */
 @media(min-width:1024px){
