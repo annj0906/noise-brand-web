@@ -1846,7 +1846,7 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 @media(min-width:768px){
  .final-intro-stage .final-posters figure:nth-child(3){
   flex:0 0 auto;
-  width:calc(52svh * 920 / 1626);
+  width:29.42svh;
  }
 }
 .final-intro-stage .final-posters figure:nth-child(3) img{
