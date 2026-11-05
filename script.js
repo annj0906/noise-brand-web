@@ -675,6 +675,13 @@ if(typeof window!=='undefined'){
    heading.style.setProperty('--copy-alpha',String(alpha));
    heading.style.setProperty('--copy-blur',reduce.matches?'0px':((1-alpha)*1.5)+'px');
    description.style.setProperty('--copy-alpha',String(alpha));
+   // In the WHITE scene, reveal sentence one with the product swap, then sentence two.
+   // The first sentence keeps its position; scrolling backwards reverses this naturally.
+   if(selector==='.brand-white-editorial'){
+    const secondLine=reduce.matches?1:smooth((p-.60)/.075);
+    heading.style.setProperty('--second-line-alpha',String(secondLine));
+    heading.style.setProperty('--second-line-rise',((1-secondLine)*14)+'px');
+   }
   });
  }
  function schedule(){if(!raf)raf=requestAnimationFrame(render)}let followFrame=0;function followPointer(now){followFrame=0;const dt=Math.min(now-followTime||16,50);followTime=now;const ease=reduce.matches?1:1-Math.exp(-dt/170);followX+=(mx-followX)*ease;followY+=(my-followY)*ease;schedule();if(Math.hypot(mx-followX,my-followY)>.15)followFrame=requestAnimationFrame(followPointer);}window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);window.addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY;const b=story.getBoundingClientRect();if(b.top<innerHeight&&b.bottom>0&&!followFrame){followTime=performance.now();followFrame=requestAnimationFrame(followPointer)}},{passive:true});render();
