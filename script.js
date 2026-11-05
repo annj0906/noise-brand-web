@@ -495,7 +495,7 @@ if(typeof window!=='undefined'){
  document.fonts.ready.then(()=>{
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const specs=[
-   {region:'.temperature-scroll',fallback:'#philosophy',scene:'.temperature-stage',world:'.temperature-world',groups:[['.temperature-word',.08,.27],['.temperature-heading p',.28,.40]]},
+   {region:'.temperature-scroll',fallback:'#philosophy',scene:'.temperature-stage',world:'.temperature-world',groups:[['.temperature-word',.05,.23],['.temperature-heading p',.23,.35]]},
    {region:'.sense-scroll',scene:'.sense-black',world:'.sense-world',groups:[['.sense-label',0,.1],['.sense-content h2',.04,.43],['.sense-copy',.25,.56]]}
   ];
   const clamp=n=>Math.max(0,Math.min(1,n));
