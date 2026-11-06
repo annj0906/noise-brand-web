@@ -838,7 +838,7 @@ if(typeof window!=='undefined')(()=>{
   back.innerHTML=card.querySelector('.card-back.note')?.innerHTML||'';
   panel.setAttribute('aria-pressed','false');
   dialog.dataset.family=family;
-  image.src=photoNames.has(key)?'product-'+key+'.webp':thumb.src;
+  image.src=photoNames.has(key)?'product-'+key+'.jpg':thumb.src;
   image.alt='NOISE NO.'+key+' '+(card.querySelector('.card-identity span')?.textContent||'')+' 향수와 패키지';
   image.onerror=()=>{image.onerror=null;image.src=thumb.src;};
   dialog.classList.remove('detail-visible','detail-flipped','detail-photo-visible','detail-closing');
