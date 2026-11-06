@@ -823,8 +823,12 @@ if(typeof window!=='undefined')(()=>{
   window.removeEventListener('keydown',stopBackgroundKeys,true);
  }
  // VIEW MORE follows the cursor over the joined card and product image.
- const mouseLabel=document.createElement('span');mouseLabel.className='scent-mouse-label';
- mouseLabel.setAttribute('aria-hidden','true');mouseLabel.innerHTML='VIEW MORE <span>↘</span>';
+ // Reuse the original NOISE collection VIEW MORE label and SVG arrow.
+ const originalView=document.querySelector('.collection-view');
+ const mouseLabel=originalView?.cloneNode(true)||document.createElement('span');
+ mouseLabel.className='scent-mouse-label';
+ mouseLabel.setAttribute('aria-hidden','true');
+ if(!originalView)mouseLabel.innerHTML='VIEW MORE <svg class="ui-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3 21 21M3 21h18V3"/></svg>';
  dialog.append(mouseLabel);
  dialog.addEventListener('pointermove',event=>{
   if(event.pointerType!=='mouse')return;
