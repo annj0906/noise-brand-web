@@ -785,7 +785,11 @@ if(typeof window!=='undefined')(()=>{
    photoButton.setAttribute('aria-label',zoom?'제품 사진 원래 크기로 보기':'제품 사진 확대');
   }
  });
- let closing=false,sourceCard=null,joinTimer=0,positionTimer=0;
+ let closing=false,sourceCard=null,joinTimer=0,positionTimer=0,removeSettleListener=null;
+ function stopPendingDock(){
+  clearTimeout(joinTimer);clearTimeout(positionTimer);
+  removeSettleListener?.();removeSettleListener=null;
+ }
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  // Preserve the page's native vertical scrollbar throughout the modal.
  // Prevent user-driven background scrolling without toggling html overflow,
@@ -831,7 +835,7 @@ if(typeof window!=='undefined')(()=>{
  },{passive:true});
  dialog.addEventListener('pointerleave',()=>dialog.classList.remove('scent-mouse-hover'));
  function close(){
-  if(!dialog.open||closing)return;closing=true;clearTimeout(joinTimer);clearTimeout(positionTimer);
+  if(!dialog.open||closing)return;closing=true;stopPendingDock();
   dialog.classList.remove('scent-photo-docked','scent-card-positioned','scent-photo-zoomed','scent-mouse-hover');
   photoButton.tabIndex=-1;photoButton.setAttribute('aria-hidden','true');
   const detail=dialog.querySelector('.scent-detail'),tile=sourceCard?.querySelector('.circular-carousel__tile'),to=tile?.getBoundingClientRect();
@@ -861,7 +865,7 @@ if(typeof window!=='undefined')(()=>{
   const ordered=[cards.find(c=>c.querySelector('[aria-controls="note-184"]')),...cards.filter(c=>!c.querySelector('[aria-controls="note-184"]'))];
   const tile=host.querySelector('[data-cc-index="'+ordered.indexOf(card)+'"] .circular-carousel__tile');
   sourceCard=tile?.closest('.circular-carousel__card');
-  clearTimeout(joinTimer);clearTimeout(positionTimer);
+  stopPendingDock();
   dialog.classList.remove('scent-photo-docked','scent-card-positioned','scent-photo-zoomed','scent-mouse-hover','detail-closing');
   photoButton.tabIndex=-1;photoButton.setAttribute('aria-hidden','true');
   const key=(card.querySelector('.note-toggle')?.getAttribute('aria-controls')||'').replace('note-','');
@@ -906,19 +910,37 @@ if(typeof window!=='undefined')(()=>{
     // as the existing centered zoom. No custom spin or jump animation.
     const mountedFlip=detail.querySelector('.rb-flip-card');
     if(mountedFlip && mountedFlip.getAttribute('aria-pressed')!=='true')mountedFlip.click();
-    // Card reaches the final layout first. The product photo follows
-    // 110ms later, keeping the original quick right-to-left snap-in.
-    const mobile=matchMedia('(max-width:767px)').matches;
-    positionTimer=setTimeout(()=>{
-     if(dialog.open&&!closing)dialog.classList.add('scent-card-positioned');
-    },reduced.matches?0:110);
-    const photoDelay=reduced.matches?0:mobile?660:220;
-    joinTimer=setTimeout(()=>{
-     if(!dialog.open||closing)return;
+    // The photo must not enter until the card's final transform COMPLETES:
+    // a measured transition-end keeps the edges from crossing mid-animation.
+    const revealPhoto=()=>{
+     if(!dialog.open||closing||dialog.classList.contains('scent-photo-docked'))return;
      dialog.classList.add('scent-photo-docked');
      photoButton.tabIndex=0;
      photoButton.setAttribute('aria-hidden','false');
-    },photoDelay);
+    };
+    const mobile=matchMedia('(max-width:767px)').matches;
+    if(reduced.matches){
+     dialog.classList.add('scent-card-positioned');
+     revealPhoto();
+    }else if(mobile){
+     joinTimer=setTimeout(revealPhoto,660);
+    }else{
+     const onCardSettled=e=>{
+      if(e.target!==detail||e.propertyName!=='transform')return;
+      stopPendingDock();
+      revealPhoto();
+     };
+     detail.addEventListener('transitionend',onCardSettled);
+     removeSettleListener=()=>detail.removeEventListener('transitionend',onCardSettled);
+     positionTimer=setTimeout(()=>{
+      if(dialog.open&&!closing)dialog.classList.add('scent-card-positioned');
+     },110);
+     // Fallback for browsers that skip transitionend when a tab is suspended.
+     joinTimer=setTimeout(()=>{
+      stopPendingDock();
+      revealPhoto();
+     },950);
+    }
    } }));
   }
   requestAnimationFrame(reveal);
