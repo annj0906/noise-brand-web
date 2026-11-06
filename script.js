@@ -805,8 +805,48 @@ if(typeof window!=='undefined')(()=>{
   }
  });
  let closing=false,sourceCard=null,joinTimer=0,positionTimer=0;
+ let photoGeneration=0,photoReady=false,photoDockRequested=false;
  function stopPendingDock(){
   clearTimeout(joinTimer);clearTimeout(positionTimer);
+ }
+ function dockPhotoWhenReady(){
+  if(!photoReady||!photoDockRequested||!dialog.open||closing)return;
+  dialog.classList.add('scent-photo-docked');
+  photoButton.tabIndex=0;
+  photoButton.setAttribute('aria-hidden','false');
+ }
+ // The modal reuses one <img> across scents. Load and decode into a
+ // separate Image before swapping it into the visible panel, and reject
+ // any completion belonging to a previously selected card.
+ function prepareProductPhoto(card,key,name){
+  const generation=++photoGeneration;
+  photoReady=false;photoDockRequested=false;
+  productPhoto.removeAttribute('src');
+  productPhoto.style.visibility='hidden';
+  productPhoto.alt='NOISE NO.'+key+' '+name+' 향수 제품 사진';
+  const fallback=card.querySelector('.card-front img')?.src||'';
+  async function decodeAndCommit(src,allowFallback){
+   if(!src)return;
+   try{
+    const preloaded=new Image();
+    preloaded.src=src;
+    if(preloaded.decode)await preloaded.decode();
+    else await new Promise((resolve,reject)=>{
+     if(preloaded.complete){if(preloaded.naturalWidth)resolve();else reject(new Error('image failed'))}
+     else{preloaded.addEventListener('load',resolve,{once:true});preloaded.addEventListener('error',reject,{once:true})}
+    });
+    if(generation!==photoGeneration||closing||!dialog.open)return;
+    productPhoto.src=src;
+    productPhoto.style.visibility='';
+    photoReady=true;
+    dockPhotoWhenReady();
+   }catch(error){
+    if(generation!==photoGeneration||closing)return;
+    if(allowFallback&&fallback&&src!==fallback)await decodeAndCommit(fallback,false);
+   }
+  }
+  // Run after dialog.showModal() so the current session is active.
+  return ()=>{void decodeAndCommit('product-'+key+'.jpg',true)};
  }
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  // Preserve the page's native vertical scrollbar throughout the modal.
@@ -857,7 +897,7 @@ if(typeof window!=='undefined')(()=>{
  },{passive:true});
  dialog.addEventListener('pointerleave',()=>dialog.classList.remove('scent-mouse-hover'));
  function close(){
-  if(!dialog.open||closing)return;closing=true;stopPendingDock();
+  if(!dialog.open||closing)return;closing=true;stopPendingDock();++photoGeneration;photoReady=false;photoDockRequested=false;
   dialog.classList.remove('scent-photo-docked','scent-card-positioned','scent-photo-zoomed','scent-mouse-hover');
   photoButton.tabIndex=-1;photoButton.setAttribute('aria-hidden','true');
   const detail=dialog.querySelector('.scent-detail'),tile=sourceCard?.querySelector('.circular-carousel__tile'),to=tile?.getBoundingClientRect();
@@ -894,13 +934,9 @@ if(typeof window!=='undefined')(()=>{
   const key=(card.querySelector('.note-toggle')?.getAttribute('aria-controls')||'').replace('note-','');
   const name=card.querySelector('.card-identity span')?.textContent?.trim()||'';
   dialog.dataset.family=card.dataset.family||'WHITE';
-  productPhoto.src='product-'+key+'.jpg';
-  productPhoto.alt='NOISE NO.'+key+' '+name+' 향수 제품 사진';
-  productPhoto.onerror=()=>{
-   productPhoto.onerror=null;
-   productPhoto.src=card.querySelector('.card-front img')?.src||'';
-  };
+  const beginPhotoLoad=prepareProductPhoto(card,key,name);
   dialog.classList.add('detail-preparing');dialog.showModal();lockModalScroll();
+  beginPhotoLoad();
   const detail=dialog.querySelector('.scent-detail');detail.style.transition='none';detail.style.removeProperty('width');detail.style.removeProperty('height');
   window.mountScentFlip(detail,card);
   // Wait for React's first paint before starting the size transition.
@@ -941,9 +977,8 @@ if(typeof window!=='undefined')(()=>{
     },reduced.matches?0:110);
     joinTimer=setTimeout(()=>{
      if(!dialog.open||closing)return;
-     dialog.classList.add('scent-photo-docked');
-     photoButton.tabIndex=0;
-     photoButton.setAttribute('aria-hidden','false');
+     photoDockRequested=true;
+     dockPhotoWhenReady();
     },reduced.matches?0:mobile?660:220);
    } }));
   }
