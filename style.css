@@ -1872,7 +1872,9 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  background:rgba(48,48,48,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
 }
 .scent-photo-detail .scent-side-photo{
- position:fixed;
+ /* Use the dialog as the same coordinate origin as .scent-detail.
+    A fixed photo used the viewport instead and caused a visible overlap. */
+ position:absolute;
  left:calc(50% + var(--paired-half-width,150px));top:50%;
  width:min(var(--paired-card-height,398px),calc(50vw - var(--paired-half-width,150px) - 20px));
  height:var(--paired-card-height,398px);
@@ -1963,17 +1965,17 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 }
 
 
-/* The card finishes its layout motion before the photo snaps in.
-   The product panel approaches from the right and stops on the exact seam. */
+/* Original fast snap-in; card and photo share the dialog coordinate system,
+   so the image's final left edge equals the positioned card's right edge. */
 @media(min-width:768px){
  .scent-photo-detail .scent-side-photo{
-  transition:transform 480ms cubic-bezier(.2,.76,.2,1),
-             opacity 400ms ease,
-             visibility 0s linear 480ms;
+  transition:transform 650ms cubic-bezier(.2,.76,.2,1),
+             opacity 520ms ease,
+             visibility 0s linear 650ms;
  }
  .scent-photo-detail.scent-photo-docked .scent-side-photo{
-  transition:transform 480ms cubic-bezier(.2,.76,.2,1),
-             opacity 400ms ease,
+  transition:transform 650ms cubic-bezier(.2,.76,.2,1),
+             opacity 520ms ease,
              visibility 0s;
  }
 }
