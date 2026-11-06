@@ -849,6 +849,8 @@ if(typeof window!=='undefined')(()=>{
    detail.style.width=w+'px';detail.style.height=h+'px';
    dialog.style.setProperty('--paired-card-width',w+'px');
    dialog.style.setProperty('--paired-card-height',h+'px');
+   dialog.style.setProperty('--paired-half-width',(w/2)+'px');
+   dialog.style.setProperty('--paired-half-height',(h/2)+'px');
    detail.style.setProperty('--detail-origin-x',(from?from.left+from.width/2-innerWidth/2:0)+'px');
    detail.style.setProperty('--detail-origin-y',(from?from.top+from.height/2-innerHeight/2:0)+'px');
    detail.style.setProperty('--detail-origin-sx',from?from.width/Math.max(1,w):1);
