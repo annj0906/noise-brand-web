@@ -775,24 +775,92 @@ if(typeof window!=='undefined')(()=>{
  const cards=[...board.querySelectorAll('.scent-card')];cards.forEach(card=>{card.classList.add('scent-data-card');card.setAttribute('aria-hidden','true');card.querySelector('button').tabIndex=-1});
  document.querySelector('.card-journey-intro')?.remove();document.querySelector('.card-journey-end')?.remove();
  const host=document.createElement('div');host.className='react-carousel-host';board.append(host);
- const dialog=document.createElement('dialog');dialog.className='scent-dialog';dialog.setAttribute('aria-label','향 카드 상세');dialog.innerHTML='<div class="scent-detail"></div>';document.body.append(dialog);
- let closing=false,sourceCard=null;
+ const dialog=document.createElement('dialog');dialog.className='scent-dialog scent-photo-detail';dialog.setAttribute('aria-label','향 카드 상세');
+ dialog.innerHTML='<div class="scent-detail"></div><button class="scent-side-photo" type="button" tabindex="-1" aria-hidden="true" aria-label="제품 사진 확대"><img alt="" loading="eager" decoding="async"></button>';
+ document.body.append(dialog);
+ const photoButton=dialog.querySelector('.scent-side-photo'),productPhoto=photoButton.querySelector('img');
+ photoButton.addEventListener('click',()=>{
+  if(dialog.classList.contains('scent-photo-docked')){
+   const zoom=dialog.classList.toggle('scent-photo-zoomed');
+   photoButton.setAttribute('aria-label',zoom?'제품 사진 원래 크기로 보기':'제품 사진 확대');
+  }
+ });
+ let closing=false,sourceCard=null,joinTimer=0,positionTimer=0;
+ function stopPendingDock(){
+  clearTimeout(joinTimer);clearTimeout(positionTimer);
+ }
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ // Preserve the page's native vertical scrollbar throughout the modal.
+ // Prevent user-driven background scrolling without toggling html overflow,
+ // which removed the scrollbar and shifted the carousel during the return.
+ function stopBackgroundWheel(e){
+  if(!dialog.open||e.ctrlKey)return;
+  const inner=e.target.closest?.('.scent-react-back');
+  if(inner){
+   const remaining=e.deltaY<0?inner.scrollTop>0:inner.scrollTop+inner.clientHeight<inner.scrollHeight-1;
+   if(remaining)return;
+  }
+  if(e.cancelable)e.preventDefault();
+ }
+ function stopBackgroundTouch(e){
+  if(dialog.open && e.cancelable && !e.target.closest?.('.scent-react-back'))e.preventDefault();
+ }
+ function stopBackgroundKeys(e){
+  if(!dialog.open || e.altKey || e.ctrlKey || e.metaKey)return;
+  if(['Space','PageDown','PageUp','Home','End','ArrowDown','ArrowUp','ArrowLeft','ArrowRight'].includes(e.code)
+    && !e.target.closest?.('input, textarea, select, [contenteditable="true"], .scent-react-back')){
+   e.preventDefault();
+  }
+ }
+ function lockModalScroll(){
+  window.addEventListener('wheel',stopBackgroundWheel,{capture:true,passive:false});
+  window.addEventListener('touchmove',stopBackgroundTouch,{capture:true,passive:false});
+  window.addEventListener('keydown',stopBackgroundKeys,{capture:true});
+ }
+ function unlockModalScroll(){
+  window.removeEventListener('wheel',stopBackgroundWheel,true);
+  window.removeEventListener('touchmove',stopBackgroundTouch,true);
+  window.removeEventListener('keydown',stopBackgroundKeys,true);
+ }
+ // VIEW MORE follows the cursor over the joined card and product image.
+ // Reuse the original NOISE collection VIEW MORE label and SVG arrow.
+ const originalView=document.querySelector('.collection-view');
+ const mouseLabel=originalView?.cloneNode(true)||document.createElement('span');
+ mouseLabel.className='scent-mouse-label';
+ mouseLabel.setAttribute('aria-hidden','true');
+ if(!originalView)mouseLabel.innerHTML='VIEW MORE <svg class="ui-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3 21 21M3 21h18V3"/></svg>';
+ dialog.append(mouseLabel);
+ dialog.addEventListener('pointermove',event=>{
+  if(event.pointerType!=='mouse')return;
+  const over=Boolean(event.target.closest('.scent-detail .rb-flip-card, .scent-side-photo'));
+  dialog.classList.toggle('scent-mouse-hover',over&&dialog.classList.contains('scent-photo-docked'));
+  if(over){dialog.style.setProperty('--scent-mouse-x',event.clientX+'px');dialog.style.setProperty('--scent-mouse-y',event.clientY+'px');}
+ },{passive:true});
+ dialog.addEventListener('pointerleave',()=>dialog.classList.remove('scent-mouse-hover'));
  function close(){
-  if(!dialog.open||closing)return;closing=true;
+  if(!dialog.open||closing)return;closing=true;stopPendingDock();
+  dialog.classList.remove('scent-photo-docked','scent-card-positioned','scent-photo-zoomed','scent-mouse-hover');
+  photoButton.tabIndex=-1;photoButton.setAttribute('aria-hidden','true');
   const detail=dialog.querySelector('.scent-detail'),tile=sourceCard?.querySelector('.circular-carousel__tile'),to=tile?.getBoundingClientRect();
+  // Reverse the original React Bits spring flip in the SAME frame as
+  // the existing zoom-back transform. No new CSS spinning animation.
+  const flip=detail.querySelector('.rb-flip-card');
+  if(flip?.getAttribute('aria-pressed')==='true')flip.click();
   if(to){
    detail.style.setProperty('--detail-origin-x',(to.left+to.width/2-innerWidth/2)+'px');
    detail.style.setProperty('--detail-origin-y',(to.top+to.height/2-innerHeight/2)+'px');
    detail.style.setProperty('--detail-origin-sx',to.width/Math.max(1,detail.offsetWidth));
    detail.style.setProperty('--detail-origin-sy',to.height/Math.max(1,detail.offsetHeight));
   }
+  // Fade the backdrop blur and dim alongside the card's reverse flight.
+  dialog.classList.add('detail-closing');
   dialog.classList.remove('detail-visible');
   setTimeout(()=>{
    if(!dialog.open)return;
    if(sourceCard){sourceCard.style.opacity='0';sourceCard.style.visibility='';sourceCard.style.transition='opacity 160ms linear';void sourceCard.offsetWidth;sourceCard.style.opacity='1';}
    dialog.classList.add('detail-returning');
-  },530);
-  setTimeout(()=>{if(sourceCard){sourceCard.style.visibility='';sourceCard.style.removeProperty('opacity');sourceCard.style.removeProperty('transition');}sourceCard=null;window.unmountScentFlip?.();dialog.close();dialog.classList.remove('detail-preparing','detail-returning');document.documentElement.style.overflow='';closing=false;host.querySelector('.circular-carousel')?.focus({preventScroll:true})},710);
+  },reduced.matches?0:630);
+  setTimeout(()=>{if(sourceCard){sourceCard.style.visibility='';sourceCard.style.removeProperty('opacity');sourceCard.style.removeProperty('transition');}sourceCard=null;window.unmountScentFlip?.();dialog.close();dialog.classList.remove('detail-preparing','detail-returning','detail-closing');unlockModalScroll();closing=false;host.querySelector('.circular-carousel')?.focus({preventScroll:true})},reduced.matches?20:830);
  }
  dialog.addEventListener('cancel',e=>{e.preventDefault();close()});dialog.addEventListener('click',e=>{if(e.target===dialog)close()});
  window.mountScentCarousel(host,cards,card=>{
@@ -800,7 +868,19 @@ if(typeof window!=='undefined')(()=>{
   const ordered=[cards.find(c=>c.querySelector('[aria-controls="note-184"]')),...cards.filter(c=>!c.querySelector('[aria-controls="note-184"]'))];
   const tile=host.querySelector('[data-cc-index="'+ordered.indexOf(card)+'"] .circular-carousel__tile');
   sourceCard=tile?.closest('.circular-carousel__card');
-  dialog.classList.add('detail-preparing');dialog.showModal();document.documentElement.style.overflow='hidden';
+  stopPendingDock();
+  dialog.classList.remove('scent-photo-docked','scent-card-positioned','scent-photo-zoomed','scent-mouse-hover','detail-closing');
+  photoButton.tabIndex=-1;photoButton.setAttribute('aria-hidden','true');
+  const key=(card.querySelector('.note-toggle')?.getAttribute('aria-controls')||'').replace('note-','');
+  const name=card.querySelector('.card-identity span')?.textContent?.trim()||'';
+  dialog.dataset.family=card.dataset.family||'WHITE';
+  productPhoto.src='product-'+key+'.jpg';
+  productPhoto.alt='NOISE NO.'+key+' '+name+' 향수 제품 사진';
+  productPhoto.onerror=()=>{
+   productPhoto.onerror=null;
+   productPhoto.src=card.querySelector('.card-front img')?.src||'';
+  };
+  dialog.classList.add('detail-preparing');dialog.showModal();lockModalScroll();
   const detail=dialog.querySelector('.scent-detail');detail.style.transition='none';detail.style.removeProperty('width');detail.style.removeProperty('height');
   window.mountScentFlip(detail,card);
   // Wait for React's first paint before starting the size transition.
@@ -812,13 +892,40 @@ if(typeof window!=='undefined')(()=>{
    // Measure the mounted card, not its differently sized layout wrapper.
    const from=tile?.getBoundingClientRect(),w=flip.offsetWidth,h=flip.offsetHeight;
    detail.style.width=w+'px';detail.style.height=h+'px';
+   dialog.style.setProperty('--paired-card-width',w+'px');
+   dialog.style.setProperty('--paired-card-height',h+'px');
+   // Use the actual product-panel width to center the combined pair.
+   // The original zoom still lands at screen center before the photo docks.
+   const photoWidth=Math.min(h,Math.max(0,innerWidth-w-48));
+   dialog.style.setProperty('--paired-photo-width',photoWidth+'px');
+   dialog.style.setProperty('--paired-photo-half',(photoWidth/2)+'px');
+   dialog.style.setProperty('--paired-half-width',(w/2)+'px');
+   dialog.style.setProperty('--paired-half-height',(h/2)+'px');
    detail.style.setProperty('--detail-origin-x',(from?from.left+from.width/2-innerWidth/2:0)+'px');
    detail.style.setProperty('--detail-origin-y',(from?from.top+from.height/2-innerHeight/2:0)+'px');
    detail.style.setProperty('--detail-origin-sx',from?from.width/Math.max(1,w):1);
    detail.style.setProperty('--detail-origin-sy',from?from.height/Math.max(1,h):1);
    if(sourceCard)sourceCard.style.visibility='hidden';
    dialog.classList.remove('detail-preparing');void detail.offsetWidth;
-   requestAnimationFrame(()=>requestAnimationFrame(()=>{if(dialog.open&&!closing){detail.style.removeProperty('transition');dialog.classList.add('detail-visible')}}));
+   requestAnimationFrame(()=>requestAnimationFrame(()=>{if(dialog.open&&!closing){
+    detail.style.removeProperty('transition');dialog.classList.add('detail-visible');
+    // Begin the original React Bits 180° spring flip on the SAME frame
+    // as the existing centered zoom. No custom spin or jump animation.
+    const mountedFlip=detail.querySelector('.rb-flip-card');
+    if(mountedFlip && mountedFlip.getAttribute('aria-pressed')!=='true')mountedFlip.click();
+    // Preserve the earlier fast entrance; the card begins settling just before
+    // the photo slides in. Both are positioned inside the SAME dialog box.
+    const mobile=matchMedia('(max-width:767px)').matches;
+    positionTimer=setTimeout(()=>{
+     if(dialog.open&&!closing)dialog.classList.add('scent-card-positioned');
+    },reduced.matches?0:110);
+    joinTimer=setTimeout(()=>{
+     if(!dialog.open||closing)return;
+     dialog.classList.add('scent-photo-docked');
+     photoButton.tabIndex=0;
+     photoButton.setAttribute('aria-hidden','false');
+    },reduced.matches?0:mobile?660:220);
+   } }));
   }
   requestAnimationFrame(reveal);
  }).catch(error=>console.error('Scent carousel failed to load',error));

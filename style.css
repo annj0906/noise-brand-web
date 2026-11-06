@@ -1859,3 +1859,141 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  z-index:25;width:max-content;
  max-width:100%;pointer-events:none;
 }
+
+
+/* Scent detail: preserve the original zoom at screen center.
+   Only after it settles, flip to information and dock the product photo.
+   The LEFT card stays centered; the full pair is intentionally right-weighted. */
+.scent-photo-detail .scent-detail{z-index:2}
+.scent-photo-detail[data-family="WHITE"]::backdrop{
+ background:rgba(253,253,253,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+.scent-photo-detail[data-family="BLACK"]::backdrop{
+ background:rgba(48,48,48,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+.scent-photo-detail .scent-side-photo{
+ /* Use the dialog as the same coordinate origin as .scent-detail.
+    A fixed photo used the viewport instead and caused a visible overlap. */
+ position:absolute;
+ left:calc(50% + var(--paired-half-width,150px));top:50%;
+ width:min(var(--paired-card-height,398px),calc(50vw - var(--paired-half-width,150px) - 20px));
+ height:var(--paired-card-height,398px);
+ padding:0;margin:0;border:0;border-radius:0;
+ background:#d6d4d2;z-index:1;
+ opacity:0;visibility:hidden;pointer-events:none;overflow:hidden;
+ transform:translate3d(min(32vw,320px),-50%,0);
+ transition:transform 760ms cubic-bezier(.2,.76,.2,1),opacity 520ms ease,visibility 0s linear 760ms;
+ will-change:transform,opacity;
+}
+.scent-photo-detail.scent-photo-docked .scent-side-photo{
+ opacity:1;visibility:visible;pointer-events:auto;
+ transform:translate3d(0,-50%,0);
+ transition:transform 760ms cubic-bezier(.2,.76,.2,1),opacity 520ms ease,visibility 0s;
+}
+.scent-side-photo img{
+ display:block;width:100%;height:100%;object-fit:cover;object-position:center;
+ transition:transform .55s cubic-bezier(.2,.8,.2,1);
+}
+.scent-photo-detail.scent-photo-zoomed .scent-side-photo img{transform:scale(1.18)}
+.scent-mouse-label{
+ position:fixed;left:0;top:0;z-index:50;pointer-events:none;
+ display:inline-flex;align-items:center;gap:8px;
+ transform:translate3d(calc(var(--scent-mouse-x,0px) + 18px),calc(var(--scent-mouse-y,0px) + 18px),0);
+ color:#101010;mix-blend-mode:normal;
+ font:400 16px/1.4 var(--font-label);letter-spacing:0;
+ white-space:nowrap;
+ opacity:0;visibility:hidden;transition:opacity 150ms ease,visibility 150ms ease;
+}
+.scent-photo-detail.scent-mouse-hover .scent-mouse-label{opacity:1;visibility:visible}
+/* Same outlined down-right SVG as the original collection CTA. */
+.scent-mouse-label .ui-arrow{width:1em;height:1em;min-width:1em;stroke-width:1}
+@media(hover:hover) and (pointer:fine){
+ .scent-photo-detail.scent-photo-docked .rb-flip-card,
+ .scent-photo-detail.scent-photo-docked .scent-side-photo{cursor:none}
+}
+@media(max-width:767px){
+ /* The enlarged card remains the original size; only the final joined
+    composition shifts upward to allow a photo beneath on narrow screens. */
+ .scent-photo-detail{--paired-mobile-photo-h:min(28dvh,220px);--paired-mobile-lift:min(14dvh,110px)}
+ .scent-photo-detail.scent-photo-docked.detail-visible .scent-detail{
+  transform:translate(-50%,calc(-50% - var(--paired-mobile-lift))) scale(1)
+ }
+ .scent-photo-detail .scent-side-photo{
+  left:50%;top:calc(50% + var(--paired-half-height,199px) - var(--paired-mobile-lift));
+  width:var(--paired-card-width,300px);height:var(--paired-mobile-photo-h);
+  transform:translate3d(-50%,90px,0);
+ }
+ .scent-photo-detail.scent-photo-docked .scent-side-photo{transform:translate3d(-50%,0,0)}
+}
+@media(hover:none),(pointer:coarse){.scent-mouse-label{display:none}}
+@media(prefers-reduced-motion:reduce){
+ .scent-photo-detail .scent-side-photo,.scent-side-photo img,
+ .scent-mouse-label{transition:none!important;will-change:auto}
+}
+
+
+/* The closing return is continuous: gradually clear the modal dim and
+   backdrop blur while the original React Bits card flips and shrinks. */
+.scent-photo-detail::backdrop{
+ transition:background-color 740ms cubic-bezier(.4,0,.2,1),
+            backdrop-filter 740ms cubic-bezier(.4,0,.2,1),
+            -webkit-backdrop-filter 740ms cubic-bezier(.4,0,.2,1);
+}
+.scent-photo-detail.detail-closing::backdrop{
+ background-color:rgba(255,255,255,0);
+ backdrop-filter:blur(0px);
+ -webkit-backdrop-filter:blur(0px);
+}
+/* The original carousel already has a 650ms filter transition and naturally
+   sharpens as detail-visible is removed on close. */
+@media(prefers-reduced-motion:reduce){
+ .scent-photo-detail::backdrop{transition:none}
+}
+
+
+/* Center the final TWO-panel composition, not just the info card.
+   At full expansion the info card is centered as before. As the product
+   panel docks, the card slides left by half the product panel's width.
+   On close, removing docked/visible naturally reverses that translation. */
+@media(min-width:768px){
+ .scent-photo-detail .scent-side-photo{
+  /* Meet the card's final right edge exactly: no overlap/underlap. */
+  left:calc(50% + var(--paired-half-width,150px) - var(--paired-photo-half,199px));
+  width:var(--paired-photo-width,398px);
+ }
+ .scent-photo-detail.scent-card-positioned.detail-visible .scent-detail{
+  transform:translate(calc(-50% - var(--paired-photo-half,199px)),-50%) scale(1);
+ }
+}
+
+
+/* Original fast snap-in; card and photo share the dialog coordinate system,
+   so the image's final left edge equals the positioned card's right edge. */
+@media(min-width:768px){
+ .scent-photo-detail .scent-side-photo{
+  transition:transform 650ms cubic-bezier(.2,.76,.2,1),
+             opacity 520ms ease,
+             visibility 0s linear 650ms;
+ }
+ .scent-photo-detail.scent-photo-docked .scent-side-photo{
+  transition:transform 650ms cubic-bezier(.2,.76,.2,1),
+             opacity 520ms ease,
+             visibility 0s;
+ }
+}
+
+
+/* The carousel root is keyboard-focusable (tabIndex=0); the browser's
+   default focus outline was drawing a huge gray rectangle after
+   closing a product dialog. Keep keyboard focus, but show it locally. */
+.react-carousel-host .circular-carousel:focus{
+ outline:none;
+}
+.react-carousel-host .circular-carousel:focus-visible .circular-carousel__caption{
+ text-decoration:underline;
+ text-underline-offset:5px;
+ text-decoration-thickness:1px;
+}
+
+/* The original monochrome label is ink on WHITE and reversed on BLACK. */
+.scent-photo-detail[data-family="BLACK"] .scent-mouse-label{color:#f5f5f5}
