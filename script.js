@@ -906,10 +906,9 @@ if(typeof window!=='undefined')(()=>{
     // as the existing centered zoom. No custom spin or jump animation.
     const mountedFlip=detail.querySelector('.rb-flip-card');
     if(mountedFlip && mountedFlip.getAttribute('aria-pressed')!=='true')mountedFlip.click();
-    // The photo glides in just after the card starts growing/turning.
-    // On narrow screens, stack it after the original zoom so the mobile
-    // card isn't yanked upward halfway through its entrance.
-    const photoDelay=reduced.matches?0:matchMedia('(max-width:767px)').matches?660:110;
+    // Let the original 650ms zoom finish first. Then translate the card
+    // and adjacent photo together at identical speed so their seam stays flush.
+    const photoDelay=reduced.matches?0:660;
     joinTimer=setTimeout(()=>{
      if(!dialog.open||closing)return;
      dialog.classList.add('scent-photo-docked');
