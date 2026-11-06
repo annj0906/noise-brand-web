@@ -961,12 +961,17 @@ if(typeof window!=='undefined'){document.querySelectorAll('.frequency-target').f
 if(typeof window!=='undefined')(()=>{
  const region=document.querySelector('.frequency-scroll'),white=document.querySelector('.frequency-white'),section=document.querySelector('#collection'),track=document.querySelector('.card-journey-track'),snow=document.querySelector('.white-snow-crop'),card=document.querySelector('[aria-controls="note-184"]')?.closest('.scent-card');if(!region||!white||!card)return;
  const reduce=matchMedia('(prefers-reduced-motion: reduce)'),bridge=document.createElement('div'),message=document.createElement('p');bridge.className='snow-card-handoff';bridge.setAttribute('aria-hidden','true');const image=card.querySelector('.card-front img').cloneNode();image.loading='eager';image.className='snow-card-final';const sourceImage=snow.querySelector('img').cloneNode();sourceImage.className='snow-card-source';sourceImage.loading='eager';bridge.append(sourceImage,image);message.className='snow-card-message';message.textContent='처음부터 취향을 정할 필요는 없습니다.';document.body.append(bridge,message);
- const clamp=n=>Math.max(0,Math.min(1,n)),ease=n=>{n=clamp(n);return n*n*(3-2*n)},mix=(a,b,t)=>a+(b-a)*t;let frame=0,origin=null,settleTimer=0;
+ const clamp=n=>Math.max(0,Math.min(1,n)),ease=n=>{n=clamp(n);return n*n*(3-2*n)},mix=(a,b,t)=>a+(b-a)*t;let frame=0,origin=null;
  function render(){frame=0;const vh=innerHeight,r=region.getBoundingClientRect(),tail=innerWidth>=768?vh*2.5:0,base=region.offsetHeight-vh-tail,elapsed=-r.top-base,t=track.getBoundingClientRect();
  const tile=track.querySelector('.circular-carousel[data-ready] [data-cc-index="0"] .circular-carousel__tile'),destination=tile?.getBoundingClientRect();
  const enabled=tail>0&&!reduce.matches,active=enabled&&elapsed>=0&&(t.top>0||!destination),settled=!!destination&&(enabled?t.top<=0:t.top<vh*.5)&&t.bottom>0;
- if(!settled){clearTimeout(settleTimer);settleTimer=0;document.body.classList.remove('scent-autoplay-ready');}
- else if(!settleTimer&&!document.body.classList.contains('scent-autoplay-ready'))settleTimer=setTimeout(()=>{document.body.classList.add('scent-autoplay-ready');track.querySelector('.circular-carousel[data-ready]')?.dispatchEvent(new Event('noise:collection-spin'));settleTimer=0;schedule()},700);
+ // Start the native full-carousel rotation on the exact frame the card
+ // arrives; the previous 700ms hold made the entrance feel disconnected.
+ if(!settled)document.body.classList.remove('scent-autoplay-ready');
+ else if(!document.body.classList.contains('scent-autoplay-ready')){
+  document.body.classList.add('scent-autoplay-ready');
+  track.querySelector('.circular-carousel[data-ready]')?.dispatchEvent(new Event('noise:collection-spin'));
+ }
  bridge.hidden=!active;message.hidden=!active;white.classList.toggle('snow-handoff-active',active);section.classList.toggle('snow-bridge-pending',active);document.body.classList.toggle('snow-transition-active',active);card.classList.toggle('snow-is-travelling',active);
  if(!active){track.style.setProperty('--arrival-reveal',settled?'1':'0');origin=null;return}if(!origin){const b=snow.getBoundingClientRect();origin={x:b.left+b.width/2,y:b.top+b.height/2,w:b.width,h:b.height}}
  const p=clamp(elapsed/tail),shrink=ease(p/.45),travel=ease((elapsed-tail)/Math.max(1,t.top+elapsed-tail)),board=track.querySelector('.scent-board').getBoundingClientRect(),cw=Math.min(innerWidth*.148,vh*.33*325/431),ch=cw*431/325,dw=destination?.width||220,dh=destination?.height||220*431/325;document.body.style.setProperty('--snow-backdrop','1');
