@@ -1926,3 +1926,22 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  .scent-photo-detail .scent-side-photo,.scent-side-photo img,
  .scent-mouse-label{transition:none!important;will-change:auto}
 }
+
+
+/* The closing return is continuous: gradually clear the modal dim and
+   backdrop blur while the original React Bits card flips and shrinks. */
+.scent-photo-detail::backdrop{
+ transition:background-color 740ms cubic-bezier(.4,0,.2,1),
+            backdrop-filter 740ms cubic-bezier(.4,0,.2,1),
+            -webkit-backdrop-filter 740ms cubic-bezier(.4,0,.2,1);
+}
+.scent-photo-detail.detail-closing::backdrop{
+ background-color:rgba(255,255,255,0);
+ backdrop-filter:blur(0px);
+ -webkit-backdrop-filter:blur(0px);
+}
+/* The original carousel already has a 650ms filter transition and naturally
+   sharpens as detail-visible is removed on close. */
+@media(prefers-reduced-motion:reduce){
+ .scent-photo-detail::backdrop{transition:none}
+}
