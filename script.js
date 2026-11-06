@@ -775,22 +775,33 @@ if(typeof window!=='undefined')(()=>{
  const cards=[...board.querySelectorAll('.scent-card')];cards.forEach(card=>{card.classList.add('scent-data-card');card.setAttribute('aria-hidden','true');card.querySelector('button').tabIndex=-1});
  document.querySelector('.card-journey-intro')?.remove();document.querySelector('.card-journey-end')?.remove();
  const host=document.createElement('div');host.className='react-carousel-host';board.append(host);
- const dialog=document.createElement('dialog');dialog.className='scent-dialog';dialog.setAttribute('aria-label','향 카드 상세');dialog.innerHTML='<div class="scent-detail"></div>';document.body.append(dialog);
- let closing=false,sourceCard=null,spinTimer=0;
+ const dialog=document.createElement('dialog');dialog.className='scent-dialog scent-photo-detail';dialog.setAttribute('aria-label','향 카드 상세');
+ dialog.innerHTML='<div class="scent-detail"></div><button class="scent-side-photo" type="button" tabindex="-1" aria-hidden="true" aria-label="제품 사진 확대"><img alt="" loading="eager" decoding="async"></button>';
+ document.body.append(dialog);
+ const photoButton=dialog.querySelector('.scent-side-photo'),productPhoto=photoButton.querySelector('img');
+ photoButton.addEventListener('click',()=>{
+  if(dialog.classList.contains('scent-photo-docked')){
+   const zoom=dialog.classList.toggle('scent-photo-zoomed');
+   photoButton.setAttribute('aria-label',zoom?'제품 사진 원래 크기로 보기':'제품 사진 확대');
+  }
+ });
+ let closing=false,sourceCard=null,joinTimer=0;
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
- // Mouse-follow label is visible only when hovering the expanded scent card.
+ // VIEW MORE follows the cursor over the joined card and product image.
  const mouseLabel=document.createElement('span');mouseLabel.className='scent-mouse-label';
  mouseLabel.setAttribute('aria-hidden','true');mouseLabel.innerHTML='VIEW MORE <span>↘</span>';
  dialog.append(mouseLabel);
  dialog.addEventListener('pointermove',event=>{
   if(event.pointerType!=='mouse')return;
-  const over=Boolean(event.target.closest('.scent-detail .rb-flip-card'));
-  dialog.classList.toggle('scent-mouse-hover',over&&dialog.classList.contains('detail-visible'));
+  const over=Boolean(event.target.closest('.scent-detail .rb-flip-card, .scent-side-photo'));
+  dialog.classList.toggle('scent-mouse-hover',over&&dialog.classList.contains('scent-photo-docked'));
   if(over){dialog.style.setProperty('--scent-mouse-x',event.clientX+'px');dialog.style.setProperty('--scent-mouse-y',event.clientY+'px');}
  },{passive:true});
  dialog.addEventListener('pointerleave',()=>dialog.classList.remove('scent-mouse-hover'));
  function close(){
-  if(!dialog.open||closing)return;closing=true;clearTimeout(spinTimer);dialog.classList.remove('detail-spin','scent-mouse-hover');
+  if(!dialog.open||closing)return;closing=true;clearTimeout(joinTimer);
+  dialog.classList.remove('scent-photo-docked','scent-photo-zoomed','scent-mouse-hover');
+  photoButton.tabIndex=-1;photoButton.setAttribute('aria-hidden','true');
   const detail=dialog.querySelector('.scent-detail'),tile=sourceCard?.querySelector('.circular-carousel__tile'),to=tile?.getBoundingClientRect();
   if(to){
    detail.style.setProperty('--detail-origin-x',(to.left+to.width/2-innerWidth/2)+'px');
@@ -812,7 +823,19 @@ if(typeof window!=='undefined')(()=>{
   const ordered=[cards.find(c=>c.querySelector('[aria-controls="note-184"]')),...cards.filter(c=>!c.querySelector('[aria-controls="note-184"]'))];
   const tile=host.querySelector('[data-cc-index="'+ordered.indexOf(card)+'"] .circular-carousel__tile');
   sourceCard=tile?.closest('.circular-carousel__card');
-  dialog.classList.remove('detail-spin','scent-mouse-hover');dialog.classList.add('detail-preparing');dialog.showModal();document.documentElement.style.overflow='hidden';
+  clearTimeout(joinTimer);
+  dialog.classList.remove('scent-photo-docked','scent-photo-zoomed','scent-mouse-hover');
+  photoButton.tabIndex=-1;photoButton.setAttribute('aria-hidden','true');
+  const key=(card.querySelector('.note-toggle')?.getAttribute('aria-controls')||'').replace('note-','');
+  const name=card.querySelector('.card-identity span')?.textContent?.trim()||'';
+  dialog.dataset.family=card.dataset.family||'WHITE';
+  productPhoto.src='product-'+key+'.jpg';
+  productPhoto.alt='NOISE NO.'+key+' '+name+' 향수 제품 사진';
+  productPhoto.onerror=()=>{
+   productPhoto.onerror=null;
+   productPhoto.src=card.querySelector('.card-front img')?.src||'';
+  };
+  dialog.classList.add('detail-preparing');dialog.showModal();document.documentElement.style.overflow='hidden';
   const detail=dialog.querySelector('.scent-detail');detail.style.transition='none';detail.style.removeProperty('width');detail.style.removeProperty('height');
   window.mountScentFlip(detail,card);
   // Wait for React's first paint before starting the size transition.
@@ -824,6 +847,8 @@ if(typeof window!=='undefined')(()=>{
    // Measure the mounted card, not its differently sized layout wrapper.
    const from=tile?.getBoundingClientRect(),w=flip.offsetWidth,h=flip.offsetHeight;
    detail.style.width=w+'px';detail.style.height=h+'px';
+   dialog.style.setProperty('--paired-card-width',w+'px');
+   dialog.style.setProperty('--paired-card-height',h+'px');
    detail.style.setProperty('--detail-origin-x',(from?from.left+from.width/2-innerWidth/2:0)+'px');
    detail.style.setProperty('--detail-origin-y',(from?from.top+from.height/2-innerHeight/2:0)+'px');
    detail.style.setProperty('--detail-origin-sx',from?from.width/Math.max(1,w):1);
@@ -832,16 +857,16 @@ if(typeof window!=='undefined')(()=>{
    dialog.classList.remove('detail-preparing');void detail.offsetWidth;
    requestAnimationFrame(()=>requestAnimationFrame(()=>{if(dialog.open&&!closing){
     detail.style.removeProperty('transition');dialog.classList.add('detail-visible');
-    // Preserve the original centered card expansion; turn only after it finishes.
-    if(!reduced.matches)spinTimer=setTimeout(()=>{
+    // The original centered enlargement completes first. The React flip then
+    // reveals the back while the matching photo glides in from the right.
+    joinTimer=setTimeout(()=>{
      if(!dialog.open||closing)return;
-     const rotor=detail.querySelector('.rb-flip-card__rotor');
-     if(!rotor)return;
-     rotor.addEventListener('animationend',event=>{
-      if(event.animationName==='scent-card-full-turn')dialog.classList.remove('detail-spin');
-     },{once:true});
-     dialog.classList.add('detail-spin');
-    },660);
+     const flip=detail.querySelector('.rb-flip-card');
+     if(flip && flip.getAttribute('aria-pressed')!=='true')flip.click();
+     dialog.classList.add('scent-photo-docked');
+     photoButton.tabIndex=0;
+     photoButton.setAttribute('aria-hidden','false');
+    },reduced.matches?0:660);
    } }));
   }
   requestAnimationFrame(reveal);
