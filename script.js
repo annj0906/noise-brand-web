@@ -785,7 +785,7 @@ if(typeof window!=='undefined')(()=>{
    photoButton.setAttribute('aria-label',zoom?'제품 사진 원래 크기로 보기':'제품 사진 확대');
   }
  });
- let closing=false,sourceCard=null,joinTimer=0;
+ let closing=false,sourceCard=null,joinTimer=0,positionTimer=0;
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  // Preserve the page's native vertical scrollbar throughout the modal.
  // Prevent user-driven background scrolling without toggling html overflow,
@@ -831,8 +831,8 @@ if(typeof window!=='undefined')(()=>{
  },{passive:true});
  dialog.addEventListener('pointerleave',()=>dialog.classList.remove('scent-mouse-hover'));
  function close(){
-  if(!dialog.open||closing)return;closing=true;clearTimeout(joinTimer);
-  dialog.classList.remove('scent-photo-docked','scent-photo-zoomed','scent-mouse-hover');
+  if(!dialog.open||closing)return;closing=true;clearTimeout(joinTimer);clearTimeout(positionTimer);
+  dialog.classList.remove('scent-photo-docked','scent-card-positioned','scent-photo-zoomed','scent-mouse-hover');
   photoButton.tabIndex=-1;photoButton.setAttribute('aria-hidden','true');
   const detail=dialog.querySelector('.scent-detail'),tile=sourceCard?.querySelector('.circular-carousel__tile'),to=tile?.getBoundingClientRect();
   // Reverse the original React Bits spring flip in the SAME frame as
@@ -861,8 +861,8 @@ if(typeof window!=='undefined')(()=>{
   const ordered=[cards.find(c=>c.querySelector('[aria-controls="note-184"]')),...cards.filter(c=>!c.querySelector('[aria-controls="note-184"]'))];
   const tile=host.querySelector('[data-cc-index="'+ordered.indexOf(card)+'"] .circular-carousel__tile');
   sourceCard=tile?.closest('.circular-carousel__card');
-  clearTimeout(joinTimer);
-  dialog.classList.remove('scent-photo-docked','scent-photo-zoomed','scent-mouse-hover','detail-closing');
+  clearTimeout(joinTimer);clearTimeout(positionTimer);
+  dialog.classList.remove('scent-photo-docked','scent-card-positioned','scent-photo-zoomed','scent-mouse-hover','detail-closing');
   photoButton.tabIndex=-1;photoButton.setAttribute('aria-hidden','true');
   const key=(card.querySelector('.note-toggle')?.getAttribute('aria-controls')||'').replace('note-','');
   const name=card.querySelector('.card-identity span')?.textContent?.trim()||'';
@@ -906,9 +906,13 @@ if(typeof window!=='undefined')(()=>{
     // as the existing centered zoom. No custom spin or jump animation.
     const mountedFlip=detail.querySelector('.rb-flip-card');
     if(mountedFlip && mountedFlip.getAttribute('aria-pressed')!=='true')mountedFlip.click();
-    // Keep the earlier quick right-side photo entrance. The final docked
-    // coordinates still share one edge with the centered two-panel layout.
-    const photoDelay=reduced.matches?0:matchMedia('(max-width:767px)').matches?660:110;
+    // Card reaches the final layout first. The product photo follows
+    // 110ms later, keeping the original quick right-to-left snap-in.
+    const mobile=matchMedia('(max-width:767px)').matches;
+    positionTimer=setTimeout(()=>{
+     if(dialog.open&&!closing)dialog.classList.add('scent-card-positioned');
+    },reduced.matches?0:110);
+    const photoDelay=reduced.matches?0:mobile?660:220;
     joinTimer=setTimeout(()=>{
      if(!dialog.open||closing)return;
      dialog.classList.add('scent-photo-docked');
