@@ -847,7 +847,9 @@ if(typeof window!=='undefined')(()=>{
   // Measure the actual card face so the expansion starts at the clicked tile.
   requestAnimationFrame(()=>{
    if(!dialog.open||closing)return;
+   panel.style.transform='none';
    const from=tile?.getBoundingClientRect(),to=panel.getBoundingClientRect();
+   panel.style.removeProperty('transform');
    panel.style.setProperty('--pair-from-x',from?(from.left+from.width/2-to.left-to.width/2)+'px':'0px');
    panel.style.setProperty('--pair-from-y',from?(from.top+from.height/2-to.top-to.height/2)+'px':'0px');
    panel.style.setProperty('--pair-from-sx',from?String(from.width/Math.max(1,to.width)):'0.65');
