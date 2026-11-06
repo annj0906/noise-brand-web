@@ -1953,10 +1953,10 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
    On close, removing docked/visible naturally reverses that translation. */
 @media(min-width:768px){
  .scent-photo-detail .scent-side-photo{
-  left:calc(50% + var(--paired-half-width,150px) - var(--paired-photo-width,398px) / 2);
+  left:calc(50% + var(--paired-half-width,150px) - var(--paired-photo-half,199px));
   width:var(--paired-photo-width,398px);
  }
  .scent-photo-detail.scent-photo-docked.detail-visible .scent-detail{
-  transform:translate(calc(-50% - var(--paired-photo-width,398px) / 2),-50%) scale(1);
+  transform:translate(calc(-50% - var(--paired-photo-half,199px)),-50%) scale(1);
  }
 }
