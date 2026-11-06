@@ -1861,7 +1861,38 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 }
 
 
-/* Card detail refinement: keep the original centered zoom and size. */
+/* Scent detail: preserve the original zoom at screen center.
+   Only after it settles, flip to information and dock the product photo.
+   The LEFT card stays centered; the full pair is intentionally right-weighted. */
+.scent-photo-detail .scent-detail{z-index:2}
+.scent-photo-detail[data-family="WHITE"]::backdrop{
+ background:rgba(253,253,253,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+.scent-photo-detail[data-family="BLACK"]::backdrop{
+ background:rgba(48,48,48,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+.scent-photo-detail .scent-side-photo{
+ position:fixed;
+ left:calc(50% + var(--paired-half-width,150px));top:50%;
+ width:min(var(--paired-card-height,398px),calc(50vw - var(--paired-half-width,150px) - 20px));
+ height:var(--paired-card-height,398px);
+ padding:0;margin:0;border:0;border-radius:0;
+ background:#d6d4d2;z-index:1;
+ opacity:0;visibility:hidden;pointer-events:none;overflow:hidden;
+ transform:translate3d(min(32vw,320px),-50%,0);
+ transition:transform 760ms cubic-bezier(.2,.76,.2,1),opacity 520ms ease,visibility 0s linear 760ms;
+ will-change:transform,opacity;
+}
+.scent-photo-detail.scent-photo-docked .scent-side-photo{
+ opacity:1;visibility:visible;pointer-events:auto;
+ transform:translate3d(0,-50%,0);
+ transition:transform 760ms cubic-bezier(.2,.76,.2,1),opacity 520ms ease,visibility 0s;
+}
+.scent-side-photo img{
+ display:block;width:100%;height:100%;object-fit:cover;object-position:center;
+ transition:transform .55s cubic-bezier(.2,.8,.2,1);
+}
+.scent-photo-detail.scent-photo-zoomed .scent-side-photo img{transform:scale(1.18)}
 .scent-mouse-label{
  position:fixed;left:0;top:0;z-index:50;pointer-events:none;
  display:inline-flex;align-items:center;gap:8px;
@@ -1870,19 +1901,28 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  font:400 13px/1.2 var(--font-label);letter-spacing:.025em;
  opacity:0;visibility:hidden;transition:opacity 160ms ease,visibility 160ms ease;
 }
-.scent-dialog.scent-mouse-hover .scent-mouse-label{opacity:1;visibility:visible}
+.scent-photo-detail.scent-mouse-hover .scent-mouse-label{opacity:1;visibility:visible}
 .scent-mouse-label span{font-size:18px;line-height:.7}
-.scent-dialog.detail-spin .rb-flip-card__rotor{
- animation:scent-card-full-turn 1150ms cubic-bezier(.52,.03,.26,.98) both;
+@media(hover:hover) and (pointer:fine){
+ .scent-photo-detail.scent-photo-docked .rb-flip-card,
+ .scent-photo-detail.scent-photo-docked .scent-side-photo{cursor:none}
 }
-@keyframes scent-card-full-turn{
- from{transform:rotateY(0deg)}
- to{transform:rotateY(360deg)}
+@media(max-width:767px){
+ /* The enlarged card remains the original size; only the final joined
+    composition shifts upward to allow a photo beneath on narrow screens. */
+ .scent-photo-detail{--paired-mobile-photo-h:min(28dvh,220px);--paired-mobile-lift:min(14dvh,110px)}
+ .scent-photo-detail.scent-photo-docked.detail-visible .scent-detail{
+  transform:translate(-50%,calc(-50% - var(--paired-mobile-lift))) scale(1)
+ }
+ .scent-photo-detail .scent-side-photo{
+  left:50%;top:calc(50% + var(--paired-half-height,199px) - var(--paired-mobile-lift));
+  width:var(--paired-card-width,300px);height:var(--paired-mobile-photo-h);
+  transform:translate3d(-50%,90px,0);
+ }
+ .scent-photo-detail.scent-photo-docked .scent-side-photo{transform:translate3d(-50%,0,0)}
 }
-@media(hover:none), (pointer:coarse){
- .scent-mouse-label{display:none}
-}
+@media(hover:none),(pointer:coarse){.scent-mouse-label{display:none}}
 @media(prefers-reduced-motion:reduce){
- .scent-dialog.detail-spin .rb-flip-card__rotor{animation:none}
- .scent-mouse-label{transition:none}
+ .scent-photo-detail .scent-side-photo,.scent-side-photo img,
+ .scent-mouse-label{transition:none!important;will-change:auto}
 }
