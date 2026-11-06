@@ -676,6 +676,39 @@ if(typeof window!=='undefined'){
  const ribbonPhotos=[...ribbon.children];
  const ribbonArrival=.32;
  let ribbonReady=false;
+ // Carry the final WHITE sentence in a viewport-fixed layer while the
+ // product composition finishes descending. The original h2 stays in the
+ // document for accessibility and its existing line-swap animation remains.
+ const lastWhiteLine=stage.querySelector('.brand-white-copy .white-line-second');
+ const floatingWhiteLine=document.createElement('div');
+ floatingWhiteLine.className='brand-white-sentence-pin';
+ floatingWhiteLine.setAttribute('aria-hidden','true');
+ floatingWhiteLine.textContent=lastWhiteLine?.textContent||'';
+ story.append(floatingWhiteLine);
+ let pinnedWhiteLine=false;
+ function updatePinnedWhiteLine(progress){
+  if(!lastWhiteLine)return;
+  const nextTop=document.querySelector('#philosophy')?.getBoundingClientRect().top??innerHeight;
+  const shouldPin=!reduce.matches&&progress>=.905&&nextTop>0&&track.getBoundingClientRect().bottom>0;
+  if(shouldPin&&!pinnedWhiteLine){
+   const box=lastWhiteLine.getBoundingClientRect();
+   const style=getComputedStyle(lastWhiteLine);
+   const heading=getComputedStyle(lastWhiteLine.closest('.brand-white-copy'));
+   floatingWhiteLine.style.left=box.left+'px';
+   floatingWhiteLine.style.top=box.top+'px';
+   floatingWhiteLine.style.width=box.width+'px';
+   floatingWhiteLine.style.font=heading.font;
+   floatingWhiteLine.style.letterSpacing=heading.letterSpacing;
+   floatingWhiteLine.style.lineHeight=heading.lineHeight;
+   floatingWhiteLine.style.textAlign=style.textAlign;
+   floatingWhiteLine.style.whiteSpace=style.whiteSpace;
+   floatingWhiteLine.style.wordBreak=style.wordBreak;
+   floatingWhiteLine.style.color=style.color;
+  }
+  pinnedWhiteLine=shouldPin;
+  stage.classList.toggle('white-sentence-held',shouldPin);
+  floatingWhiteLine.classList.toggle('is-visible',shouldPin);
+ }
  // Decode before revealing the strip so neighboring cards appear together.
  Promise.allSettled(ribbonPhotos.map(photo=>photo.decode())).then(()=>{
   ribbonReady=true;
@@ -746,6 +779,7 @@ if(typeof window!=='undefined'){
    {selector:'.brand-black-editorial',alpha:blackIntro*(1-productSwap),rise:reduce.matches?0:(1-blackIntro)*24},
    {selector:'.brand-white-editorial',alpha:productSwap,rise:0}
   ];
+  updatePinnedWhiteLine(p);
   editorialStates.forEach(({selector,alpha,rise})=>{
    const editorial=stage.querySelector(selector);
    if(!editorial)return;
