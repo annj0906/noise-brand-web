@@ -803,6 +803,10 @@ if(typeof window!=='undefined')(()=>{
   dialog.classList.remove('scent-photo-docked','scent-photo-zoomed','scent-mouse-hover');
   photoButton.tabIndex=-1;photoButton.setAttribute('aria-hidden','true');
   const detail=dialog.querySelector('.scent-detail'),tile=sourceCard?.querySelector('.circular-carousel__tile'),to=tile?.getBoundingClientRect();
+  // Reverse the original React Bits spring flip in the SAME frame as
+  // the existing zoom-back transform. No new CSS spinning animation.
+  const flip=detail.querySelector('.rb-flip-card');
+  if(flip?.getAttribute('aria-pressed')==='true')flip.click();
   if(to){
    detail.style.setProperty('--detail-origin-x',(to.left+to.width/2-innerWidth/2)+'px');
    detail.style.setProperty('--detail-origin-y',(to.top+to.height/2-innerHeight/2)+'px');
@@ -814,8 +818,8 @@ if(typeof window!=='undefined')(()=>{
    if(!dialog.open)return;
    if(sourceCard){sourceCard.style.opacity='0';sourceCard.style.visibility='';sourceCard.style.transition='opacity 160ms linear';void sourceCard.offsetWidth;sourceCard.style.opacity='1';}
    dialog.classList.add('detail-returning');
-  },530);
-  setTimeout(()=>{if(sourceCard){sourceCard.style.visibility='';sourceCard.style.removeProperty('opacity');sourceCard.style.removeProperty('transition');}sourceCard=null;window.unmountScentFlip?.();dialog.close();dialog.classList.remove('detail-preparing','detail-returning');document.documentElement.style.overflow='';closing=false;host.querySelector('.circular-carousel')?.focus({preventScroll:true})},710);
+  },reduced.matches?0:630);
+  setTimeout(()=>{if(sourceCard){sourceCard.style.visibility='';sourceCard.style.removeProperty('opacity');sourceCard.style.removeProperty('transition');}sourceCard=null;window.unmountScentFlip?.();dialog.close();dialog.classList.remove('detail-preparing','detail-returning');document.documentElement.style.overflow='';closing=false;host.querySelector('.circular-carousel')?.focus({preventScroll:true})},reduced.matches?20:830);
  }
  dialog.addEventListener('cancel',e=>{e.preventDefault();close()});dialog.addEventListener('click',e=>{if(e.target===dialog)close()});
  window.mountScentCarousel(host,cards,card=>{
