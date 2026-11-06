@@ -1957,7 +1957,23 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
   left:calc(50% + var(--paired-half-width,150px) - var(--paired-photo-half,199px) - 1px);
   width:calc(var(--paired-photo-width,398px) + 1px);
  }
- .scent-photo-detail.scent-photo-docked.detail-visible .scent-detail{
+ .scent-photo-detail.scent-card-positioned.detail-visible .scent-detail{
   transform:translate(calc(-50% - var(--paired-photo-half,199px)),-50%) scale(1);
+ }
+}
+
+
+/* A subtle lead-lag: the card positions first, followed by the product photo
+   110ms later. Retain the existing right-to-left snap-in, with a flush end seam. */
+@media(min-width:768px){
+ .scent-photo-detail .scent-side-photo{
+  transition:transform 650ms cubic-bezier(.2,.76,.2,1),
+             opacity 520ms ease,
+             visibility 0s linear 650ms;
+ }
+ .scent-photo-detail.scent-photo-docked .scent-side-photo{
+  transition:transform 650ms cubic-bezier(.2,.76,.2,1),
+             opacity 520ms ease,
+             visibility 0s;
  }
 }
