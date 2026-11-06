@@ -786,6 +786,12 @@ if(typeof window!=='undefined')(()=>{
   }
  });
  let closing=false,sourceCard=null,joinTimer=0;
+ let activeRotor=null,onSpinEnd=null;
+ function resetCardSpin(){
+  if(activeRotor&&onSpinEnd)activeRotor.removeEventListener('animationend',onSpinEnd);
+  activeRotor=null;onSpinEnd=null;
+  dialog.classList.remove('scent-card-spinning');
+ }
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  // VIEW MORE follows the cursor over the joined card and product image.
  const mouseLabel=document.createElement('span');mouseLabel.className='scent-mouse-label';
@@ -799,7 +805,7 @@ if(typeof window!=='undefined')(()=>{
  },{passive:true});
  dialog.addEventListener('pointerleave',()=>dialog.classList.remove('scent-mouse-hover'));
  function close(){
-  if(!dialog.open||closing)return;closing=true;clearTimeout(joinTimer);
+  if(!dialog.open||closing)return;closing=true;clearTimeout(joinTimer);resetCardSpin();
   dialog.classList.remove('scent-photo-docked','scent-photo-zoomed','scent-mouse-hover');
   photoButton.tabIndex=-1;photoButton.setAttribute('aria-hidden','true');
   const detail=dialog.querySelector('.scent-detail'),tile=sourceCard?.querySelector('.circular-carousel__tile'),to=tile?.getBoundingClientRect();
@@ -823,7 +829,7 @@ if(typeof window!=='undefined')(()=>{
   const ordered=[cards.find(c=>c.querySelector('[aria-controls="note-184"]')),...cards.filter(c=>!c.querySelector('[aria-controls="note-184"]'))];
   const tile=host.querySelector('[data-cc-index="'+ordered.indexOf(card)+'"] .circular-carousel__tile');
   sourceCard=tile?.closest('.circular-carousel__card');
-  clearTimeout(joinTimer);
+  clearTimeout(joinTimer);resetCardSpin();
   dialog.classList.remove('scent-photo-docked','scent-photo-zoomed','scent-mouse-hover');
   photoButton.tabIndex=-1;photoButton.setAttribute('aria-hidden','true');
   const key=(card.querySelector('.note-toggle')?.getAttribute('aria-controls')||'').replace('note-','');
@@ -864,7 +870,19 @@ if(typeof window!=='undefined')(()=>{
     joinTimer=setTimeout(()=>{
      if(!dialog.open||closing)return;
      const flip=detail.querySelector('.rb-flip-card');
+     const rotor=flip?.querySelector('.rb-flip-card__rotor');
+     // React owns the final back-face state. A visible CSS 3D rotation
+     // completes one full turn plus a half-turn so it STOPS on that back.
      if(flip && flip.getAttribute('aria-pressed')!=='true')flip.click();
+     if(rotor&&!reduced.matches){
+      activeRotor=rotor;
+      onSpinEnd=event=>{
+       if(event.target!==rotor||event.animationName!=='scent-card-spin-to-back')return;
+       resetCardSpin();
+      };
+      rotor.addEventListener('animationend',onSpinEnd);
+      dialog.classList.add('scent-card-spinning');
+     }
      dialog.classList.add('scent-photo-docked');
      photoButton.tabIndex=0;
      photoButton.setAttribute('aria-hidden','false');
