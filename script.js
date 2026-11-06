@@ -859,17 +859,20 @@ if(typeof window!=='undefined')(()=>{
    dialog.classList.remove('detail-preparing');void detail.offsetWidth;
    requestAnimationFrame(()=>requestAnimationFrame(()=>{if(dialog.open&&!closing){
     detail.style.removeProperty('transition');dialog.classList.add('detail-visible');
-    // The original centered enlargement completes first. The React flip then
-    // reveals the back while the matching photo glides in from the right.
+    // Begin the original React Bits 180° spring flip on the SAME frame
+    // as the existing centered zoom. No custom spin or jump animation.
+    const mountedFlip=detail.querySelector('.rb-flip-card');
+    if(mountedFlip && mountedFlip.getAttribute('aria-pressed')!=='true')mountedFlip.click();
+    // The photo glides in just after the card starts growing/turning.
+    // On narrow screens, stack it after the original zoom so the mobile
+    // card isn't yanked upward halfway through its entrance.
+    const photoDelay=reduced.matches?0:matchMedia('(max-width:767px)').matches?660:110;
     joinTimer=setTimeout(()=>{
      if(!dialog.open||closing)return;
-     const flip=detail.querySelector('.rb-flip-card');
-     // Original React Bits 180-degree flip; no overlapping custom CSS rotation.
-     if(flip && flip.getAttribute('aria-pressed')!=='true')flip.click();
      dialog.classList.add('scent-photo-docked');
      photoButton.tabIndex=0;
      photoButton.setAttribute('aria-hidden','false');
-    },reduced.matches?0:660);
+    },photoDelay);
    } }));
   }
   requestAnimationFrame(reveal);
