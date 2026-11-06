@@ -1960,3 +1960,23 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
   transform:translate(calc(-50% - var(--paired-photo-half,199px)),-50%) scale(1);
  }
 }
+
+
+/* Match the two joined faces throughout docking, not just at the end.
+   Both move left by EXACTLY half the measured photo width with the SAME
+   650ms easing. Initially the photo is invisibly flush to the zoomed card;
+   its edge follows the card's right edge at every animation frame. */
+@media(min-width:768px){
+ .scent-photo-detail .scent-side-photo{
+  transform:translate3d(var(--paired-photo-half,199px),-50%,0);
+  transition:transform 650ms cubic-bezier(.4,0,.2,1),
+             opacity 520ms ease,
+             visibility 0s linear 650ms;
+ }
+ .scent-photo-detail.scent-photo-docked .scent-side-photo{
+  transform:translate3d(0,-50%,0);
+  transition:transform 650ms cubic-bezier(.4,0,.2,1),
+             opacity 520ms ease,
+             visibility 0s;
+ }
+}
