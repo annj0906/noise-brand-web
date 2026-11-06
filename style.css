@@ -2040,3 +2040,35 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 @media(prefers-reduced-motion:reduce){
  #philosophy.temperature-section.scent-spotlight{margin-top:0}
 }
+
+
+/* Keep only the concluding WHITE sentence fixed to the viewport while the
+   package and bottle finish descending. The floating copy is painted inside
+   the isolated brand scene, so the incoming FOLLOW THE SCENT section can
+   naturally cover it during the handoff. The real h2 remains accessible. */
+.brand-journey .brand-white-sentence-pin{
+ position:fixed;
+ z-index:20;
+ margin:0;
+ padding:0;
+ color:#101010;
+ pointer-events:none;
+ user-select:none;
+ opacity:0;
+ visibility:hidden;
+ transform:none;
+ transition:none;
+}
+.brand-journey .brand-white-sentence-pin.is-visible{
+ opacity:1;
+ visibility:visible;
+}
+.brand-journey .collection-stage.white-sentence-held .brand-white-copy .white-line-second{
+ opacity:0!important;
+}
+@media(prefers-reduced-motion:reduce){
+ .brand-journey .brand-white-sentence-pin{display:none!important}
+ .brand-journey .collection-stage.white-sentence-held .brand-white-copy .white-line-second{
+  opacity:var(--white-second-alpha,0)!important;
+ }
+}
