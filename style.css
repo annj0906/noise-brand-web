@@ -1979,3 +1979,16 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
              visibility 0s;
  }
 }
+
+
+/* The carousel root is keyboard-focusable (tabIndex=0); the browser's
+   default focus outline was drawing a huge gray rectangle after
+   closing a product dialog. Keep keyboard focus, but show it locally. */
+.react-carousel-host .circular-carousel:focus{
+ outline:none;
+}
+.react-carousel-host .circular-carousel:focus-visible .circular-carousel__caption{
+ text-decoration:underline;
+ text-underline-offset:5px;
+ text-decoration-thickness:1px;
+}
