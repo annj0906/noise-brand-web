@@ -1945,3 +1945,18 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 @media(prefers-reduced-motion:reduce){
  .scent-photo-detail::backdrop{transition:none}
 }
+
+
+/* Center the final TWO-panel composition, not just the info card.
+   At full expansion the info card is centered as before. As the product
+   panel docks, the card slides left by half the product panel's width.
+   On close, removing docked/visible naturally reverses that translation. */
+@media(min-width:768px){
+ .scent-photo-detail .scent-side-photo{
+  left:calc(50% + var(--paired-half-width,150px) - var(--paired-photo-width,398px) / 2);
+  width:var(--paired-photo-width,398px);
+ }
+ .scent-photo-detail.scent-photo-docked.detail-visible .scent-detail{
+  transform:translate(calc(-50% - var(--paired-photo-width,398px) / 2),-50%) scale(1);
+ }
+}
