@@ -2023,3 +2023,20 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 @media(prefers-reduced-motion:reduce){
  .carousel-hover-cue{transition:none}
 }
+
+
+/* Seamless BLACK / WHITE → FOLLOW THE SCENT handoff.
+   Pull only the next section's entry forward: the WHITE package/bottle
+   continue their ORIGINAL scroll-driven descent behind the incoming scene.
+   Neither product velocity nor the 360° collection carousel is changed. */
+#philosophy.temperature-section.scent-spotlight{
+ position:relative;
+ z-index:1;
+ margin-top:-72svh;
+}
+@media(max-width:767px){
+ #philosophy.temperature-section.scent-spotlight{margin-top:-62svh}
+}
+@media(prefers-reduced-motion:reduce){
+ #philosophy.temperature-section.scent-spotlight{margin-top:0}
+}
