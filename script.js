@@ -787,6 +787,38 @@ if(typeof window!=='undefined')(()=>{
  });
  let closing=false,sourceCard=null,joinTimer=0;
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ // Preserve the page's native vertical scrollbar throughout the modal.
+ // Prevent user-driven background scrolling without toggling html overflow,
+ // which removed the scrollbar and shifted the carousel during the return.
+ function stopBackgroundWheel(e){
+  if(!dialog.open||e.ctrlKey)return;
+  const inner=e.target.closest?.('.scent-react-back');
+  if(inner){
+   const remaining=e.deltaY<0?inner.scrollTop>0:inner.scrollTop+inner.clientHeight<inner.scrollHeight-1;
+   if(remaining)return;
+  }
+  if(e.cancelable)e.preventDefault();
+ }
+ function stopBackgroundTouch(e){
+  if(dialog.open && e.cancelable && !e.target.closest?.('.scent-react-back'))e.preventDefault();
+ }
+ function stopBackgroundKeys(e){
+  if(!dialog.open || e.altKey || e.ctrlKey || e.metaKey)return;
+  if(['Space','PageDown','PageUp','Home','End','ArrowDown','ArrowUp','ArrowLeft','ArrowRight'].includes(e.code)
+    && !e.target.closest?.('input, textarea, select, [contenteditable="true"], .scent-react-back')){
+   e.preventDefault();
+  }
+ }
+ function lockModalScroll(){
+  window.addEventListener('wheel',stopBackgroundWheel,{capture:true,passive:false});
+  window.addEventListener('touchmove',stopBackgroundTouch,{capture:true,passive:false});
+  window.addEventListener('keydown',stopBackgroundKeys,{capture:true});
+ }
+ function unlockModalScroll(){
+  window.removeEventListener('wheel',stopBackgroundWheel,true);
+  window.removeEventListener('touchmove',stopBackgroundTouch,true);
+  window.removeEventListener('keydown',stopBackgroundKeys,true);
+ }
  // VIEW MORE follows the cursor over the joined card and product image.
  const mouseLabel=document.createElement('span');mouseLabel.className='scent-mouse-label';
  mouseLabel.setAttribute('aria-hidden','true');mouseLabel.innerHTML='VIEW MORE <span>↘</span>';
@@ -821,7 +853,7 @@ if(typeof window!=='undefined')(()=>{
    if(sourceCard){sourceCard.style.opacity='0';sourceCard.style.visibility='';sourceCard.style.transition='opacity 160ms linear';void sourceCard.offsetWidth;sourceCard.style.opacity='1';}
    dialog.classList.add('detail-returning');
   },reduced.matches?0:630);
-  setTimeout(()=>{if(sourceCard){sourceCard.style.visibility='';sourceCard.style.removeProperty('opacity');sourceCard.style.removeProperty('transition');}sourceCard=null;window.unmountScentFlip?.();dialog.close();dialog.classList.remove('detail-preparing','detail-returning','detail-closing');document.documentElement.style.overflow='';closing=false;host.querySelector('.circular-carousel')?.focus({preventScroll:true})},reduced.matches?20:830);
+  setTimeout(()=>{if(sourceCard){sourceCard.style.visibility='';sourceCard.style.removeProperty('opacity');sourceCard.style.removeProperty('transition');}sourceCard=null;window.unmountScentFlip?.();dialog.close();dialog.classList.remove('detail-preparing','detail-returning','detail-closing');unlockModalScroll();closing=false;host.querySelector('.circular-carousel')?.focus({preventScroll:true})},reduced.matches?20:830);
  }
  dialog.addEventListener('cancel',e=>{e.preventDefault();close()});dialog.addEventListener('click',e=>{if(e.target===dialog)close()});
  window.mountScentCarousel(host,cards,card=>{
@@ -841,7 +873,7 @@ if(typeof window!=='undefined')(()=>{
    productPhoto.onerror=null;
    productPhoto.src=card.querySelector('.card-front img')?.src||'';
   };
-  dialog.classList.add('detail-preparing');dialog.showModal();document.documentElement.style.overflow='hidden';
+  dialog.classList.add('detail-preparing');dialog.showModal();lockModalScroll();
   const detail=dialog.querySelector('.scent-detail');detail.style.transition='none';detail.style.removeProperty('width');detail.style.removeProperty('height');
   window.mountScentFlip(detail,card);
   // Wait for React's first paint before starting the size transition.
