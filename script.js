@@ -768,59 +768,102 @@ if(typeof window!=='undefined'){
  }
 }
 
-// React Bits original carousel, with the existing scent detail modal.
+// The existing React carousel remains unchanged; its expanded detail pairs a
+// flipping information card with the matching NOISE product photograph.
 if(typeof window!=='undefined')(()=>{
  const track=document.querySelector('.card-journey-track'),board=track?.querySelector('.scent-board');if(!board)return;
  track.classList.add('carousel-track');board.classList.add('react-scent-board');
- const cards=[...board.querySelectorAll('.scent-card')];cards.forEach(card=>{card.classList.add('scent-data-card');card.setAttribute('aria-hidden','true');card.querySelector('button').tabIndex=-1});
+ const cards=[...board.querySelectorAll('.scent-card')];
+ cards.forEach(card=>{card.classList.add('scent-data-card');card.setAttribute('aria-hidden','true');card.querySelector('button').tabIndex=-1});
  document.querySelector('.card-journey-intro')?.remove();document.querySelector('.card-journey-end')?.remove();
  const host=document.createElement('div');host.className='react-carousel-host';board.append(host);
- const dialog=document.createElement('dialog');dialog.className='scent-dialog';dialog.setAttribute('aria-label','향 카드 상세');dialog.innerHTML='<div class="scent-detail"></div>';document.body.append(dialog);
- let closing=false,sourceCard=null;
- function close(){
-  if(!dialog.open||closing)return;closing=true;
-  const detail=dialog.querySelector('.scent-detail'),tile=sourceCard?.querySelector('.circular-carousel__tile'),to=tile?.getBoundingClientRect();
-  if(to){
-   detail.style.setProperty('--detail-origin-x',(to.left+to.width/2-innerWidth/2)+'px');
-   detail.style.setProperty('--detail-origin-y',(to.top+to.height/2-innerHeight/2)+'px');
-   detail.style.setProperty('--detail-origin-sx',to.width/Math.max(1,detail.offsetWidth));
-   detail.style.setProperty('--detail-origin-sy',to.height/Math.max(1,detail.offsetHeight));
-  }
-  dialog.classList.remove('detail-visible');
-  setTimeout(()=>{
-   if(!dialog.open)return;
-   if(sourceCard){sourceCard.style.opacity='0';sourceCard.style.visibility='';sourceCard.style.transition='opacity 160ms linear';void sourceCard.offsetWidth;sourceCard.style.opacity='1';}
-   dialog.classList.add('detail-returning');
-  },530);
-  setTimeout(()=>{if(sourceCard){sourceCard.style.visibility='';sourceCard.style.removeProperty('opacity');sourceCard.style.removeProperty('transition');}sourceCard=null;window.unmountScentFlip?.();dialog.close();dialog.classList.remove('detail-preparing','detail-returning');document.documentElement.style.overflow='';closing=false;host.querySelector('.circular-carousel')?.focus({preventScroll:true})},710);
+ const dialog=document.createElement('dialog');dialog.className='scent-dialog scent-pair-dialog';dialog.setAttribute('aria-label','향수 제품 상세');
+ dialog.innerHTML='<div class="scent-pair" role="group" aria-label="선택한 향수 제품과 향 설명">'+
+  '<button type="button" class="scent-pair-card" aria-label="카드를 뒤집어 앞뒤 보기" aria-pressed="false"><span class="scent-pair-rotor"><span class="scent-pair-face scent-pair-front"></span><span class="scent-pair-face scent-pair-back"></span></span></button>'+
+  '<button type="button" class="scent-pair-photo" aria-label="제품 사진 확대" aria-pressed="false"><img class="scent-product-image" alt="" loading="eager" decoding="async"><span class="scent-photo-action"><span class="scent-photo-action-label">VIEW MORE</span> <span aria-hidden="true">↘</span></span></button>'+
+  '</div><button type="button" class="scent-dialog-close" aria-label="상세 보기 닫기">CLOSE <span aria-hidden="true">×</span></button>';
+ document.body.append(dialog);
+ const pair=dialog.querySelector('.scent-pair'),panel=dialog.querySelector('.scent-pair-card');
+ const rotor=dialog.querySelector('.scent-pair-rotor'),front=dialog.querySelector('.scent-pair-front'),back=dialog.querySelector('.scent-pair-back');
+ const photo=dialog.querySelector('.scent-pair-photo'),image=dialog.querySelector('.scent-product-image');
+ const photoLabel=dialog.querySelector('.scent-photo-action-label');
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ let sourceCard=null,closing=false,timers=[],previousOverflow='';
+ const photoNames=new Set(['001','021','043','058','079','101','119','138','162','184']);
+ const delay=(fn,ms)=>{const id=setTimeout(fn,ms);timers.push(id);};
+ function clearTimers(){timers.forEach(clearTimeout);timers=[];}
+ function setPhotoZoom(on){
+  dialog.classList.toggle('photo-zoomed',on);
+  photo.setAttribute('aria-pressed',String(on));
+  photo.setAttribute('aria-label',on?'제품 사진 원래 크기로 보기':'제품 사진 확대');
+  photoLabel.textContent=on?'VIEW LESS':'VIEW MORE';
  }
- dialog.addEventListener('cancel',e=>{e.preventDefault();close()});dialog.addEventListener('click',e=>{if(e.target===dialog)close()});
+ function close(){
+  if(!dialog.open||closing)return;
+  closing=true;clearTimers();setPhotoZoom(false);
+  dialog.classList.remove('detail-flipped','detail-photo-visible','detail-visible');
+  dialog.classList.add('detail-closing');
+  delay(()=>{
+   if(sourceCard){sourceCard.style.removeProperty('visibility');sourceCard=null;}
+   if(dialog.open)dialog.close();
+   dialog.classList.remove('detail-closing','detail-preparing');
+   document.documentElement.style.overflow=previousOverflow;
+   closing=false;
+   host.querySelector('.circular-carousel')?.focus({preventScroll:true});
+  },reduced.matches?0:650);
+ }
+ dialog.querySelector('.scent-dialog-close').addEventListener('click',close);
+ dialog.addEventListener('cancel',e=>{
+  e.preventDefault();
+  if(dialog.classList.contains('photo-zoomed'))setPhotoZoom(false);
+  else close();
+ });
+ dialog.addEventListener('click',e=>{if(e.target===dialog)close();});
+ panel.addEventListener('click',()=>{
+  if(closing)return;
+  const flipped=dialog.classList.toggle('detail-flipped');
+  panel.setAttribute('aria-pressed',String(flipped));
+ });
+ photo.addEventListener('click',()=>{if(!closing)setPhotoZoom(!dialog.classList.contains('photo-zoomed'));});
  window.mountScentCarousel(host,cards,card=>{
-  if(dialog.open)return;
+  if(dialog.open||closing)return;
+  clearTimers();setPhotoZoom(false);previousOverflow=document.documentElement.style.overflow;
   const ordered=[cards.find(c=>c.querySelector('[aria-controls="note-184"]')),...cards.filter(c=>!c.querySelector('[aria-controls="note-184"]'))];
   const tile=host.querySelector('[data-cc-index="'+ordered.indexOf(card)+'"] .circular-carousel__tile');
-  sourceCard=tile?.closest('.circular-carousel__card');
-  dialog.classList.add('detail-preparing');dialog.showModal();document.documentElement.style.overflow='hidden';
-  const detail=dialog.querySelector('.scent-detail');detail.style.transition='none';detail.style.removeProperty('width');detail.style.removeProperty('height');
-  window.mountScentFlip(detail,card);
-  // Wait for React's first paint before starting the size transition.
-  let attempts=0;
-  function reveal(){
+  sourceCard=tile?.closest('.circular-carousel__card')||null;
+  const key=(card.querySelector('.note-toggle')?.getAttribute('aria-controls')||'').replace('note-','');
+  const family=card.dataset.family==='BLACK'?'BLACK':'WHITE';
+  const thumb=card.querySelector('.card-front img');
+  front.replaceChildren(thumb.cloneNode(true));
+  back.innerHTML=card.querySelector('.card-back.note')?.innerHTML||'';
+  panel.setAttribute('aria-pressed','false');
+  dialog.dataset.family=family;
+  image.src=photoNames.has(key)?'product-'+key+'.webp':thumb.src;
+  image.alt='NOISE NO.'+key+' '+(card.querySelector('.card-identity span')?.textContent||'')+' 향수와 패키지';
+  image.onerror=()=>{image.onerror=null;image.src=thumb.src;};
+  dialog.classList.remove('detail-visible','detail-flipped','detail-photo-visible','detail-closing');
+  dialog.classList.add('detail-preparing');
+  dialog.showModal();document.documentElement.style.overflow='hidden';
+  // Measure the actual card face so the expansion starts at the clicked tile.
+  requestAnimationFrame(()=>{
    if(!dialog.open||closing)return;
-   const flip=detail.querySelector('.rb-flip-card');
-   if(!flip){if(++attempts<120)requestAnimationFrame(reveal);else close();return;}
-   // Measure the mounted card, not its differently sized layout wrapper.
-   const from=tile?.getBoundingClientRect(),w=flip.offsetWidth,h=flip.offsetHeight;
-   detail.style.width=w+'px';detail.style.height=h+'px';
-   detail.style.setProperty('--detail-origin-x',(from?from.left+from.width/2-innerWidth/2:0)+'px');
-   detail.style.setProperty('--detail-origin-y',(from?from.top+from.height/2-innerHeight/2:0)+'px');
-   detail.style.setProperty('--detail-origin-sx',from?from.width/Math.max(1,w):1);
-   detail.style.setProperty('--detail-origin-sy',from?from.height/Math.max(1,h):1);
-   if(sourceCard)sourceCard.style.visibility='hidden';
-   dialog.classList.remove('detail-preparing');void detail.offsetWidth;
-   requestAnimationFrame(()=>requestAnimationFrame(()=>{if(dialog.open&&!closing){detail.style.removeProperty('transition');dialog.classList.add('detail-visible')}}));
-  }
-  requestAnimationFrame(reveal);
+   const from=tile?.getBoundingClientRect(),to=panel.getBoundingClientRect();
+   panel.style.setProperty('--pair-from-x',from?(from.left+from.width/2-to.left-to.width/2)+'px':'0px');
+   panel.style.setProperty('--pair-from-y',from?(from.top+from.height/2-to.top-to.height/2)+'px':'0px');
+   panel.style.setProperty('--pair-from-sx',from?String(from.width/Math.max(1,to.width)):'0.65');
+   panel.style.setProperty('--pair-from-sy',from?String(from.height/Math.max(1,to.height)):'0.65');
+   dialog.classList.remove('detail-preparing');void pair.offsetWidth;
+   requestAnimationFrame(()=>{
+    if(!dialog.open||closing)return;
+    dialog.classList.add('detail-visible');
+    if(sourceCard)sourceCard.style.visibility='hidden';
+    delay(()=>{
+     if(!dialog.open||closing)return;
+     dialog.classList.add('detail-flipped','detail-photo-visible');
+     panel.setAttribute('aria-pressed','true');
+    },reduced.matches?0:420);
+   });
+  });
  }).catch(error=>console.error('Scent carousel failed to load',error));
 })();
 
