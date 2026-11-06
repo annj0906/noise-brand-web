@@ -887,6 +887,10 @@ if(typeof window!=='undefined')(()=>{
    detail.style.width=w+'px';detail.style.height=h+'px';
    dialog.style.setProperty('--paired-card-width',w+'px');
    dialog.style.setProperty('--paired-card-height',h+'px');
+   // Use the actual product-panel width to center the combined pair.
+   // The original zoom still lands at screen center before the photo docks.
+   const photoWidth=Math.min(h,Math.max(0,innerWidth-w-48));
+   dialog.style.setProperty('--paired-photo-width',photoWidth+'px');
    dialog.style.setProperty('--paired-half-width',(w/2)+'px');
    dialog.style.setProperty('--paired-half-height',(h/2)+'px');
    detail.style.setProperty('--detail-origin-x',(from?from.left+from.width/2-innerWidth/2:0)+'px');
