@@ -1899,12 +1899,14 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  position:fixed;left:0;top:0;z-index:50;pointer-events:none;
  display:inline-flex;align-items:center;gap:8px;
  transform:translate3d(calc(var(--scent-mouse-x,0px) + 18px),calc(var(--scent-mouse-y,0px) + 18px),0);
- color:#fff;mix-blend-mode:difference;
- font:400 13px/1.2 var(--font-label);letter-spacing:.025em;
- opacity:0;visibility:hidden;transition:opacity 160ms ease,visibility 160ms ease;
+ color:#101010;mix-blend-mode:normal;
+ font:400 16px/1.4 var(--font-label);letter-spacing:0;
+ white-space:nowrap;
+ opacity:0;visibility:hidden;transition:opacity 150ms ease,visibility 150ms ease;
 }
 .scent-photo-detail.scent-mouse-hover .scent-mouse-label{opacity:1;visibility:visible}
-.scent-mouse-label span{font-size:18px;line-height:.7}
+/* Same outlined down-right SVG as the original collection CTA. */
+.scent-mouse-label .ui-arrow{width:1em;height:1em;min-width:1em;stroke-width:1}
 @media(hover:hover) and (pointer:fine){
  .scent-photo-detail.scent-photo-docked .rb-flip-card,
  .scent-photo-detail.scent-photo-docked .scent-side-photo{cursor:none}
@@ -1992,3 +1994,6 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  text-underline-offset:5px;
  text-decoration-thickness:1px;
 }
+
+/* The original monochrome label is ink on WHITE and reversed on BLACK. */
+.scent-photo-detail[data-family="BLACK"] .scent-mouse-label{color:#f5f5f5}
