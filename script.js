@@ -906,9 +906,9 @@ if(typeof window!=='undefined')(()=>{
     // as the existing centered zoom. No custom spin or jump animation.
     const mountedFlip=detail.querySelector('.rb-flip-card');
     if(mountedFlip && mountedFlip.getAttribute('aria-pressed')!=='true')mountedFlip.click();
-    // Let the original 650ms zoom finish first. Then translate the card
-    // and adjacent photo together at identical speed so their seam stays flush.
-    const photoDelay=reduced.matches?0:660;
+    // Keep the earlier quick right-side photo entrance. The final docked
+    // coordinates still share one edge with the centered two-panel layout.
+    const photoDelay=reduced.matches?0:matchMedia('(max-width:767px)').matches?660:110;
     joinTimer=setTimeout(()=>{
      if(!dialog.open||closing)return;
      dialog.classList.add('scent-photo-docked');
