@@ -1921,7 +1921,7 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  opacity:0;transform:translateY(5px);transition:opacity .25s ease,transform .25s ease;
 }
 .scent-pair-dialog[data-family="BLACK"] .scent-photo-action{color:#f6f6f6;background:rgba(0,0,0,.3)}
-.scent-pair-photo:hover .scent-photo-action,.scent-pair-photo:focus-visible .scent-photo-action,
+.scent-pair:hover .scent-photo-action,.scent-pair:focus-within .scent-photo-action,
 .scent-pair-dialog.photo-zoomed .scent-photo-action{opacity:1;transform:none}
 .scent-pair-dialog .scent-dialog-close{
  position:fixed;top:clamp(18px,4vh,44px);right:clamp(18px,4vw,52px);
