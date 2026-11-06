@@ -813,13 +813,15 @@ if(typeof window!=='undefined')(()=>{
    detail.style.setProperty('--detail-origin-sx',to.width/Math.max(1,detail.offsetWidth));
    detail.style.setProperty('--detail-origin-sy',to.height/Math.max(1,detail.offsetHeight));
   }
+  // Fade the backdrop blur and dim alongside the card's reverse flight.
+  dialog.classList.add('detail-closing');
   dialog.classList.remove('detail-visible');
   setTimeout(()=>{
    if(!dialog.open)return;
    if(sourceCard){sourceCard.style.opacity='0';sourceCard.style.visibility='';sourceCard.style.transition='opacity 160ms linear';void sourceCard.offsetWidth;sourceCard.style.opacity='1';}
    dialog.classList.add('detail-returning');
   },reduced.matches?0:630);
-  setTimeout(()=>{if(sourceCard){sourceCard.style.visibility='';sourceCard.style.removeProperty('opacity');sourceCard.style.removeProperty('transition');}sourceCard=null;window.unmountScentFlip?.();dialog.close();dialog.classList.remove('detail-preparing','detail-returning');document.documentElement.style.overflow='';closing=false;host.querySelector('.circular-carousel')?.focus({preventScroll:true})},reduced.matches?20:830);
+  setTimeout(()=>{if(sourceCard){sourceCard.style.visibility='';sourceCard.style.removeProperty('opacity');sourceCard.style.removeProperty('transition');}sourceCard=null;window.unmountScentFlip?.();dialog.close();dialog.classList.remove('detail-preparing','detail-returning','detail-closing');document.documentElement.style.overflow='';closing=false;host.querySelector('.circular-carousel')?.focus({preventScroll:true})},reduced.matches?20:830);
  }
  dialog.addEventListener('cancel',e=>{e.preventDefault();close()});dialog.addEventListener('click',e=>{if(e.target===dialog)close()});
  window.mountScentCarousel(host,cards,card=>{
@@ -828,7 +830,7 @@ if(typeof window!=='undefined')(()=>{
   const tile=host.querySelector('[data-cc-index="'+ordered.indexOf(card)+'"] .circular-carousel__tile');
   sourceCard=tile?.closest('.circular-carousel__card');
   clearTimeout(joinTimer);
-  dialog.classList.remove('scent-photo-docked','scent-photo-zoomed','scent-mouse-hover');
+  dialog.classList.remove('scent-photo-docked','scent-photo-zoomed','scent-mouse-hover','detail-closing');
   photoButton.tabIndex=-1;photoButton.setAttribute('aria-hidden','true');
   const key=(card.querySelector('.note-toggle')?.getAttribute('aria-controls')||'').replace('note-','');
   const name=card.querySelector('.card-identity span')?.textContent?.trim()||'';
