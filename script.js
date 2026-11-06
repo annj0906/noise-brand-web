@@ -785,10 +785,9 @@ if(typeof window!=='undefined')(()=>{
    photoButton.setAttribute('aria-label',zoom?'제품 사진 원래 크기로 보기':'제품 사진 확대');
   }
  });
- let closing=false,sourceCard=null,joinTimer=0,positionTimer=0,removeSettleListener=null;
+ let closing=false,sourceCard=null,joinTimer=0,positionTimer=0;
  function stopPendingDock(){
   clearTimeout(joinTimer);clearTimeout(positionTimer);
-  removeSettleListener?.();removeSettleListener=null;
  }
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  // Preserve the page's native vertical scrollbar throughout the modal.
@@ -910,37 +909,18 @@ if(typeof window!=='undefined')(()=>{
     // as the existing centered zoom. No custom spin or jump animation.
     const mountedFlip=detail.querySelector('.rb-flip-card');
     if(mountedFlip && mountedFlip.getAttribute('aria-pressed')!=='true')mountedFlip.click();
-    // The photo must not enter until the card's final transform COMPLETES:
-    // a measured transition-end keeps the edges from crossing mid-animation.
-    const revealPhoto=()=>{
-     if(!dialog.open||closing||dialog.classList.contains('scent-photo-docked'))return;
+    // Preserve the earlier fast entrance; the card begins settling just before
+    // the photo slides in. Both are positioned inside the SAME dialog box.
+    const mobile=matchMedia('(max-width:767px)').matches;
+    positionTimer=setTimeout(()=>{
+     if(dialog.open&&!closing)dialog.classList.add('scent-card-positioned');
+    },reduced.matches?0:110);
+    joinTimer=setTimeout(()=>{
+     if(!dialog.open||closing)return;
      dialog.classList.add('scent-photo-docked');
      photoButton.tabIndex=0;
      photoButton.setAttribute('aria-hidden','false');
-    };
-    const mobile=matchMedia('(max-width:767px)').matches;
-    if(reduced.matches){
-     dialog.classList.add('scent-card-positioned');
-     revealPhoto();
-    }else if(mobile){
-     joinTimer=setTimeout(revealPhoto,660);
-    }else{
-     const onCardSettled=e=>{
-      if(e.target!==detail||e.propertyName!=='transform')return;
-      stopPendingDock();
-      revealPhoto();
-     };
-     detail.addEventListener('transitionend',onCardSettled);
-     removeSettleListener=()=>detail.removeEventListener('transitionend',onCardSettled);
-     positionTimer=setTimeout(()=>{
-      if(dialog.open&&!closing)dialog.classList.add('scent-card-positioned');
-     },110);
-     // Fallback for browsers that skip transitionend when a tab is suspended.
-     joinTimer=setTimeout(()=>{
-      stopPendingDock();
-      revealPhoto();
-     },950);
-    }
+    },reduced.matches?0:mobile?660:220);
    } }));
   }
   requestAnimationFrame(reveal);
