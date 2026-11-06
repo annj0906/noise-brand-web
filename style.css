@@ -1997,3 +1997,29 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
 
 /* The original monochrome label is ink on WHITE and reversed on BLACK. */
 .scent-photo-detail[data-family="BLACK"] .scent-mouse-label{color:#f5f5f5}
+
+
+/* The original collection VIEW MORE cue follows the pointer over individual
+   cards. It sits outside the filtered carousel host, so its coordinates remain
+   viewport-relative and it never takes clicks away from the React carousel. */
+.carousel-hover-cue{
+ position:fixed;left:0;top:0;z-index:70;
+ display:inline-flex;align-items:center;gap:.6em;
+ font:400 16px/1.4 var(--font-label);white-space:nowrap;
+ color:#fff;mix-blend-mode:difference;
+ pointer-events:none;user-select:none;
+ opacity:0;visibility:hidden;
+ transition:opacity 150ms ease,visibility 150ms ease;
+}
+.carousel-hover-cue.is-visible{opacity:1;visibility:visible}
+.carousel-hover-cue .ui-arrow{
+ width:1em;height:1em;min-width:1em;
+ stroke-width:1;margin-inline-start:.35em
+}
+.react-carousel-host .circular-carousel__tile{cursor:pointer}
+@media(hover:none),(pointer:coarse){
+ .carousel-hover-cue{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+ .carousel-hover-cue{transition:none}
+}
