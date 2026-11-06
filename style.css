@@ -1926,3 +1926,26 @@ body.snow-transition-active .react-carousel-host .circular-carousel__tile{pointe
  .scent-photo-detail .scent-side-photo,.scent-side-photo img,
  .scent-mouse-label{transition:none!important;will-change:auto}
 }
+
+
+/* Deliberate 3D spin: after the unchanged center zoom, make the card
+   revolve visibly and land with the description side facing the visitor. */
+.scent-photo-detail.scent-card-spinning .rb-flip-card__rotor{
+ animation:scent-card-spin-to-back 1120ms cubic-bezier(.42,.05,.17,.96) both;
+ transform-style:preserve-3d;
+}
+@keyframes scent-card-spin-to-back{
+ 0%{transform:rotateY(0deg)}
+ 56%{transform:rotateY(305deg)}
+ 100%{transform:rotateY(540deg)}
+}
+/* Finish the photo slide at the same instant as the card rotation. */
+.scent-photo-detail .scent-side-photo{
+ transition-duration:1120ms,650ms,0s;
+}
+.scent-photo-detail.scent-photo-docked .scent-side-photo{
+ transition-duration:1120ms,650ms,0s;
+}
+@media(prefers-reduced-motion:reduce){
+ .scent-photo-detail.scent-card-spinning .rb-flip-card__rotor{animation:none}
+}
