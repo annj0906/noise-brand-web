@@ -891,6 +891,7 @@ if(typeof window!=='undefined')(()=>{
    // The original zoom still lands at screen center before the photo docks.
    const photoWidth=Math.min(h,Math.max(0,innerWidth-w-48));
    dialog.style.setProperty('--paired-photo-width',photoWidth+'px');
+   dialog.style.setProperty('--paired-photo-half',(photoWidth/2)+'px');
    dialog.style.setProperty('--paired-half-width',(w/2)+'px');
    dialog.style.setProperty('--paired-half-height',(h/2)+'px');
    detail.style.setProperty('--detail-origin-x',(from?from.left+from.width/2-innerWidth/2:0)+'px');
